@@ -6,6 +6,12 @@
         x:Class="Chess_D_B.MainWindow"
         Title="Chess_D_B">
     <Grid Background="{DynamicResource ResourceKey=PrimaryBackground}" ColumnDefinitions="200, *">
-        
+        <Border Padding="20">
+            <Grid RowDefinitions="*, Auto">
+                <StackPanel>
+                    <Image Source="/Assets/federation_logo.png"></Image>
+                </StackPanel>
+                </Grid>
+        </Border>        
     </Grid>
 </Window>
