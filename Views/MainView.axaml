@@ -4,9 +4,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
         Width="1024" Height="600"
-        x:Class="Chess_D_B.MainWindow"
+        x:Class="Chess_D_B.MainView"
+        xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+        xmlns:view="clr-namespace:Chess_D_B.Views"
+        x:DataType="vm:MainViewModel"
         Title="Chess_D_B">
+    <Window.DataContext>
+        <vm:MainViewModel></vm:MainViewModel>
+    </Window.DataContext>
+
     <Grid Background="{DynamicResource ResourceKey=PrimaryBackground}" ColumnDefinitions="Auto, *">
+        
+        <ContentControl Grid.Column="1"><view:JoueursPageView /></ContentControl>
+        
         <Border Padding="20" Background="{DynamicResource PrimaryBackgroundGradient}">
             <Grid RowDefinitions="*, Auto">
                 <StackPanel Spacing="40">
@@ -18,7 +28,7 @@
                 </StackPanel>
                 
                 <Button Grid.Row="1" Content="Settings"  ></Button>
-                </Grid>
+                </Grid> 
         </Border>        
     </Grid>
 </Window>
