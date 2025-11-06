@@ -2,8 +2,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
+        Width="1024" Height="600"
         x:Class="Chess_D_B.MainWindow"
         Title="Chess_D_B">
-    Welcome to Avalonia!
+    <Grid Background="{DynamicResource ResourceKey=PrimaryBackground}" ColumnDefinitions="Auto, *">
+        <Border Padding="20" Background="{DynamicResource PrimaryBackgroundGradient}">
+            <Grid RowDefinitions="*, Auto">
+                <StackPanel Spacing="40">
+                    <Image Source="/Assets/logo_fede.png" Width="100"></Image>
+                    <Button Content="Gérer joueurs"   HorizontalAlignment="Stretch"></Button>
+                    <Button Content="Gérer Compétitions"   HorizontalAlignment="Stretch"></Button>
+                    <Button Content="Classement ELO"  HorizontalAlignment="Stretch"></Button>
+                    <Button Content="Fonction Bonus"  HorizontalAlignment="Stretch"></Button>
+                </StackPanel>
+                
+                <Button Grid.Row="1" Content="Settings"  ></Button>
+                </Grid>
+        </Border>        
+    </Grid>
 </Window>
