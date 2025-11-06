@@ -1417,19 +1417,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HP PRO\\.nuget\\packages\\": {}
+    "C:\\Users\\lasse\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\software engineering 1\\Programmation Orientée Objet\\Chess_Data_Base\\Chess_D_B\\Chess_D_B\\Chess_D_B.csproj",
+      "projectUniqueName": "C:\\Users\\lasse\\Projet-Chess_DB\\Chess_D_B.csproj",
       "projectName": "Chess_D_B",
-      "projectPath": "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\software engineering 1\\Programmation Orientée Objet\\Chess_Data_Base\\Chess_D_B\\Chess_D_B\\Chess_D_B.csproj",
-      "packagesPath": "C:\\Users\\HP PRO\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HP PRO\\Desktop\\BAC 3 Q1 ECAM\\software engineering 1\\Programmation Orientée Objet\\Chess_Data_Base\\Chess_D_B\\Chess_D_B\\obj\\",
+      "projectPath": "C:\\Users\\lasse\\Projet-Chess_DB\\Chess_D_B.csproj",
+      "packagesPath": "C:\\Users\\lasse\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lasse\\Projet-Chess_DB\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\HP PRO\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\lasse\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
