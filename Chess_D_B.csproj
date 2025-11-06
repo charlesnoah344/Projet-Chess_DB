@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <None Remove="Assets\federation_logo.png" />
-      <AvaloniaResource Include="Assets\federation_logo.png" />
+      <None Remove="Assets\logo_fede.png" />
+      <AvaloniaResource Include="Assets\logo_fede.png" />
     </ItemGroup>
 </Project>
