@@ -15,14 +15,14 @@
 
     <Grid Background="{DynamicResource ResourceKey=PrimaryBackground}" ColumnDefinitions="Auto, *">
         
-        <ContentControl Grid.Column="1"><view:JoueursPageView /></ContentControl>
+        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
         
         <Border Padding="20" Background="{DynamicResource PrimaryBackgroundGradient}">
             <Grid RowDefinitions="*, Auto">
                 <StackPanel Spacing="40">
                     <Image Source="/Assets/logo_fede.png" Width="100"></Image>
-                    <Button Content="Gérer joueurs"   HorizontalAlignment="Stretch"></Button>
-                    <Button Content="Gérer Compétitions"   HorizontalAlignment="Stretch"></Button>
+                    <Button Content="Gérer joueurs" Classes.active="{Binding JoueursPageIsActive}" Command="{Binding GoToJoueursCommand}"  HorizontalAlignment="Stretch"></Button>
+                    <Button Content="Gérer Compétitions" Classes.active="{Binding CompetitionPageIsActive}" Command="{Binding GoToCompetitionCommand}" HorizontalAlignment="Stretch"></Button>
                     <Button Content="Classement ELO"  HorizontalAlignment="Stretch"></Button>
                     <Button Content="Fonction Bonus"  HorizontalAlignment="Stretch"></Button>
                 </StackPanel>
