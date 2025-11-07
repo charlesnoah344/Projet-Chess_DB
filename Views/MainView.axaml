@@ -23,8 +23,8 @@
                     <Image Source="/Assets/logo_fede.png" Width="100"></Image>
                     <Button Content="Gérer joueurs" Classes.active="{Binding JoueursPageIsActive}" Command="{Binding GoToJoueursCommand}"  HorizontalAlignment="Stretch"></Button>
                     <Button Content="Gérer Compétitions" Classes.active="{Binding CompetitionPageIsActive}" Command="{Binding GoToCompetitionCommand}" HorizontalAlignment="Stretch"></Button>
-                    <Button Content="Classement ELO"  HorizontalAlignment="Stretch"></Button>
-                    <Button Content="Fonction Bonus"  HorizontalAlignment="Stretch"></Button>
+                    <Button Content="Classement ELO" Classes.active="{Binding EloPageIsActive}" Command="{Binding GoToEloCommand}" HorizontalAlignment="Stretch"></Button>
+                    <Button Content="Fonction Bonus" Classes.active="{Binding BonusPageIsActive}" Command="{Binding GoToBonusCommand}" HorizontalAlignment="Stretch"></Button>
                 </StackPanel>
                 
                 <Button Grid.Row="1" Content="Settings"  ></Button>

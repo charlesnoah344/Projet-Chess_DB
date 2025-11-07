@@ -32,7 +32,13 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/software engineering 1/Programmation Orientée Objet/Chess_Data_Base/Chess_D_B/Chess_D_B/Styles/AppDefaultStyles.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/software engineering 1/Programmation Orientée Objet/Chess_Data_Base/Chess_D_B/Chess_D_B/Views/BonusPageView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/software engineering 1/Programmation Orientée Objet/Chess_Data_Base/Chess_D_B/Chess_D_B/Views/CompetitionPageView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/software engineering 1/Programmation Orientée Objet/Chess_Data_Base/Chess_D_B/Chess_D_B/Views/EloPageView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/HP PRO/Desktop/BAC 3 Q1 ECAM/software engineering 1/Programmation Orientée Objet/Chess_Data_Base/Chess_D_B/Chess_D_B/Views/JoueursPageView.axaml]
