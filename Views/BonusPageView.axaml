@@ -4,6 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              Foreground="White"
+             xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             x:DataType="vm:BonusPageViewModel"
              x:Class="Chess_D_B.Views.BonusPageView">
-    Welcome to Bonus Page !
+    
+    <Design.DataContext><vm:BonusPageViewModel></vm:BonusPageViewModel></Design.DataContext>
+    
+    <Label Content="{Binding Test}"></Label>
 </UserControl>
