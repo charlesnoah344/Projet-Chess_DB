@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
         Width="1024" Height="600"
+        MinWidth="1024" MinHeight="600"
         x:Class="Chess_D_B.MainView"
         xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
         xmlns:view="clr-namespace:Chess_D_B.Views"

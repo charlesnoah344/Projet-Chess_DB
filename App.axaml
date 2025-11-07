@@ -23,5 +23,6 @@
         <SolidColorBrush x:Key="PrimaryHoverBackground">#333B5A</SolidColorBrush>
         <SolidColorBrush x:Key="PrimaryActiveBackground">#6633dd</SolidColorBrush>
         <SolidColorBrush x:Key="PrimaryHoverForeground">White</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryMenuBackground">#1E3A8A</SolidColorBrush>
     </Application.Resources>
 </Application>
