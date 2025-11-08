@@ -31,6 +31,8 @@
       <AvaloniaResource Include="Assets\logo_fede.png" />
       <None Remove="Assets\joueur_image.jpg" />
       <AvaloniaResource Include="Assets\joueur_image.jpg" />
+      <None Remove="Assets\competition_image.jpg" />
+      <AvaloniaResource Include="Assets\competition_image.jpg" />
     </ItemGroup>
 
     <ItemGroup>

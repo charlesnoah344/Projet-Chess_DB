@@ -3,13 +3,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             Foreground="White"
+             Foreground="{DynamicResource PrimaryForeground}"
+             Background="{DynamicResource PrimaryBackground}"
              xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
              x:DataType="vm:CompetitionPageViewModel"
              x:Class="Chess_D_B.Views.CompetitionPageView">
     
-    <Design.DataContext><vm:CompetitionPageViewModel></vm:CompetitionPageViewModel></Design.DataContext>
-    
-    <Label Content="{Binding Test}"></Label>
+    <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, *">
+        <!--Header-->
+        <Grid Name="HeaderGrid" Grid.ColumnSpan="2">
+            <Image Source="/Assets/competition_image.jpg" Height="350" Stretch="Fill"/>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Classes="title" Content=""/>
+            </StackPanel>
+        </Grid>
+        <!--Left side content-->
+        <StackPanel Grid.Column="0" Grid.Row="1" Spacing="15" Margin="15">
+            <!--Ajouter compétition-->
+            <Button Classes="menu" Grid.Column="0" Grid.Row="1" Content="Créer une compétition" HorizontalAlignment="Stretch"></Button>
+            <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Créer un nouvelle compétition dans la base de donnée de la fédération"></TextBlock>
+            
+            <!--Charger d'une compétition-->
+            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Charger une compétition" HorizontalAlignment="Stretch"></Button>
+            <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="Accéder à une compétition existante dans la base de donnée de la fédération"></TextBlock>
+        </StackPanel>
+        
+        <!--Right Side content-->
+        
+        <StackPanel Grid.Column="1" Grid.Row="1" Spacing="15" Margin="15">
+            <!--Supprimer compétition-->
+            <Button Classes="menu" Grid.Column="0" Grid.Row="1" Content="Supprimer une compétition" HorizontalAlignment="Stretch"></Button>
+            <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Supprimer une compétition de la base de donnée de la fédération"></TextBlock>
+        </StackPanel>
+    </Grid>
 </UserControl>
-
