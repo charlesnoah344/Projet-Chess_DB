@@ -26,25 +26,25 @@
                 <!-- Nom -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Nom du joueur" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Watermark="Entrez le nom..." Height="40"/>
+                    <TextBox Watermark="Entrez le nom..." Background="#333B5A" Height="40"/>
                 </StackPanel>
                 
                 <!-- Prénom -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Prénom du joueur" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Watermark="Entrez le prénom..." Height="40"/>
+                    <TextBox Watermark="Entrez le prénom..." Background="#333B5A" Height="40"/>
                 </StackPanel>
                 
                 <!-- Date de naissance -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Date de naissance" FontWeight="Bold" FontSize="14"/>
-                    <DatePicker Height="40"/>
+                    <DatePicker Height="40" Background="#333B5A"/>
                 </StackPanel>
                 
                 <!-- ELO Initial -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="ELO Initial" FontWeight="Bold" FontSize="14"/>
-                    <NumericUpDown Value="1200" Minimum="0" Maximum="3000" Height="40"/>
+                    <NumericUpDown Value="1200" Minimum="0" Maximum="3000" Background="#333B5A" Height="40"/>
                 </StackPanel>
                 
                 <!-- Boutons -->
