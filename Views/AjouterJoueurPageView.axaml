@@ -12,7 +12,7 @@
     <Grid RowDefinitions="Auto, *">
         <!-- Header -->
         <Border Grid.Row="0" Background="#2C3E50" Padding="20">
-            <TextBlock Text=" Ajouter un Nouveau Joueur" 
+            <TextBlock Text="🎯 Ajouter un Nouveau Joueur" 
                        FontSize="28" 
                        FontWeight="Bold"
                        Foreground="White"
@@ -23,46 +23,83 @@
         <ScrollViewer Grid.Row="1">
             <StackPanel Margin="40" Spacing="20" MaxWidth="600">
                 
+                <!-- Message de retour (succès ou erreur) -->
+                <TextBlock Text="{Binding MessageRetour}" 
+                           FontSize="16"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           IsVisible="{Binding MessageRetour, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                
                 <!-- Nom -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Nom du joueur" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Watermark="Entrez le nom..." Background="#333B5A" Height="40"/>
+                    <TextBlock Text="Nom du joueur *" FontWeight="Bold" FontSize="14"/>
+                    <!-- Binding en mode TwoWay : les changements dans le TextBox modifient la propriété Nom du ViewModel -->
+                    <TextBox Text="{Binding Nom}" 
+                             Watermark="Entrez le nom..." 
+                             Background="#333B5A" 
+                             Height="40"
+                             IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
                 
                 <!-- Prénom -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Prénom du joueur" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Watermark="Entrez le prénom..." Background="#333B5A" Height="40"/>
+                    <TextBlock Text="Prénom du joueur *" FontWeight="Bold" FontSize="14"/>
+                    <TextBox Text="{Binding Prenom}" 
+                             Watermark="Entrez le prénom..." 
+                             Background="#333B5A" 
+                             Height="40"
+                             IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
                 
                 <!-- Date de naissance -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Date de naissance" FontWeight="Bold" FontSize="14"/>
-                    <DatePicker Height="40" Background="#333B5A"/>
+                    <TextBlock Text="Date de naissance *" FontWeight="Bold" FontSize="14"/>
+                    <!-- Le DatePicker se lie à la propriété DateNaissance -->
+                    <DatePicker SelectedDate="{Binding DateNaissance}" 
+                                Height="40" 
+                                Background="#333B5A"
+                                IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
                 
                 <!-- ELO Initial -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="ELO Initial" FontWeight="Bold" FontSize="14"/>
-                    <NumericUpDown Value="1200" Minimum="0" Maximum="3000" Background="#333B5A" Height="40"/>
+                    <TextBlock Text="ELO Initial *" FontWeight="Bold" FontSize="14"/>
+                    <!-- NumericUpDown permet de saisir un nombre avec des boutons +/- -->
+                    <NumericUpDown Value="{Binding Elo}" 
+                                   Minimum="0" 
+                                   Maximum="3000" 
+                                   Background="#333B5A" 
+                                   Height="40"
+                                   IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
                 
                 <!-- Boutons -->
                 <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
+                    <!-- Bouton Retour : appelle la commande RetourCommand -->
                     <Button Grid.Column="0" 
                             Content="← Retour" 
                             Command="{Binding RetourCommand}"
                             Height="45"
                             Margin="0,0,10,0"
-                            HorizontalAlignment="Stretch"/>
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                     
+                    <!-- Bouton Enregistrer : appelle la commande EnregistrerCommand (async) -->
                     <Button Grid.Column="1" 
                             Content="✓ Enregistrer" 
+                            Command="{Binding EnregistrerCommand}"
                             Height="45"
                             Margin="10,0,0,0"
                             Classes="menu"
-                            HorizontalAlignment="Stretch"/>
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </Grid>
+                
+                <!-- Indicateur de chargement -->
+                <ProgressBar IsIndeterminate="True" 
+                             IsVisible="{Binding EstEnCoursEnregistrement}"
+                             Height="4"
+                             Margin="0,10,0,0"/>
                 
             </StackPanel>
         </ScrollViewer>

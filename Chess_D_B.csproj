@@ -41,4 +41,9 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
+    <ItemGroup>
+        <None Update="Data_Base\joueurs.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>
