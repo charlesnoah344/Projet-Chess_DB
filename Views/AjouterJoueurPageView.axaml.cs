@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Chess_D_B.Views;
 
-public partial class AjouterJoueurView : UserControl
+public partial class AjouterJoueurPageView : UserControl
 {
-    public AjouterJoueurView()
+    public AjouterJoueurPageView()
     {
         InitializeComponent();
     }

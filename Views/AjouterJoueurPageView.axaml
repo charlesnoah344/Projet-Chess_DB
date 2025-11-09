@@ -7,7 +7,7 @@
              Background="{DynamicResource PrimaryBackground}"
              xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
              x:DataType="vm:AjouterJoueurPageViewModel"
-             x:Class="Chess_D_B.Views.AjouterJoueurView">
+             x:Class="Chess_D_B.Views.AjouterJoueurPageView">
     
     <Grid RowDefinitions="Auto, *">
         <!-- Header -->

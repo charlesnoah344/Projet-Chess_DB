@@ -1,6 +1,33 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
 namespace Chess_D_B.ViewModels;
 
 public partial class JoueursPageViewModel : ViewModelBase
 {
-    public string Test { get; set; } = "Joueurs";
+    private readonly MainViewModel _mainViewModel;
+
+    public JoueursPageViewModel(MainViewModel mainViewModel)
+    {
+        _mainViewModel = mainViewModel;
+    }
+
+    [RelayCommand]
+    public void AjouterJoueur()
+    {
+        _mainViewModel.GoToAjouterJoueur();
+    }
+    
+    // Vous pouvez ajouter d'autres commandes pour Modifier et Supprimer plus tard
+    // [RelayCommand]
+    // private void ModifierJoueur()
+    // {
+    //     // Navigation vers ModifierJoueurPage
+    // }
+    
+    // [RelayCommand]
+    // private void SupprimerJoueur()
+    // {
+    //     // Navigation vers SupprimerJoueurPage
+    // }
 }

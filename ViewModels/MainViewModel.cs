@@ -13,23 +13,24 @@ public partial class MainViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(BonusPageIsActive))]
     private ViewModelBase _currentPage ;
 
-    public bool JoueursPageIsActive => CurrentPage == _joueursPage ;
+    public bool JoueursPageIsActive => CurrentPage == _joueursPage || CurrentPage is AjouterJoueurPageViewModel ;
     public bool CompetitionPageIsActive => CurrentPage == _competitionPage ;   
     public bool EloPageIsActive => CurrentPage == _eloPage ;
     public bool BonusPageIsActive => CurrentPage == _bonusPage ;
     
-    private readonly JoueursPageViewModel _joueursPage = new();
+    private readonly JoueursPageViewModel _joueursPage ;
     private readonly CompetitionPageViewModel _competitionPage = new();
     private readonly EloPageViewModel _eloPage = new();
     private readonly BonusPageViewModel _bonusPage = new();
 
     public MainViewModel()
     {
+        _joueursPage = new JoueursPageViewModel(this);
         CurrentPage = _joueursPage;
     }
 
 [RelayCommand]
-private void GoToJoueurs()
+public void GoToJoueurs()
 {
     CurrentPage = _joueursPage;
 }
@@ -47,5 +48,11 @@ private void GoToElo()
 private void GoToBonus()
 {
     CurrentPage = _bonusPage;
+}
+// méthode pour naviguer vers AjouterJoueur
+[RelayCommand]
+public void GoToAjouterJoueur()
+{
+    CurrentPage = new AjouterJoueurPageViewModel(this);
 }
 }
