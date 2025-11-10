@@ -36,7 +36,7 @@
             <Button Classes="menu" Grid.Column="0" Grid.Row="1" Content="Supprimer un joueur" HorizontalAlignment="Stretch"></Button>
             <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Supprimer un joueur de la base de donnée de la fédération"></TextBlock>
             <!--Afficher les informations des joueur-->
-            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Afficher les joueurs" HorizontalAlignment="Stretch"></Button>
+            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Afficher les joueurs" Command="{Binding AfficherJoueurCommand}" HorizontalAlignment="Stretch"></Button>
             <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="Afficher les informations des joueurs contenus dans la base de donnée de la fédération"></TextBlock>
         </StackPanel>
     </Grid>

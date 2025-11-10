@@ -6,5 +6,21 @@
     "DateNaissance": "2005-04-17T00:00:00",
     "Elo": 1200,
     "DateCreation": "2025-11-09T17:46:48.4780682+01:00"
+  },
+  {
+    "Id": "55293e4b-9906-403e-89fd-0c37741e2523",
+    "Nom": "Lorie",
+    "Prenom": "Malabuna",
+    "DateNaissance": "2002-04-24T00:00:00",
+    "Elo": 3000,
+    "DateCreation": "2025-11-10T12:23:52.6054966+01:00"
+  },
+  {
+    "Id": "c496a637-b9b8-42c3-b6a4-87272200ce97",
+    "Nom": "Lesno",
+    "Prenom": "Lesno",
+    "DateNaissance": "2005-11-10T19:57:35.4749449",
+    "Elo": 1200,
+    "DateCreation": "2025-11-10T19:57:44.5081366+01:00"
   }
 ]
