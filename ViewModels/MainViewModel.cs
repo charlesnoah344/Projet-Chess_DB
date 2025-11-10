@@ -14,18 +14,19 @@ public partial class MainViewModel : ViewModelBase
     private ViewModelBase _currentPage ;
 
     public bool JoueursPageIsActive => CurrentPage == _joueursPage || CurrentPage is AjouterJoueurPageViewModel ;
-    public bool CompetitionPageIsActive => CurrentPage == _competitionPage ;   
+    public bool CompetitionPageIsActive => CurrentPage == _competitionPage || CurrentPage is CreateCompetitionPageViewModel ;   
     public bool EloPageIsActive => CurrentPage == _eloPage ;
     public bool BonusPageIsActive => CurrentPage == _bonusPage ;
     
     private readonly JoueursPageViewModel _joueursPage ;
-    private readonly CompetitionPageViewModel _competitionPage = new();
+    private readonly CompetitionPageViewModel _competitionPage ;
     private readonly EloPageViewModel _eloPage = new();
     private readonly BonusPageViewModel _bonusPage = new();
 
     public MainViewModel()
     {
         _joueursPage = new JoueursPageViewModel(this);
+        _competitionPage = new CompetitionPageViewModel(this);
         CurrentPage = _joueursPage;
     }
 
@@ -35,7 +36,7 @@ public void GoToJoueurs()
     CurrentPage = _joueursPage;
 }
 [RelayCommand]
-private void GoToCompetition()
+public void GoToCompetition()
 {
     CurrentPage = _competitionPage;
 }
@@ -54,5 +55,12 @@ private void GoToBonus()
 public void GoToAjouterJoueur()
 {
     CurrentPage = new AjouterJoueurPageViewModel(this);
+}
+
+[RelayCommand]
+
+public void GoToCreateCompetition()
+{
+    CurrentPage = new CreateCompetitionPageViewModel(this);
 }
 }
