@@ -12,7 +12,7 @@
     <Grid RowDefinitions="Auto, Auto, *, Auto">
         
         <!-- Header -->
-        <Border Grid.Row="0" Background="#c0392b" Padding="20">
+        <Border Grid.Row="0" Background="#2C3E50" Padding="20">
             <TextBlock Text="🗑️ Supprimer un Joueur" 
                        FontSize="28" 
                        FontWeight="Bold"
@@ -21,7 +21,7 @@
         </Border>
         
         <!-- Barre d'outils et message -->
-        <Border Grid.Row="1" Padding="20" Background="#e74c3c">
+        <Border Grid.Row="1" Padding="20" Background="#34495E">
             <StackPanel Spacing="10">
                 <!-- Message de statut -->
                 <TextBlock Text="{Binding Message}" 
@@ -59,7 +59,7 @@
                 
                 <!-- Colonne gauche : Liste de tous les joueurs -->
                 <Border Grid.Column="0" 
-                        BorderBrush="#e74c3c" 
+                        BorderBrush="#34495E" 
                         BorderThickness="2" 
                         CornerRadius="5"
                         Padding="15">
@@ -68,7 +68,7 @@
                         <TextBlock Text="📋 Tous les joueurs" 
                                    FontSize="18" 
                                    FontWeight="Bold"
-                                   Foreground="#e74c3c"/>
+                                   Foreground="White"/>
                         
                         <TextBlock Text="Cliquez sur un joueur pour le sélectionner" 
                                    FontSize="12" 
@@ -120,7 +120,7 @@
                 
                 <!-- Colonne droite : Informations du joueur sélectionné -->
                 <Border Grid.Column="1" 
-                        BorderBrush="#e74c3c" 
+                        BorderBrush="#34495E" 
                         BorderThickness="2" 
                         CornerRadius="5"
                         Padding="15">
@@ -129,9 +129,23 @@
                         <TextBlock Text="👤 Joueur sélectionné" 
                                    FontSize="18" 
                                    FontWeight="Bold"
-                                   Foreground="#e74c3c"/>
+                                   Foreground="White"/>
                         
-                       
+                        <!-- Message si aucun joueur sélectionné -->
+                        <StackPanel Spacing="20"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="0,50,0,0"
+                                    IsVisible="{Binding !JoueurEstSelectionne}">
+                            <TextBlock Text="👈" 
+                                       FontSize="48" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Sélectionnez un joueur&#x0a;dans la liste"
+                                       FontSize="16"
+                                       Foreground="#95a5a6"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"/>
+                        </StackPanel>
                         
                         <!-- Affichage des détails du joueur sélectionné -->
                         <StackPanel Spacing="10" 
@@ -172,7 +186,7 @@
                             </StackPanel>
                             
                             <!-- Zone de confirmation -->
-                            <Border Background="#c0392b" 
+                            <Border Background="#34495E" 
                                     Padding="15" 
                                     CornerRadius="5"
                                     Margin="0,20,0,0"
@@ -211,7 +225,7 @@
                                     Command="{Binding DemanderConfirmationCommand}"
                                     HorizontalAlignment="Stretch"
                                     Height="45"
-                                    Background="#e74c3c"
+                                    Background="#34495E"
                                     Foreground="White"
                                     FontSize="14"
                                     FontWeight="Bold"
