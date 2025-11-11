@@ -30,9 +30,9 @@ public partial class JoueursPageViewModel : ViewModelBase
     //     // Navigation vers ModifierJoueurPage
     // }
     
-    // [RelayCommand]
-    // private void SupprimerJoueur()
-    // {
-    //     // Navigation vers SupprimerJoueurPage
-    // }
+    [RelayCommand]
+    private void SupprimerJoueur()
+    {
+        _mainViewModel.GoToSupprimerJoueur();
+    }
 }
