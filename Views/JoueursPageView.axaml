@@ -25,7 +25,7 @@
             <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Ajouter un nouveau joueur dans la base de donnée de la fédération"></TextBlock>
             
             <!--Modifier les informations d'un joueur-->
-            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Modifier un joueur" HorizontalAlignment="Stretch"></Button>
+            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Modifier un joueur" Command="{Binding ModifierJoueurCommand}" HorizontalAlignment="Stretch"></Button>
             <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="Modifier les informations d'un joueur dans la base de donnée de la fédération"></TextBlock>
         </StackPanel>
         

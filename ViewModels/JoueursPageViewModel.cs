@@ -24,11 +24,11 @@ public partial class JoueursPageViewModel : ViewModelBase
     }
     
     // Vous pouvez ajouter d'autres commandes pour Modifier et Supprimer plus tard
-    // [RelayCommand]
-    // private void ModifierJoueur()
-    // {
-    //     // Navigation vers ModifierJoueurPage
-    // }
+    [RelayCommand]
+    private void ModifierJoueur()
+    {
+        _mainViewModel.GoToModifierJoueur();
+    }
     
     [RelayCommand]
     private void SupprimerJoueur()
