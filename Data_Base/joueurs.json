@@ -14,5 +14,21 @@
     "DateNaissance": "2002-04-24T00:00:00",
     "Elo": 3000,
     "DateCreation": "2025-11-10T12:23:52.6054966+01:00"
+  },
+  {
+    "Id": "9da802f3-70cb-4dc3-ab16-bc6b605bb64a",
+    "Nom": "Lesno",
+    "Prenom": "Noah",
+    "DateNaissance": "2005-11-12T15:09:45.7067883",
+    "Elo": 2000,
+    "DateCreation": "2025-11-12T15:10:02.4449893+01:00"
+  },
+  {
+    "Id": "1b9f661e-ef18-4b4c-9756-647da7f41103",
+    "Nom": "Lassey",
+    "Prenom": "Lincoln",
+    "DateNaissance": "2003-01-13T00:00:00",
+    "Elo": 1600,
+    "DateCreation": "2025-11-12T15:10:39.9398475+01:00"
   }
 ]

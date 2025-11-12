@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Chess_D_B.Views;
 
-public partial class EloPageView : UserControl
+public partial class ClassementEloPageView : UserControl
 {
-    public EloPageView()
+    public ClassementEloPageView()
     {
         InitializeComponent();
     }
