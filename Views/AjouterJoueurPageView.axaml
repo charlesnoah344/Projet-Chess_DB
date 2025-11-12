@@ -36,7 +36,7 @@
                     <!-- Binding en mode TwoWay : les changements dans le TextBox modifient la propriété Nom du ViewModel -->
                     <TextBox Text="{Binding Nom}" 
                              Watermark="Entrez le nom..." 
-                             Background="#333B5A" 
+                             Background="#34495E" 
                              Height="40"
                              IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
@@ -46,7 +46,7 @@
                     <TextBlock Text="Prénom du joueur *" FontWeight="Bold" FontSize="14"/>
                     <TextBox Text="{Binding Prenom}" 
                              Watermark="Entrez le prénom..." 
-                             Background="#333B5A" 
+                             Background="#34495E" 
                              Height="40"
                              IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
@@ -57,7 +57,7 @@
                     <!-- Le DatePicker se lie à la propriété DateNaissance -->
                     <DatePicker SelectedDate="{Binding DateNaissance}" 
                                 Height="40" 
-                                Background="#333B5A"
+                                Background="#34495E"
                                 IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
                 
@@ -68,7 +68,7 @@
                     <NumericUpDown Value="{Binding Elo}" 
                                    Minimum="0" 
                                    Maximum="3000" 
-                                   Background="#333B5A" 
+                                   Background="#34495E" 
                                    Height="40"
                                    IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>

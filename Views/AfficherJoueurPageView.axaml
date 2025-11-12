@@ -1,0 +1,177 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             Foreground="{DynamicResource PrimaryForeground}"
+             Background="{DynamicResource PrimaryBackground}"
+             xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             x:DataType="vm:AfficherJoueurPageViewModel"
+             x:Class="Chess_D_B.Views.AfficherJoueurPageView">
+    
+    <Grid RowDefinitions="Auto, Auto, *, Auto">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2C3E50" Padding="20">
+            <TextBlock Text="👥 Liste des Joueurs" 
+                       FontSize="28" 
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+        </Border>
+        
+        <!-- Barre d'outils -->
+        <Border Grid.Row="1" Padding="20" Background="#34495E">
+            <Grid ColumnDefinitions="*, Auto, Auto">
+                <!-- Message de statut -->
+                <TextBlock Grid.Column="0" 
+                           Text="{Binding Message}" 
+                           FontSize="14"
+                           VerticalAlignment="Center"
+                           Foreground="White"/>
+                
+                <!-- Bouton Rafraîchir -->
+                <Button Grid.Column="1" 
+                        Content="🔄 Rafraîchir" 
+                        Command="{Binding ChargerJoueursCommand}"
+                        Margin="0,0,10,0"
+                        Height="35"
+                        IsEnabled="{Binding !EstEnChargement}"/>
+                
+                <!-- Bouton Ajouter -->
+                <Button Grid.Column="2" 
+                        Content="➕ Ajouter un joueur" 
+                        Command="{Binding AjouterJoueurCommand}"
+                        Classes="menu"
+                        Height="35"/>
+            </Grid>
+        </Border>
+        
+        <!-- Liste des joueurs avec en-têtes -->
+        <ScrollViewer Grid.Row="2" Margin="20">
+            <StackPanel>
+                
+                <!-- En-tête du tableau -->
+                <Border Background="#2C3E50" 
+                        BorderBrush="#34495E" 
+                        BorderThickness="2" 
+                        CornerRadius="5,5,0,0"
+                        Padding="15,10">
+                    <Grid ColumnDefinitions="2*,2*,1.5*,1*,1.5*">
+                        <TextBlock Grid.Column="0" 
+                                   Text="Prénom" 
+                                   FontWeight="Bold" 
+                                   FontSize="16"
+                                   Foreground="White"/>
+                        <TextBlock Grid.Column="1" 
+                                   Text="Nom" 
+                                   FontWeight="Bold" 
+                                   FontSize="16"
+                                   Foreground="White"/>
+                        <TextBlock Grid.Column="2" 
+                                   Text="Naissance" 
+                                   FontWeight="Bold" 
+                                   FontSize="16"
+                                   Foreground="White"/>
+                        <TextBlock Grid.Column="3" 
+                                   Text="ELO" 
+                                   FontWeight="Bold" 
+                                   FontSize="16"
+                                   Foreground="White"/>
+                        <TextBlock Grid.Column="4" 
+                                   Text="Créé le" 
+                                   FontWeight="Bold" 
+                                   FontSize="16"
+                                   Foreground="White"/>
+                    </Grid>
+                </Border>
+                
+                <!-- Liste des joueurs -->
+                <ListBox ItemsSource="{Binding Joueurs}"
+                         Background="Transparent"
+                         BorderBrush="#34495E"
+                         BorderThickness="2,0,2,2"
+                         CornerRadius="0,0,5,5">
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Chaque ligne de joueur -->
+                            <Border Background="#34495E" 
+                                    BorderBrush="#2C3E50" 
+                                    BorderThickness="0,0,0,1" 
+                                    Padding="15,10">
+                                <Grid ColumnDefinitions="2*,2*,1.5*,1*,1.5*">
+                                    
+                                    <!-- Prénom -->
+                                    <TextBlock Grid.Column="0" 
+                                               Text="{Binding Prenom}" 
+                                               VerticalAlignment="Center"
+                                               FontSize="14"/>
+                                    
+                                    <!-- Nom -->
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding Nom}" 
+                                               VerticalAlignment="Center"
+                                               FontSize="14"/>
+                                    
+                                    <!-- Date de naissance (formatée sans heure) -->
+                                    <TextBlock Grid.Column="2" 
+                                               Text="{Binding DateNaissance, StringFormat='dd/MM/yyyy'}" 
+                                               VerticalAlignment="Center"
+                                               FontSize="14"/>
+                                    
+                                    <!-- ELO -->
+                                    <TextBlock Grid.Column="3" 
+                                               Text="{Binding Elo}" 
+                                               VerticalAlignment="Center"
+                                               FontSize="14"
+                                               FontWeight="Bold"
+                                               Foreground="#3498db"/>
+                                    
+                                    <!-- Date de création (formatée avec heure) -->
+                                    <TextBlock Grid.Column="4" 
+                                               Text="{Binding DateCreation, StringFormat='dd/MM/yyyy HH:mm'}" 
+                                               VerticalAlignment="Center"
+                                               FontSize="12"
+                                               Foreground="#95a5a6"/>
+                                    
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                    <!-- Style pour enlever la sélection visuelle -->
+                    <ListBox.Styles>
+                        <Style Selector="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                            <Setter Property="Background" Value="#3498db"/>
+                        </Style>
+                    </ListBox.Styles>
+                    
+                </ListBox>
+                
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Indicateur de chargement et bouton retour -->
+        <StackPanel Grid.Row="3" Margin="20" Spacing="10">
+            
+            <!-- Barre de progression -->
+            <ProgressBar IsIndeterminate="True" 
+                         IsVisible="{Binding EstEnChargement}"
+                         Height="4"/>
+            
+            <!-- Bouton Retour -->
+            <Button Content="← Retour au menu" 
+                    Command="{Binding RetourCommand}"
+                    HorizontalAlignment="Left"
+                    Width="200"
+                    Height="40"/>
+            
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

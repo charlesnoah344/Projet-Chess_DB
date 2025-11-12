@@ -17,17 +17,22 @@ public partial class JoueursPageViewModel : ViewModelBase
     {
         _mainViewModel.GoToAjouterJoueur();
     }
+    [RelayCommand]
+    public void AfficherJoueur()
+    {
+        _mainViewModel.GoToAfficherJoueur();
+    }
     
     // Vous pouvez ajouter d'autres commandes pour Modifier et Supprimer plus tard
-    // [RelayCommand]
-    // private void ModifierJoueur()
-    // {
-    //     // Navigation vers ModifierJoueurPage
-    // }
+    [RelayCommand]
+    private void ModifierJoueur()
+    {
+        _mainViewModel.GoToModifierJoueur();
+    }
     
-    // [RelayCommand]
-    // private void SupprimerJoueur()
-    // {
-    //     // Navigation vers SupprimerJoueurPage
-    // }
+    [RelayCommand]
+    private void SupprimerJoueur()
+    {
+        _mainViewModel.GoToSupprimerJoueur();
+    }
 }

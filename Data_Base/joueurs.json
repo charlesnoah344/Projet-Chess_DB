@@ -4,15 +4,15 @@
     "Nom": "Charles",
     "Prenom": "Noah",
     "DateNaissance": "2005-04-17T00:00:00",
-    "Elo": 1200,
+    "Elo": 1865,
     "DateCreation": "2025-11-09T17:46:48.4780682+01:00"
   },
   {
-    "Id": "6eae4d48-2a91-408a-814e-5d3b4864c4c8",
-    "Nom": "Lassey",
-    "Prenom": "Lincoln",
-    "DateNaissance": "2003-05-23T00:00:00",
-    "Elo": 2100,
-    "DateCreation": "2025-11-10T12:20:30.2212681+01:00"
+    "Id": "55293e4b-9906-403e-89fd-0c37741e2523",
+    "Nom": "Lorie",
+    "Prenom": "Malabuna",
+    "DateNaissance": "2002-04-24T00:00:00",
+    "Elo": 3000,
+    "DateCreation": "2025-11-10T12:23:52.6054966+01:00"
   }
 ]
