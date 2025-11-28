@@ -8,18 +8,18 @@ using Chess_D_B.Services;
 
 namespace Chess_D_B.ViewModels;
 
-public partial class SupprimerJoueurPageViewModel : ViewModelBase
+public partial class SupprimerCompetitionPageViewModel : ViewModelBase
 {
     private readonly MainViewModel _mainViewModel;
-    private readonly JoueurService _joueurService;
+    private readonly CompetitionService _competitionService;
 
-    // Collection observable de tous les joueurs
+    // Collection observable de toutes les competitions
     [ObservableProperty]
-    private ObservableCollection<Joueur> _joueurs = new();
+    private ObservableCollection<Competition> _competitions = new();
 
-    // Joueur sélectionné dans la liste
+    // Competition sélectionnée dans la liste
     [ObservableProperty]
-    private Joueur? _joueurSelectionne;
+    private Competition? _competitionSelectionne;
 
     // ID saisi manuellement
     [ObservableProperty]
@@ -37,43 +37,43 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _confirmationVisible = false;
     
-    public bool JoueurEstSelectionne => _joueurSelectionne != null;
+    public bool CompetitionEstSelectionne => _competitionSelectionne != null;
 
-    public SupprimerJoueurPageViewModel(MainViewModel mainViewModel)
+    public SupprimerCompetitionPageViewModel(MainViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
-        _joueurService = new JoueurService();
+        _competitionService = new CompetitionService();
         
-        // Charger les joueurs dès la création
-        _ = ChargerJoueursAsync();
+        // Charger les competitions dès la création
+        _ = ChargerCompetitionsAsync();
     }
 
     /// <summary>
-    /// Charge tous les joueurs depuis le fichier JSON
+    /// Charge tous les competitions depuis le fichier JSON
     /// </summary>
     [RelayCommand]
-    private async Task ChargerJoueursAsync()
+    private async Task ChargerCompetitionsAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement des joueurs...";
+        Message = "🔄 Chargement des competitions...";
         
         try
         {
-            var listeJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
+            var listeCompetitions = await _competitionService.ObtenirToutesLesCompetitionsAsync();
             
-            Joueurs.Clear();
-            foreach (var joueur in listeJoueurs)
+            Competitions.Clear();
+            foreach (var competition in listeCompetitions)
             {
-                Joueurs.Add(joueur);
+                Competitions.Add(competition);
             }
             
-            if (Joueurs.Count == 0)
+            if (Competitions.Count == 0)
             {
-                Message = "ℹ️ Aucun joueur trouvé.";
+                Message = "ℹ️ Aucune competition trouvée.";
             }
             else
             {
-                Message = $"✅ {Joueurs.Count} joueur(s) chargé(s)";
+                Message = $"✅ {Competitions.Count} competition(s) chargé(s)";
             }
         }
         catch (Exception ex)
@@ -87,7 +87,7 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Recherche un joueur par son ID
+    /// Recherche un tournoi par son ID
     /// </summary>
     [RelayCommand]
     private async Task RechercherParIdAsync()
@@ -110,17 +110,17 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
 
         try
         {
-            var joueur = await _joueurService.ObtenirJoueurParIdAsync(id);
+            var competition = await _competitionService.ObtenirCompetitionParIdAsync(id);
             
-            if (joueur != null)
+            if (competition != null)
             {
-                JoueurSelectionne = joueur;
-                Message = $"✅ Joueur trouvé : {joueur.Prenom} {joueur.Nom}";
+                CompetitionSelectionne = competition;
+                Message = $"✅ Competition trouvé : {competition.Ville} {competition.Tournoi}";
             }
             else
             {
-                JoueurSelectionne = null;
-                Message = "❌ Aucun joueur trouvé avec cet ID.";
+                CompetitionSelectionne = null;
+                Message = "❌ Aucune competition trouvée avec cet ID.";
             }
         }
         catch (Exception ex)
@@ -139,14 +139,14 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     [RelayCommand]
     private void DemanderConfirmation()
     {
-        if (JoueurSelectionne == null)
+        if (CompetitionSelectionne == null)
         {
-            Message = "❌ Veuillez sélectionner un joueur !";
+            Message = "❌ Veuillez sélectionner une competition !";
             return;
         }
 
         ConfirmationVisible = true;
-        Message = $"⚠️ Êtes-vous sûr de vouloir supprimer {JoueurSelectionne.Prenom} {JoueurSelectionne.Nom} ?";
+        Message = $"⚠️ Êtes-vous sûr de vouloir supprimer {CompetitionSelectionne.Ville} {CompetitionSelectionne.Tournoi} ?";
     }
 
     /// <summary>
@@ -160,14 +160,14 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Supprime le joueur sélectionné
+    /// Supprime le tournoi sélectionné
     /// </summary>
     [RelayCommand]
     private async Task ConfirmerSuppressionAsync()
     {
-        if (JoueurSelectionne == null)
+        if (CompetitionSelectionne == null)
         {
-            Message = "❌ Aucun joueur sélectionné !";
+            Message = "❌ Aucun tournoi sélectionné !";
             return;
         }
 
@@ -177,23 +177,23 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
 
         try
         {
-            bool succes = await _joueurService.SupprimerJoueurAsync(JoueurSelectionne.Id);
+            bool succes = await _competitionService.SupprimerCompetitionAsync(CompetitionSelectionne.Id);
 
             if (succes)
             {
-                Message = $"✅ {JoueurSelectionne.Prenom} {JoueurSelectionne.Nom} a été supprimé !";
+                Message = $"✅ {CompetitionSelectionne.Ville} {CompetitionSelectionne.Tournoi} a été supprimé !";
                 
-                // Retirer le joueur de la liste affichée
-                Joueurs.Remove(JoueurSelectionne);
+                // Retirer le tournoi de la liste affichée
+                Competitions.Remove(CompetitionSelectionne);
                 
                 // Réinitialiser la sélection
-                JoueurSelectionne = null;
+                CompetitionSelectionne = null;
                 IdRecherche = string.Empty;
                 
                 // Attendre un peu pour que l'utilisateur voie le message
                 await Task.Delay(1500);
                 
-                Message = $"✅ {Joueurs.Count} joueur(s) restant(s)";
+                Message = $"✅ {Competitions.Count} competition(s) restante(s)";
             }
             else
             {
@@ -216,12 +216,12 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     [RelayCommand]
     private void Retour()
     {
-        _mainViewModel.GoToJoueurs();
+        _mainViewModel.GoToCompetition();
     }
     
 
-    partial void OnJoueurSelectionneChanged(Joueur? value)
+    partial void OnCompetitionSelectionneChanged(Competition? value)
     {
-        OnPropertyChanged(nameof(JoueurEstSelectionne));
+        OnPropertyChanged(nameof(CompetitionEstSelectionne));
     }
 }

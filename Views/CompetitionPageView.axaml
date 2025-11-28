@@ -32,7 +32,7 @@
         
         <StackPanel Grid.Column="1" Grid.Row="1" Spacing="15" Margin="15">
             <!--Supprimer compétition-->
-            <Button Classes="menu" Grid.Column="0" Grid.Row="1" Content="Supprimer une compétition" HorizontalAlignment="Stretch"></Button>
+            <Button Classes="menu" Grid.Column="0" Grid.Row="1" Content="Supprimer une compétition" Command="{Binding SupprimerCompetitionCommand}" HorizontalAlignment="Stretch"></Button>
             <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Supprimer une compétition de la base de donnée de la fédération"></TextBlock>
         </StackPanel>
     </Grid>

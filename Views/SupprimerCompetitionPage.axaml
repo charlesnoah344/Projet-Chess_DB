@@ -1,0 +1,258 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             Foreground="{DynamicResource PrimaryForeground}"
+             Background="{DynamicResource PrimaryBackground}"
+             xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             x:DataType="vm:SupprimerCompetitionPageViewModel"
+             x:Class="Chess_D_B.Views.SupprimerCompetitionPageView">
+    <Grid RowDefinitions="Auto, Auto, *, Auto">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2C3E50" Padding="20">
+            <TextBlock Text="🗑️ Supprimer une Competitionr" 
+                       FontSize="28" 
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+        </Border>
+        
+        <!-- Barre d'outils et message -->
+        <Border Grid.Row="1" Padding="20" Background="#34495E">
+            <StackPanel Spacing="10">
+                <!-- Message de statut -->
+                <TextBlock Text="{Binding Message}" 
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"/>
+                
+                <!-- Recherche par ID -->
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBox Grid.Column="0"
+                             Text="{Binding IdRecherche}"
+                             Watermark="Entrez l'ID du tournoi à supprimer..."
+                             Height="40"
+                             Background="#333B5A"
+                             Margin="0,0,10,0"
+                             IsEnabled="{Binding !EstEnChargement}"/>
+                    
+                    <Button Grid.Column="1"
+                            Content="🔍 Rechercher"
+                            Command="{Binding RechercherParIdCommand}"
+                            Height="40"
+                            MinWidth="120"
+                            Background="#2980b9"
+                            Foreground="White"
+                            IsEnabled="{Binding !EstEnChargement}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+        <!-- Contenu principal -->
+        <ScrollViewer Grid.Row="2">
+            <Grid ColumnDefinitions="*, *" Margin="20" ColumnSpacing="20">
+                
+                <!-- Colonne gauche : Liste de tous les tournois -->
+                <Border Grid.Column="0" 
+                        BorderBrush="#34495E" 
+                        BorderThickness="2" 
+                        CornerRadius="5"
+                        Padding="15">
+                    <StackPanel Spacing="10">
+                        
+                        <TextBlock Text="📋 Toutes les competitions" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"
+                                   Foreground="White"/>
+                        
+                        <TextBlock Text="Cliquez sur un tournoi pour le sélectionner" 
+                                   FontSize="12" 
+                                   Foreground="#95a5a6"
+                                   TextWrapping="Wrap"/>
+                        
+                        <!-- Liste des tournois -->
+                        <ListBox ItemsSource="{Binding Competitions}"
+                                 SelectedItem="{Binding CompetitionSelectionne, Mode=TwoWay}"
+                                 SelectionMode="Single"
+                                 Height="400"
+                                 Background="#2C3E50"
+                                 BorderBrush="#34495E"
+                                 BorderThickness="1">
+                            
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding="10" 
+                                            BorderBrush="#34495E" 
+                                            BorderThickness="0,0,0,1">
+                                        <StackPanel Spacing="5">
+                                            <TextBlock>
+                                                <Run Text="{Binding Ville}" FontWeight="Bold"/>
+                                                <Run Text=" "/>
+                                                <Run Text="{Binding Tournoi}" FontWeight="Bold"/>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding DateDebut, StringFormat='Debute le : dd/MM/yyyy'}" 
+                                                       FontSize="11" 
+                                                       Foreground="#95a5a6"/>
+                                            <TextBlock Text="{Binding DateFin, StringFormat='Fini le : dd/MM/yyyy'}" 
+                                                       FontSize="11" 
+                                                       Foreground="#95a5a6"/>
+                                           
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            
+                        </ListBox>
+                        
+                        <!-- Bouton Rafraîchir -->
+                        <Button Content="🔄 Rafraîchir la liste"
+                                Command="{Binding ChargerCompetitionsCommand}"
+                                HorizontalAlignment="Stretch"
+                                Height="35"
+                                IsEnabled="{Binding !EstEnChargement}"/>
+                        
+                    </StackPanel>
+                </Border>
+                
+                <!-- Colonne droite : Informations du tournoi sélectionné -->
+                <Border Grid.Column="1" 
+                        BorderBrush="#34495E" 
+                        BorderThickness="2" 
+                        CornerRadius="5"
+                        Padding="15">
+                    <StackPanel Spacing="15">
+                        
+                        <TextBlock Text="👤 tournoi sélectionné" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"
+                                   Foreground="White"/>
+                        
+                        <!-- Message si aucun tournoi sélectionné -->
+                        <StackPanel Spacing="20"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="0,50,0,0"
+                                    IsVisible="{Binding !CompetitionEstSelectionne}">
+                            <TextBlock Text="👈" 
+                                       FontSize="48" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Sélectionnez un tournoi&#x0a;dans la liste"
+                                       FontSize="16"
+                                       Foreground="#95a5a6"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"/>
+                        </StackPanel>
+                        
+                        <!-- Affichage des détails du tournoi sélectionné -->
+                        <StackPanel Spacing="10" 
+                                    IsVisible="{Binding CompetitionEstSelectionne, FallbackValue=False}">
+                            
+                            <!-- Ville -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Ville" FontWeight="Bold" FontSize="12" Foreground="#95a5a6"/>
+                                <TextBlock Text="{Binding CompetitionSelectionne.Ville}" FontSize="16"/>
+                            </StackPanel>
+                            
+                            <!-- Tournoi -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Tournoi" FontWeight="Bold" FontSize="12" Foreground="#95a5a6"/>
+                                <TextBlock Text="{Binding CompetitionSelectionne.Tournoi}" FontSize="16"/>
+                            </StackPanel>
+                            
+                            <!-- Date de debut -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Date de debut" FontWeight="Bold" FontSize="12" Foreground="#95a5a6"/>
+                                <TextBlock Text="{Binding CompetitionSelectionne.DateDebut, StringFormat='dd/MM/yyyy'}" FontSize="16"/>
+                            </StackPanel>
+                            
+                            
+                            
+                            <!-- ID -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="ID" FontWeight="Bold" FontSize="12" Foreground="#95a5a6"/>
+                                <TextBlock Text="{Binding CompetitionSelectionne.Id}" 
+                                           FontSize="11" 
+                                           Foreground="#95a5a6"
+                                           FontFamily="Consolas"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                            
+                            <!-- Zone de confirmation -->
+                            <Border Background="#34495E" 
+                                    Padding="15" 
+                                    CornerRadius="5"
+                                    Margin="0,20,0,0"
+                                    IsVisible="{Binding ConfirmationVisible}">
+                                <StackPanel Spacing="10">
+                                    <TextBlock Text="⚠️ Confirmation requise" 
+                                               FontSize="16" 
+                                               FontWeight="Bold"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"/>
+                                    
+                                    <TextBlock Text="Cette action est irréversible !" 
+                                               FontSize="12" 
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               TextWrapping="Wrap"/>
+                                    
+                                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Margin="0,10,0,0">
+                                        <Button Grid.Column="0"
+                                                Content="❌ Annuler"
+                                                Command="{Binding AnnulerSuppressionCommand}"
+                                                HorizontalAlignment="Stretch"
+                                                Background="#7f8c8d"/>
+                                        
+                                        <Button Grid.Column="1"
+                                                Content="✓ Confirmer"
+                                                Command="{Binding ConfirmerSuppressionCommand}"
+                                                HorizontalAlignment="Stretch"
+                                                Background="#27ae60"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Bouton Supprimer -->
+                            <Button Content="🗑️ Supprimer ce tournoi"
+                                    Command="{Binding DemanderConfirmationCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    Height="45"
+                                    Background="#34495E"
+                                    Foreground="Red"
+                                    FontSize="14"
+                                    FontWeight="Bold"
+                                    Margin="0,20,0,0"
+                                    IsEnabled="{Binding !EstEnChargement}"
+                                    IsVisible="{Binding !ConfirmationVisible}"/>
+                            
+                        </StackPanel>
+                        
+                    </StackPanel>
+                </Border>
+                
+            </Grid>
+        </ScrollViewer>
+        
+        <!-- Footer avec bouton retour et indicateur de chargement -->
+        <StackPanel Grid.Row="3" Margin="20" Spacing="10">
+            
+            <!-- Barre de progression -->
+            <ProgressBar IsIndeterminate="True" 
+                         IsVisible="{Binding EstEnChargement}"
+                         Height="4"/>
+            
+            <!-- Bouton Retour -->
+            <Button Content="← Retour au menu" 
+                    Command="{Binding RetourCommand}"
+                    HorizontalAlignment="Left"
+                    Width="200"
+                    Height="40"/>
+            
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

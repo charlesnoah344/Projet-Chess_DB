@@ -17,7 +17,10 @@ public partial class MainViewModel : ViewModelBase
                                                                    || CurrentPage is AfficherJoueurPageViewModel 
                                                                    || CurrentPage is SupprimerJoueurPageViewModel
                                                                    || CurrentPage is ModifierJoueurPageViewModel;
-    public bool CompetitionPageIsActive => CurrentPage == _competitionPage || CurrentPage is CreateCompetitionPageViewModel ;   
+
+    public bool CompetitionPageIsActive =>
+        CurrentPage == _competitionPage || CurrentPage is CreateCompetitionPageViewModel
+                                        || CurrentPage is SupprimerCompetitionPageViewModel;
     public bool EloPageIsActive => CurrentPage == _eloPage ;
     public bool BonusPageIsActive => CurrentPage == _bonusPage ;
     
@@ -76,6 +79,12 @@ public void GoToSupprimerJoueur()
 {
     CurrentPage = new SupprimerJoueurPageViewModel(this);
 }
+[RelayCommand]
+public void GoToSupprimerCompetition()
+{
+    CurrentPage = new SupprimerCompetitionPageViewModel(this);
+} 
+[RelayCommand]
 public void GoToModifierJoueur()
 {
     CurrentPage = new ModifierJoueurPageViewModel(this);
