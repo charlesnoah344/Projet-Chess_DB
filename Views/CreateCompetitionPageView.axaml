@@ -26,31 +26,41 @@
                 <!-- Nom -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Nom du Tournoi" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Watermark="Entrez le nom..." Height="40"/>
+                    <TextBox Text="{Binding Tournoi}"
+                             Watermark="Entrez le nom..." Height="40"
+                             Background="#34495E" 
+                             IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
+                             
                 </StackPanel>
                 
-                <!-- Federation -->
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Federation" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Watermark="Choisissez la Federation..." Height="40"/>
-                </StackPanel>
+
+                
                 
                 <!-- Ville -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Ville" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Watermark="Entrez le nom de la ville..." Height="40"/>
+                    <TextBox Text="{Binding Ville}"
+                             Watermark="Entrez le nom de la ville..." Height="40"
+                             Background="#34495E" 
+                             IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
                 
                 <!-- Date de debut -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Date de debut" FontWeight="Bold" FontSize="14"/>
-                    <DatePicker Height="40"/>
+                    <DatePicker SelectedDate="{Binding DateDebut}"
+                                Height="40"
+                                Background="#34495E"
+                                IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
                 
                 <!-- Date de fin -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Date de fin" FontWeight="Bold" FontSize="14"/>
-                    <DatePicker Height="40"/>
+                    <DatePicker SelectedDate="{Binding DateFin}"
+                                Height="40"
+                                Background="#34495E"
+                                IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
                 
                 <!-- Boutons -->
@@ -64,11 +74,19 @@
                     
                     <Button Grid.Column="1" 
                             Content="✓ Enregistrer" 
+                            Command="{Binding EnregistrerCommand}"
                             Height="45"
                             Margin="10,0,0,0"
                             Classes="menu"
-                            HorizontalAlignment="Stretch"/>
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
+                            
                 </Grid>
+                <!-- Indicateur de chargement -->
+                <ProgressBar IsIndeterminate="True" 
+                             IsVisible="{Binding EstEnCoursEnregistrement}"
+                             Height="4"
+                             Margin="0,10,0,0"/>
                 
             </StackPanel>
         </ScrollViewer>

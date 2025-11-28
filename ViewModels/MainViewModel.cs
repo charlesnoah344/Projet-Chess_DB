@@ -44,7 +44,11 @@ public void GoToCompetition()
 {
     CurrentPage = _competitionPage;
 }
-
+[RelayCommand]
+private void GoToElo()
+{
+    CurrentPage = _eloPage;
+}
 [RelayCommand]
 private void GoToBonus()
 {
@@ -77,10 +81,12 @@ public void GoToModifierJoueur()
 {
     CurrentPage = new ModifierJoueurPageViewModel(this);
 }
-[RelayCommand]
-public void GoToClassementElo()
+public void GoToSupprimerCompetition()
+{
+    CurrentPage = new SupprimerCompetitionPageViewModel(this);
+}
+public void GoToClass()
 {
     CurrentPage = new ClassementEloPageViewModel(this);
 }
-
 }
