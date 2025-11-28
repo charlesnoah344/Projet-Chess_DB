@@ -26,13 +26,14 @@ public partial class MainViewModel : ViewModelBase
     
     private readonly JoueursPageViewModel _joueursPage ;
     private readonly CompetitionPageViewModel _competitionPage ;
-    private readonly EloPageViewModel _eloPage = new();
+    private readonly ClassementEloPageViewModel _eloPage ;
     private readonly BonusPageViewModel _bonusPage = new();
 
     public MainViewModel()
     {
         _joueursPage = new JoueursPageViewModel(this);
         _competitionPage = new CompetitionPageViewModel(this);
+        _eloPage = new ClassementEloPageViewModel(this);
         CurrentPage = _joueursPage;
     }
 
@@ -69,6 +70,14 @@ public void GoToCreateCompetition()
 {
     CurrentPage = new CreateCompetitionPageViewModel(this);
 }
+
+[RelayCommand]
+
+public void GoToSupprimerCompetition()
+{
+    CurrentPage = new SupprimerCompetitionPageViewModel(this);
+}
+
 [RelayCommand]
 public void GoToAfficherJoueur()
 {
@@ -79,8 +88,14 @@ public void GoToSupprimerJoueur()
 {
     CurrentPage = new SupprimerJoueurPageViewModel(this);
 }
+[RelayCommand]
 public void GoToModifierJoueur()
 {
     CurrentPage = new ModifierJoueurPageViewModel(this);
+}
+[RelayCommand]
+public void GoToClassementElo()
+{
+    CurrentPage = new ClassementEloPageViewModel(this);
 }
 }
