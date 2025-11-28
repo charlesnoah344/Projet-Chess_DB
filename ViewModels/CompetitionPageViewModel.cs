@@ -18,4 +18,11 @@ public partial class CompetitionPageViewModel : ViewModelBase
     {
         _mainViewModel.GoToCreateCompetition();
     }
+    
+    [RelayCommand]
+    
+    public void SupprimerCompetition()
+    {
+        _mainViewModel.GoToSupprimerCompetition();
+    }
 }

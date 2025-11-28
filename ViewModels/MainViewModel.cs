@@ -17,20 +17,22 @@ public partial class MainViewModel : ViewModelBase
                                                                    || CurrentPage is AfficherJoueurPageViewModel 
                                                                    || CurrentPage is SupprimerJoueurPageViewModel
                                                                    || CurrentPage is ModifierJoueurPageViewModel;
-    public bool CompetitionPageIsActive => CurrentPage == _competitionPage || CurrentPage is CreateCompetitionPageViewModel ;   
-    public bool EloPageIsActive => CurrentPage == _eloPage || CurrentPage is ClassementEloPageViewModel ;
+
+    public bool CompetitionPageIsActive =>
+        CurrentPage == _competitionPage || CurrentPage is CreateCompetitionPageViewModel
+                                        || CurrentPage is SupprimerCompetitionPageViewModel;
+    public bool EloPageIsActive => CurrentPage == _eloPage ;
     public bool BonusPageIsActive => CurrentPage == _bonusPage ;
     
     private readonly JoueursPageViewModel _joueursPage ;
     private readonly CompetitionPageViewModel _competitionPage ;
-    private readonly ClassementEloPageViewModel _eloPage ;
+    private readonly EloPageViewModel _eloPage = new();
     private readonly BonusPageViewModel _bonusPage = new();
 
     public MainViewModel()
     {
         _joueursPage = new JoueursPageViewModel(this);
         _competitionPage = new CompetitionPageViewModel(this);
-        _eloPage = new ClassementEloPageViewModel(this);
         CurrentPage = _joueursPage;
     }
 
@@ -44,7 +46,11 @@ public void GoToCompetition()
 {
     CurrentPage = _competitionPage;
 }
-
+[RelayCommand]
+private void GoToElo()
+{
+    CurrentPage = _eloPage;
+}
 [RelayCommand]
 private void GoToBonus()
 {
@@ -77,10 +83,4 @@ public void GoToModifierJoueur()
 {
     CurrentPage = new ModifierJoueurPageViewModel(this);
 }
-[RelayCommand]
-public void GoToClassementElo()
-{
-    CurrentPage = new ClassementEloPageViewModel(this);
-}
-
 }
