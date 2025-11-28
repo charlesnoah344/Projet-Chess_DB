@@ -85,7 +85,7 @@ public void GoToSupprimerCompetition()
 {
     CurrentPage = new SupprimerCompetitionPageViewModel(this);
 }
-public void GoToClass()
+public void GoToClassementElo()
 {
     CurrentPage = new ClassementEloPageViewModel(this);
 }
