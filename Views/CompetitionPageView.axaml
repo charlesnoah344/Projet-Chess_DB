@@ -24,7 +24,7 @@
             <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Créer un nouvelle compétition dans la base de donnée de la fédération"></TextBlock>
             
             <!--Charger d'une compétition-->
-            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Charger une compétition" HorizontalAlignment="Stretch"></Button>
+            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Charger une compétition" Command="{Binding ModifierCompetitionCommand}" HorizontalAlignment="Stretch"></Button>
             <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="Accéder à une compétition existante dans la base de donnée de la fédération"></TextBlock>
         </StackPanel>
         
