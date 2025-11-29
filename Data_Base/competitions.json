@@ -5,5 +5,12 @@
     "Ville": "Yaounde et Douala",
     "DateDebut": "2025-11-29T15:30:07.3252454",
     "DateFin": "2025-12-09T15:30:07.3253108"
+  },
+  {
+    "Id": "7fea28c4-6e87-4541-b3cc-f9be90b233c5",
+    "Tournoi": "Chess Open",
+    "Ville": "Bruxelles",
+    "DateDebut": "2023-11-26T00:00:00",
+    "DateFin": "2027-08-06T00:00:00"
   }
 ]

@@ -21,7 +21,8 @@ public partial class MainViewModel : ViewModelBase
     public bool CompetitionPageIsActive =>
         CurrentPage == _competitionPage || CurrentPage is CreateCompetitionPageViewModel
                                         || CurrentPage is SupprimerCompetitionPageViewModel
-                                        || CurrentPage is ModifierCompetitionPageViewModel;
+                                        || CurrentPage is ModifierCompetitionPageViewModel
+                                        || CurrentPage is ChargerCompetitionPageViewModel;
     public bool EloPageIsActive => CurrentPage == _eloPage ;
     public bool BonusPageIsActive => CurrentPage == _bonusPage ;
     
@@ -104,6 +105,12 @@ public void GoToClassementElo()
 public void GoToModifierCompetition()
 {
     CurrentPage = new ModifierCompetitionPageViewModel(this);
+}
+
+[RelayCommand]
+public void GoToChargerCompetition()
+{
+    CurrentPage = new ChargerCompetitionPageViewModel(this);
 }
 
 }

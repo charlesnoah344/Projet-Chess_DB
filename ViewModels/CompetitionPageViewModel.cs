@@ -31,4 +31,10 @@ public partial class CompetitionPageViewModel : ViewModelBase
     {
         _mainViewModel.GoToModifierCompetition();
     }
+    
+    [RelayCommand]
+    private void ChargerCompetition()
+    {
+        _mainViewModel.GoToChargerCompetition();
+    }
 }
