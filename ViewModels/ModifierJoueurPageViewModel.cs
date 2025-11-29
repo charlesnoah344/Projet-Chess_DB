@@ -277,6 +277,6 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
     [RelayCommand]
     private void Retour()
     {
-        _mainViewModel.GoToJoueurs();
+        _mainViewModel.GoToCompetition();
     }
 }

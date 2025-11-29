@@ -4,15 +4,40 @@ using Chess_D_B.Services;
 using Chess_D_B.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Chess_D_B.Models;
+using Chess_D_B.Services;
 
 namespace Chess_D_B.ViewModels;
 
+/// <summary>
+/// Wrapper pour afficher un joueur avec une case à cocher
+/// </summary>
+public partial class JoueurSelectionnable : ObservableObject
+{
+    [ObservableProperty]
+    private Joueur _joueur;
+
+    [ObservableProperty]
+    private bool _estSelectionne;
+
+    public JoueurSelectionnable(Joueur joueur)
+    {
+        _joueur = joueur;
+        _estSelectionne = false;
+    }
+}
 
 public partial class CreateCompetitionPageViewModel : ViewModelBase
 {
     private readonly MainViewModel _mainViewModel;
     private readonly CompetitionService _competitionService;
+    private readonly JoueurService _joueurService;
     
     // Propriété pour le tournoi (ObservableProperty génère automatiquement les événements de changement)
     [ObservableProperty]
@@ -30,6 +55,8 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
     [ObservableProperty]
     private DateTimeOffset _dateFin = DateTimeOffset.Now.AddDays(10);
     
+    [ObservableProperty]
+    private ObservableCollection<JoueurSelectionnable> _joueursDisponibles = new();
 
     // Propriété pour afficher un message de succès ou d'erreur
     [ObservableProperty]
@@ -38,12 +65,54 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
     // Propriété pour indiquer si une sauvegarde est en cours
     [ObservableProperty]
     private bool _estEnCoursEnregistrement = false;
+    
+    [ObservableProperty]
+    private bool _estEnChargement = false;
+    
+    partial void OnEstEnChargementChanged(bool value)
+    {
+        OnPropertyChanged(nameof(EstPasEnChargement));
+    }
+
+    public bool EstPasEnChargement => !EstEnChargement;
+
+    
+    [ObservableProperty]
+    private string _message = string.Empty;
 
     public CreateCompetitionPageViewModel(MainViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
         _competitionService = new CompetitionService();
+        _joueurService = new JoueurService();
+        
+        // Charger les joueurs disponibles
+        _ = ChargerJoueursAsync();
     }
+    
+    /// <summary>
+    /// Charge tous les joueurs pour la sélection
+    /// </summary>
+    private async Task ChargerJoueursAsync()
+    {
+        try
+        {
+            var joueurs = await _joueurService.ObtenirTousLesJoueursAsync();
+            
+            JoueursDisponibles.Clear();
+            foreach (var joueur in joueurs.OrderBy(j => j.Nom))
+            {
+                JoueursDisponibles.Add(new JoueurSelectionnable(joueur));
+            }
+            
+            Message = $"✅ {joueurs.Count} joueur(s) disponible(s)";
+        }
+        catch (Exception ex)
+        {
+            Message = $"❌ Erreur lors du chargement des joueurs : {ex.Message}";
+        }
+    }
+    
 /// <summary>
     /// Commande pour enregistrer le nouveau tournoi
     /// </summary>
@@ -71,6 +140,12 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
 
         try
         {
+            // Récupérer les IDs des joueurs sélectionnés
+            var joueursSelectionnésIds = JoueursDisponibles
+                .Where(j => j.EstSelectionne)
+                .Select(j => j.Joueur.Id)
+                .ToList();
+            
             // Créer un nouvel objet Competition avec les données du formulaire
             var nouvelleCompetition = new Competition
             {
@@ -108,6 +183,19 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
             EstEnCoursEnregistrement = false;
         }
     }
+
+    /// <summary>
+    /// Sélectionne ou désélectionne tous les joueurs
+    /// </summary>
+    [RelayCommand]
+    private void SelectionnerTous(bool selectionner)
+    {
+        foreach (var joueur in JoueursDisponibles)
+        {
+            joueur.EstSelectionne = selectionner;
+        }
+    }
+
     [RelayCommand]
     public void Retour()
     {

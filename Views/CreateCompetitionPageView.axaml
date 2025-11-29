@@ -2,93 +2,181 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
              Foreground="{DynamicResource PrimaryForeground}"
              Background="{DynamicResource PrimaryBackground}"
              xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
              x:DataType="vm:CreateCompetitionPageViewModel"
              x:Class="Chess_D_B.Views.CreateCompetitionPageView">
     
-    <Grid RowDefinitions="Auto, *">
+    <Grid RowDefinitions="Auto, Auto, *, Auto">
+        
         <!-- Header -->
-        <Border Grid.Row="0" Background="#2C3E50" Padding="20">
-            <TextBlock Text=" Nouveau Tournoi" 
+        <Border Grid.Row="0" Background="#16a085" Padding="20">
+            <TextBlock Text="🏆 Créer une Nouvelle Compétition" 
                        FontSize="28" 
                        FontWeight="Bold"
                        Foreground="White"
                        HorizontalAlignment="Center"/>
         </Border>
         
+        
         <!-- Contenu -->
-        <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="40" Spacing="20" MaxWidth="600">
+        <ScrollViewer Grid.Row="2">
+            <Grid ColumnDefinitions="1.2*, *" Margin="20" ColumnSpacing="20">
                 
-                <!-- Nom -->
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Nom du Tournoi" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Text="{Binding Tournoi}"
-                             Watermark="Entrez le nom..." Height="40"
-                             Background="#34495E" 
-                             IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
-                             
-                </StackPanel>
-                
-
-                
-                
-                <!-- Ville -->
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Ville" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Text="{Binding Ville}"
-                             Watermark="Entrez le nom de la ville..." Height="40"
-                             Background="#34495E" 
-                             IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
-                </StackPanel>
-                
-                <!-- Date de debut -->
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Date de debut" FontWeight="Bold" FontSize="14"/>
-                    <DatePicker SelectedDate="{Binding DateDebut}"
-                                Height="40"
-                                Background="#34495E"
-                                IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
-                </StackPanel>
-                
-                <!-- Date de fin -->
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Date de fin" FontWeight="Bold" FontSize="14"/>
-                    <DatePicker SelectedDate="{Binding DateFin}"
-                                Height="40"
-                                Background="#34495E"
-                                IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
-                </StackPanel>
-                
-                <!-- Boutons -->
-                <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
-                    <Button Grid.Column="0" 
-                            Content="← Retour" 
-                            Command="{Binding RetourCommand}"
-                            Height="45"
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Stretch"/>
-                    
-                    <Button Grid.Column="1" 
-                            Content="✓ Enregistrer" 
-                            Command="{Binding EnregistrerCommand}"
-                            Height="45"
-                            Margin="10,0,0,0"
-                            Classes="menu"
-                            HorizontalAlignment="Stretch"
-                            IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
+                <!-- Colonne gauche : Formulaire -->
+                <Border Grid.Column="0" 
+                        BorderBrush="#16a085" 
+                        BorderThickness="2" 
+                        CornerRadius="5"
+                        Padding="20">
+                    <StackPanel Spacing="15">
+                        
+                        <TextBlock Text="📋 Informations de la compétition" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"
+                                   Foreground="#16a085"
+                                   Margin="0,0,0,10"/>
+                        
+                        <!-- Nom -->
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Nom de la compétition *" FontWeight="Bold" FontSize="14"/>
+                            <TextBox Text="{Binding Tournoi}" 
+                                     Watermark="Ex: Championnat d'échecs 2024" 
+                                     Background="#333B5A" 
+                                     Height="40"
+                                     IsEnabled="{Binding EstPasEnChargement}"/>
+                        </StackPanel>
+                        
+                        <!-- Lieu -->
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Lieu *" FontWeight="Bold" FontSize="14"/>
+                            <TextBox Text="{Binding Ville}" 
+                                     Watermark="Ex: Bruxelles, Belgique" 
+                                     Background="#333B5A" 
+                                     Height="40"
+                                     IsEnabled="{Binding EstPasEnChargement}"/>
+                        </StackPanel>
+                        
+                        <!-- Dates -->
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                            <StackPanel Grid.Column="0" Spacing="8">
+                                <TextBlock Text="Date de début *" FontWeight="Bold" FontSize="14"/>
+                                <DatePicker SelectedDate="{Binding DateDebut}" 
+                                            Height="40" 
+                                            Background="#333B5A"
+                                            IsEnabled="{Binding EstPasEnChargement}"/>
+                            </StackPanel>
                             
-                </Grid>
-                <!-- Indicateur de chargement -->
-                <ProgressBar IsIndeterminate="True" 
-                             IsVisible="{Binding EstEnCoursEnregistrement}"
-                             Height="4"
-                             Margin="0,10,0,0"/>
+                            <StackPanel Grid.Column="1" Spacing="8">
+                                <TextBlock Text="Date de fin *" FontWeight="Bold" FontSize="14"/>
+                                <DatePicker SelectedDate="{Binding DateFin}" 
+                                            Height="40" 
+                                            Background="#333B5A"
+                                            IsEnabled="{Binding EstPasEnChargement}"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                       
+                        
+                        <!-- Boutons d'action -->
+                        <Grid ColumnDefinitions="*, *" Margin="0,20,0,0" ColumnSpacing="10">
+                            <Button Grid.Column="0"
+                                    Content="← Retour"
+                                    Command="{Binding RetourCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    Height="45"
+                                    IsEnabled="{Binding EstPasEnChargement}"/>
+                            
+                            <Button Grid.Column="1"
+                                    Content="✓ Créer la compétition"
+                                    Command="{Binding EnregistrerCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    Height="45"
+                                    Classes="menu"
+                                    IsEnabled="{Binding !EstPasEnChargement}"/>
+                        </Grid>
+                        
+                    </StackPanel>
+                </Border>
                 
-            </StackPanel>
+                <!-- Colonne droite : Sélection des joueurs -->
+                <Border Grid.Column="1" 
+                        BorderBrush="#16a085" 
+                        BorderThickness="2" 
+                        CornerRadius="5"
+                        Padding="20">
+                    <StackPanel Spacing="15">
+                        
+                        <TextBlock Text="👥 Joueurs participants" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"
+                                   Foreground="#16a085"/>
+                        
+                        <TextBlock Text="Sélectionnez les joueurs qui participeront" 
+                                   FontSize="12" 
+                                   Foreground="#95a5a6"
+                                   TextWrapping="Wrap"/>
+                        
+                        <!-- Boutons de sélection rapide -->
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                            <Button Grid.Column="0"
+                                    Content="✓ Tout sélectionner"
+                                    Command="{Binding SelectionnerTousCommand}"
+                                    CommandParameter="True"
+                                    Height="35"
+                                    Background="#27ae60"
+                                    HorizontalAlignment="Stretch"/>
+                            
+                            <Button Grid.Column="1"
+                                    Content="✗ Tout désélectionner"
+                                    Command="{Binding SelectionnerTousCommand}"
+                                    CommandParameter="False"
+                                    Height="35"
+                                    Background="#e74c3c"
+                                    HorizontalAlignment="Stretch"/>
+                        </Grid>
+                        
+                        <!-- Liste des joueurs avec cases à cocher -->
+                        <ScrollViewer Height="400">
+                            <ItemsControl ItemsSource="{Binding JoueursDisponibles}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#34495E" 
+                                                Padding="10" 
+                                                Margin="0,0,0,5"
+                                                CornerRadius="3">
+                                            <CheckBox IsChecked="{Binding EstSelectionne}">
+                                                <StackPanel Spacing="3">
+                                                    <TextBlock>
+                                                        <Run Text="{Binding Joueur.Prenom}" FontWeight="Bold"/>
+                                                        <Run Text=" "/>
+                                                        <Run Text="{Binding Joueur.Nom}" FontWeight="Bold"/>
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding Joueur.Elo, StringFormat='ELO: {0}'}" 
+                                                               FontSize="11" 
+                                                               Foreground="#3498db"/>
+                                                </StackPanel>
+                                            </CheckBox>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        
+                    </StackPanel>
+                </Border>
+                
+            </Grid>
         </ScrollViewer>
+        
+        <!-- Footer -->
+        <StackPanel Grid.Row="3" Margin="20" Spacing="10">
+            <ProgressBar IsIndeterminate="True" 
+                         IsVisible="{Binding EstEnChargement}"
+                         Height="4"/>
+        </StackPanel>
+        
     </Grid>
 </UserControl>
