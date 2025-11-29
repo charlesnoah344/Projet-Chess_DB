@@ -84,6 +84,7 @@
                 
                 <!-- Liste des joueurs -->
                 <ListBox ItemsSource="{Binding Competitions}"
+                         SelectedItem="{Binding CompetitionSelectionne, Mode=TwoWay}"
                          Background="Transparent"
                          BorderBrush="#34495E"
                          BorderThickness="2,0,2,2"
@@ -110,13 +111,13 @@
                                                VerticalAlignment="Center"
                                                FontSize="14"/>
                                     
-                                    <!-- Date de naissance (formatée sans heure) -->
+                                    <!-- Date de Debut -->
                                     <TextBlock Grid.Column="2" 
                                                Text="{Binding DateDebut, StringFormat='dd/MM/yyyy'}" 
                                                VerticalAlignment="Center"
                                                FontSize="14"/>
                                     
-                                    <!-- ELO -->
+                                    <!-- Date de Fin -->
                                     <TextBlock Grid.Column="3" 
                                                Text="{Binding DateFin, StringFormat='dd/MM/yyyy'}" 
                                                VerticalAlignment="Center"

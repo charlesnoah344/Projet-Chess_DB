@@ -13,7 +13,7 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
     private readonly MainViewModel _mainViewModel;
     private readonly CompetitionService _competitionService;
 
-    // Collection de tous les joueurs pour la sélection
+    // Collection de tous les competitions pour la sélection
     [ObservableProperty]
     private ObservableCollection<Competition> _competitions = new();
 

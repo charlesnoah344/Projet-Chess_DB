@@ -16,6 +16,13 @@ public partial class ChargerCompetitionPageViewModel : ViewModelBase
     // Collection observable pour le DataGrid (se met à jour automatiquement)
     [ObservableProperty]
     private ObservableCollection<Competition> _competitions = new();
+    
+    // Competition sélectionné dans la liste
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CompetitionEstSelectionne))]
+    private Competition? _competitionSelectionne;
+    
+    public bool CompetitionEstSelectionne => CompetitionSelectionne != null;
 
     // Indique si les données sont en cours de chargement
     [ObservableProperty]
@@ -73,6 +80,18 @@ public partial class ChargerCompetitionPageViewModel : ViewModelBase
         finally
         {
             EstEnChargement = false;
+        }
+    }
+    
+    // <summary>
+    /// Appelé quand la sélection change dans la liste
+    /// </summary>
+    partial void OnCompetitionSelectionneChanged(Competition? value)
+    {
+        if (value != null)
+        {
+            //ChargerDansFormulaire(value);
+            //Message = $"📝 Modification de {value.Tournoi} {value.Ville}";
         }
     }
 
