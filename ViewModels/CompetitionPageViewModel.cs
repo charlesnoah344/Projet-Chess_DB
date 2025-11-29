@@ -37,4 +37,10 @@ public partial class CompetitionPageViewModel : ViewModelBase
     {
         _mainViewModel.GoToChargerCompetition();
     }
+    
+    [RelayCommand]
+    public void AfficherCompetitions()
+    {
+        _mainViewModel.GoToAfficherCompetitions();
+    }
 }

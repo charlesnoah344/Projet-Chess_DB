@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 
 namespace Chess_D_B.ViewModels;
 
@@ -22,7 +23,9 @@ public partial class MainViewModel : ViewModelBase
         CurrentPage == _competitionPage || CurrentPage is CreateCompetitionPageViewModel
                                         || CurrentPage is SupprimerCompetitionPageViewModel
                                         || CurrentPage is ModifierCompetitionPageViewModel
-                                        || CurrentPage is ChargerCompetitionPageViewModel;
+                                        || CurrentPage is ChargerCompetitionPageViewModel
+                                        || CurrentPage is AfficherCompetitionsPageViewModel;
+    
     public bool EloPageIsActive => CurrentPage == _eloPage ;
     public bool BonusPageIsActive => CurrentPage == _bonusPage ;
     
@@ -113,4 +116,21 @@ public void GoToChargerCompetition()
     CurrentPage = new ChargerCompetitionPageViewModel(this);
 }
 
+[RelayCommand]
+public void GoToAfficherCompetitions()
+{
+    CurrentPage = new AfficherCompetitionsPageViewModel(this);
+}
+
+[RelayCommand]
+public void GoToDetailsMatch(Guid matchId)
+{
+   // CurrentPage = new DetailsMatchPageViewModel(this, matchId);
+}
+
+[RelayCommand]
+public void GoToAjouterMatch()
+{
+   // CurrentPage = new AjouterMatchPageViewModel(this);
+}
 }

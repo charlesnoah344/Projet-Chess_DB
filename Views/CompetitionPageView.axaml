@@ -36,7 +36,7 @@
             <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Supprimer une compétition de la base de donnée de la fédération"></TextBlock>
             
             <!--Afficher compétitions à charger -->
-            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Charger compétition" Command="{Binding ChargerCompetitionCommand}" HorizontalAlignment="Stretch"></Button>
+            <Button Classes="menu" Grid.Column="0" Grid.Row="3" Content="Charger compétition" Command="{Binding AfficherCompetitionsCommand}" HorizontalAlignment="Stretch"></Button>
             <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="Accéder auc compétitions existantes dans la base de donnée de la fédération"></TextBlock>
         </StackPanel>
         
