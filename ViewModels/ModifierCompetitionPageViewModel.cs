@@ -60,7 +60,7 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
         _mainViewModel = mainViewModel;
         _competitionService = new CompetitionService();
         
-        // Charger les joueurs au démarrage
+        // Charger les competitions au démarrage
         _ = ChargerCompetitionsAsync();
     }
 
