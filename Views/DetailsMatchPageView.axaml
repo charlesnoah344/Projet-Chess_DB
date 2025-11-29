@@ -1,0 +1,285 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             Foreground="{DynamicResource PrimaryForeground}"
+             Background="{DynamicResource PrimaryBackground}"
+             xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             x:DataType="vm:DetailsMatchPageViewModel"
+             x:Class="Chess_D_B.Views.DetailsMatchPageView">
+    
+    <Grid RowDefinitions="Auto, Auto, *, Auto">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2980b9" Padding="20">
+            <StackPanel Spacing="8" HorizontalAlignment="Center">
+                <TextBlock Text="♟️ Détails du Match" 
+                           FontSize="28" 
+                           FontWeight="Bold"
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+                <TextBlock FontSize="14" Foreground="White" HorizontalAlignment="Center">
+                    <Run Text="🏆"/>
+                    <Run Text="{Binding NomCompetition}"/>
+                    <Run Text=" | "/>
+                    <Run Text="📅"/>
+                    <Run Text="{Binding Match.DateMatch, StringFormat='dd/MM/yyyy HH:mm'}"/>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+        
+        <!-- Résultat du match -->
+        <Border Grid.Row="1" Padding="20" Background="{Binding CouleurResultat}">
+            <TextBlock Text="{Binding ResultatAvecIcone}" 
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+        </Border>
+        
+        <!-- Contenu principal -->
+        <ScrollViewer Grid.Row="2">
+            <Grid ColumnDefinitions="*, 1.5*" Margin="20" ColumnSpacing="20">
+                
+                <!-- Colonne gauche : Informations du match -->
+                <StackPanel Grid.Column="0" Spacing="15">
+                    
+                    <!-- Joueurs -->
+                    <Border BorderBrush="#2980b9" 
+                            BorderThickness="2" 
+                            CornerRadius="5"
+                            Padding="20">
+                        <StackPanel Spacing="15">
+                            
+                            <TextBlock Text="👥 Joueurs" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"
+                                       Foreground="#2980b9"/>
+                            
+                            <!-- Joueur Blanc -->
+                            <Border Background="#ecf0f1" 
+                                    Padding="15" 
+                                    CornerRadius="5">
+                                <Grid ColumnDefinitions="Auto, *, Auto">
+                                    <TextBlock Grid.Column="0" 
+                                               Text="⚪" 
+                                               FontSize="32"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,15,0"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding NomJoueurBlanc}" 
+                                                   FontSize="18" 
+                                                   FontWeight="Bold"
+                                                   Foreground="Black"/>
+                                        <TextBlock Text="Blanc" 
+                                                   FontSize="12" 
+                                                   Foreground="#7f8c8d"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" 
+                                            Background="#3498db" 
+                                            CornerRadius="8"
+                                            Padding="10,5"
+                                            VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding EloJoueurBlanc, StringFormat='ELO: {0}'}" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="White"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            
+                            <!-- VS -->
+                            <TextBlock Text="VS" 
+                                       FontSize="20" 
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       Foreground="#95a5a6"/>
+                            
+                            <!-- Joueur Noir -->
+                            <Border Background="#34495e" 
+                                    Padding="15" 
+                                    CornerRadius="5">
+                                <Grid ColumnDefinitions="Auto, *, Auto">
+                                    <TextBlock Grid.Column="0" 
+                                               Text="⚫" 
+                                               FontSize="32"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,15,0"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding NomJoueurNoir}" 
+                                                   FontSize="18" 
+                                                   FontWeight="Bold"
+                                                   Foreground="White"/>
+                                        <TextBlock Text="Noir" 
+                                                   FontSize="12" 
+                                                   Foreground="#95a5a6"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" 
+                                            Background="#3498db" 
+                                            CornerRadius="8"
+                                            Padding="10,5"
+                                            VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding EloJoueurNoir, StringFormat='ELO: {0}'}" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="White"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Scores -->
+                    <Border BorderBrush="#2980b9" 
+                            BorderThickness="2" 
+                            CornerRadius="5"
+                            Padding="20">
+                        <StackPanel Spacing="15">
+                            
+                            <TextBlock Text="📊 Scores" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"
+                                       Foreground="#2980b9"/>
+                            
+                            <Grid ColumnDefinitions="*, Auto">
+                                <TextBlock Grid.Column="0" 
+                                           Text="⚪ Blanc" 
+                                           FontSize="16"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Match.ScoreBlanc}" 
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#27ae60"/>
+                            </Grid>
+                            
+                            <Grid ColumnDefinitions="*, Auto">
+                                <TextBlock Grid.Column="0" 
+                                           Text="⚫ Noir" 
+                                           FontSize="16"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Match.ScoreNoir}" 
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="#27ae60"/>
+                            </Grid>
+                            
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Informations supplémentaires -->
+                    <Border BorderBrush="#2980b9" 
+                            BorderThickness="2" 
+                            CornerRadius="5"
+                            Padding="20">
+                        <StackPanel Spacing="12">
+                            
+                            <TextBlock Text="ℹ️ Informations" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"
+                                       Foreground="#2980b9"/>
+                            
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="⏱️ Durée" 
+                                           FontSize="12" 
+                                           Foreground="#95a5a6"/>
+                                
+                            </StackPanel>
+                            
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="🆔 ID du match" 
+                                           FontSize="12" 
+                                           Foreground="#95a5a6"/>
+                                <TextBlock Text="{Binding Match.Id}" 
+                                           FontSize="10"
+                                           FontFamily="Consolas"
+                                           Foreground="#95a5a6"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                            
+                        </StackPanel>
+                    </Border>
+                    
+                </StackPanel>
+                
+                <!-- Colonne droite : Coups et notes -->
+                <StackPanel Grid.Column="1" Spacing="15">
+                    
+                    <!-- TOUS LES COUPS DU MATCH -->
+                    <Border BorderBrush="#2980b9" 
+                            BorderThickness="2" 
+                            CornerRadius="5"
+                            Padding="20">
+                        <StackPanel Spacing="15">
+                            
+                            <TextBlock Text="♟️ Coups de la partie" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"
+                                       Foreground="#2980b9"/>
+                            
+                            <ScrollViewer Height="400" 
+                                          VerticalScrollBarVisibility="Auto">
+                                <TextBox Text="{Binding Match.Coups}" 
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         Background="#2C3E50"
+                                         FontFamily="Consolas"
+                                         FontSize="13"
+                                         IsReadOnly="True"
+                                         BorderThickness="0"/>
+                            </ScrollViewer>
+                            
+                            <TextBlock Text="{Binding Match.Coups.Length, StringFormat='📊 {0} caractères'}" 
+                                       FontSize="11" 
+                                       Foreground="#95a5a6"
+                                       HorizontalAlignment="Right"/>
+                            
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Notes -->
+                    <Border BorderBrush="#2980b9" 
+                            BorderThickness="2" 
+                            CornerRadius="5"
+                            Padding="20">
+                        <StackPanel Spacing="15">
+                            
+                            <TextBlock Text="📝 Notes" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"
+                                       Foreground="#2980b9"/>
+                            
+                            <TextBox Text="{Binding Match.Notes}" 
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     Height="150"
+                                     Background="#2C3E50"
+                                     IsReadOnly="True"
+                                     BorderThickness="0"/>
+                            
+                        </StackPanel>
+                    </Border>
+                    
+                </StackPanel>
+                
+            </Grid>
+        </ScrollViewer>
+        
+        <!-- Footer -->
+        <StackPanel Grid.Row="3" Margin="20" Spacing="10">
+            
+            <ProgressBar IsIndeterminate="True" 
+                         IsVisible="{Binding EstEnChargement}"
+                         Height="4"/>
+            
+            <Button Content="← Retour" 
+                    Command="{Binding RetourCommand}"
+                    HorizontalAlignment="Left"
+                    Width="200"
+                    Height="40"/>
+            
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

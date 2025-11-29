@@ -69,7 +69,7 @@ public partial class AfficherCompetitionsPageViewModel : ViewModelBase
     private void OuvrirCompetition(Competition competition)
     {
         // Navigation vers les détails de la compétition
-        // _mainViewModel.GoToDetailsCompetition(competition.Id);
+        _mainViewModel.GoToDetailsCompetition(competition.Id);
     }
 
     [RelayCommand]

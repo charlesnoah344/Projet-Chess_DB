@@ -1,0 +1,260 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Chess_D_B.Models;
+using Chess_D_B.Services;
+
+namespace Chess_D_B.ViewModels;
+
+public partial class AjouterMatchPageViewModel : ViewModelBase
+{
+    private readonly MainViewModel _mainViewModel;
+    private readonly MatchService _matchService;
+    private readonly CompetitionService _competitionService;
+    private readonly JoueurService _joueurService;
+
+    // Liste des compétitions disponibles
+    [ObservableProperty]
+    private ObservableCollection<Competition> _competitions = new();
+
+    [ObservableProperty]
+    private Competition? _competitionSelectionnee;
+
+    // Liste des joueurs participants de la compétition sélectionnée
+    [ObservableProperty]
+    private ObservableCollection<Joueur> _joueursParticipants = new();
+
+    [ObservableProperty]
+    private Joueur? _joueurBlancSelectionne;
+
+    [ObservableProperty]
+    private Joueur? _joueurNoirSelectionne;
+
+    // Propriétés du match
+    [ObservableProperty]
+    private DateTimeOffset _dateMatch = DateTimeOffset.Now;
+
+    [ObservableProperty]
+    private string _resultatSelectionne = "En cours";
+
+    public ObservableCollection<string> Resultats { get; } = new()
+    {
+        "En cours",
+        "Blanc gagne",
+        "Noir gagne",
+        "Nul"
+    };
+
+    [ObservableProperty]
+    private int _dureeMinutes = 60;
+
+    // ZONE DE TEXTE MULTI-LIGNES POUR TOUS LES COUPS
+    [ObservableProperty]
+    private string _coups = string.Empty;
+
+    [ObservableProperty]
+    private string _notes = string.Empty;
+
+    [ObservableProperty]
+    private bool _estEnChargement = false;
+
+    [ObservableProperty]
+    private string _message = string.Empty;
+
+    public AjouterMatchPageViewModel(MainViewModel mainViewModel)
+    {
+        _mainViewModel = mainViewModel;
+        _matchService = new MatchService();
+        _competitionService = new CompetitionService();
+        _joueurService = new JoueurService();
+        
+        _ = ChargerCompetitionsAsync();
+    }
+
+    /// <summary>
+    /// Charge toutes les compétitions
+    /// </summary>
+    private async Task ChargerCompetitionsAsync()
+    {
+        try
+        {
+            var competitions = await _competitionService.ObtenirToutesLesCompetitionsAsync();
+            
+            Competitions.Clear();
+            foreach (var comp in competitions.OrderByDescending(c => c.DateDebut))
+            {
+                Competitions.Add(comp);
+            }
+            
+            Message = $"✅ {competitions.Count} compétition(s) disponible(s)";
+        }
+        catch (Exception ex)
+        {
+            Message = $"❌ Erreur : {ex.Message}";
+        }
+    }
+
+    /// <summary>
+    /// Appelé quand la compétition sélectionnée change
+    /// </summary>
+    partial void OnCompetitionSelectionneeChanged(Competition? value)
+    {
+        if (value != null)
+        {
+            _ = ChargerJoueursParticipantsAsync(value);
+        }
+        else
+        {
+            JoueursParticipants.Clear();
+        }
+    }
+
+    /// <summary>
+    /// Charge les joueurs participants d'une compétition
+    /// </summary>
+    private async Task ChargerJoueursParticipantsAsync(Competition competition)
+    {
+        try
+        {
+            var tousLesJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
+            
+            JoueursParticipants.Clear();
+            
+            foreach (var joueurId in competition.JoueursIds)
+            {
+                var joueur = tousLesJoueurs.Find(j => j.Id == joueurId);
+                if (joueur != null)
+                {
+                    JoueursParticipants.Add(joueur);
+                }
+            }
+            
+            Message = $"✅ {JoueursParticipants.Count} joueur(s) participant(s) dans {competition.Tournoi}";
+        }
+        catch (Exception ex)
+        {
+            Message = $"❌ Erreur : {ex.Message}";
+        }
+    }
+
+    /// <summary>
+    /// Calcule automatiquement les scores selon le résultat
+    /// </summary>
+    partial void OnResultatSelectionneChanged(string value)
+    {
+        // Les scores seront calculés lors de l'enregistrement
+    }
+
+    /// <summary>
+    /// Enregistre le nouveau match
+    /// </summary>
+    [RelayCommand]
+    private async Task EnregistrerAsync()
+    {
+        // Validation
+        if (CompetitionSelectionnee == null)
+        {
+            Message = "❌ Veuillez sélectionner une compétition !";
+            return;
+        }
+
+        if (JoueurBlancSelectionne == null)
+        {
+            Message = "❌ Veuillez sélectionner le joueur Blanc !";
+            return;
+        }
+
+        if (JoueurNoirSelectionne == null)
+        {
+            Message = "❌ Veuillez sélectionner le joueur Noir !";
+            return;
+        }
+
+        if (JoueurBlancSelectionne.Id == JoueurNoirSelectionne.Id)
+        {
+            Message = "❌ Les deux joueurs doivent être différents !";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Coups))
+        {
+            Message = "❌ Veuillez entrer les coups du match !";
+            return;
+        }
+
+        EstEnChargement = true;
+        Message = "💾 Enregistrement en cours...";
+
+        try
+        {
+            // Calculer les scores selon le résultat
+            double scoreBlanc = 0;
+            double scoreNoir = 0;
+
+            switch (ResultatSelectionne)
+            {
+                case "Blanc gagne":
+                    scoreBlanc = 1;
+                    scoreNoir = 0;
+                    break;
+                case "Noir gagne":
+                    scoreBlanc = 0;
+                    scoreNoir = 1;
+                    break;
+                case "Nul":
+                    scoreBlanc = 0.5;
+                    scoreNoir = 0.5;
+                    break;
+                case "En cours":
+                    scoreBlanc = 0;
+                    scoreNoir = 0;
+                    break;
+            }
+
+            // Créer le nouveau match
+            var nouveauMatch = new Match
+            {
+                CompetitionId = CompetitionSelectionnee.Id,
+                JoueurBlancId = JoueurBlancSelectionne.Id,
+                JoueurNoirId = JoueurNoirSelectionne.Id,
+                DateMatch = DateMatch.DateTime,
+                Resultat = ResultatSelectionne,
+                ScoreBlanc = scoreBlanc,
+                ScoreNoir = scoreNoir,
+                DureeMinutes = DureeMinutes,
+                Coups = Coups.Trim(), // TOUS LES COUPS EN TEXTE
+                Notes = Notes.Trim()
+            };
+
+            bool succes = await _matchService.AjouterMatchAsync(nouveauMatch);
+
+            if (succes)
+            {
+                Message = $"✅ Match enregistré : {JoueurBlancSelectionne.Nom} vs {JoueurNoirSelectionne.Nom} !";
+                await Task.Delay(1500);
+                _mainViewModel.GoToCompetition();
+            }
+            else
+            {
+                Message = "❌ Erreur lors de l'enregistrement.";
+            }
+        }
+        catch (Exception ex)
+        {
+            Message = $"❌ Erreur : {ex.Message}";
+        }
+        finally
+        {
+            EstEnChargement = false;
+        }
+    }
+
+    [RelayCommand]
+    private void Retour()
+    {
+        _mainViewModel.GoToCompetition();
+    }
+}

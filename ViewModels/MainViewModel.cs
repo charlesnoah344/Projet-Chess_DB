@@ -24,8 +24,11 @@ public partial class MainViewModel : ViewModelBase
                                         || CurrentPage is SupprimerCompetitionPageViewModel
                                         || CurrentPage is ModifierCompetitionPageViewModel
                                         || CurrentPage is ChargerCompetitionPageViewModel
-                                        || CurrentPage is AfficherCompetitionsPageViewModel;
-    
+                                        || CurrentPage is AfficherCompetitionsPageViewModel
+                                        || CurrentPage is DetailsMatchPageViewModel
+                                        || CurrentPage is AjouterMatchPageViewModel
+                                        || CurrentPage is DetailsCompetitionPageViewModel;
+        
     public bool EloPageIsActive => CurrentPage == _eloPage ;
     public bool BonusPageIsActive => CurrentPage == _bonusPage ;
     
@@ -125,12 +128,18 @@ public void GoToAfficherCompetitions()
 [RelayCommand]
 public void GoToDetailsMatch(Guid matchId)
 {
-   // CurrentPage = new DetailsMatchPageViewModel(this, matchId);
+    CurrentPage = new DetailsMatchPageViewModel(this, matchId);
+}
+
+[RelayCommand]
+public void GoToDetailsCompetition(Guid matchId)
+{
+    CurrentPage = new DetailsCompetitionPageViewModel(this, matchId);
 }
 
 [RelayCommand]
 public void GoToAjouterMatch()
 {
-   // CurrentPage = new AjouterMatchPageViewModel(this);
+    CurrentPage = new AjouterMatchPageViewModel(this);
 }
 }
