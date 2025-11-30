@@ -25,6 +25,8 @@ public partial class JoueurSelectionnable : ObservableObject
 
     [ObservableProperty]
     private bool _estSelectionne;
+    
+    public string NomComplet => $"{_joueur.Prenom} {_joueur.Nom}";
 
     public JoueurSelectionnable(Joueur joueur)
     {

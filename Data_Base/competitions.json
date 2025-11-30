@@ -4,13 +4,31 @@
     "Tournoi": "Cameroun Challenge",
     "Ville": "Yaounde et Douala",
     "DateDebut": "2025-11-29T15:30:07.3252454",
-    "DateFin": "2025-12-09T15:30:07.3253108"
+    "DateFin": "2025-12-09T15:30:07.3253108",
+    "JoueursIds": []
   },
   {
     "Id": "7fea28c4-6e87-4541-b3cc-f9be90b233c5",
     "Tournoi": "Chess Open",
     "Ville": "Bruxelles",
     "DateDebut": "2023-11-26T00:00:00",
-    "DateFin": "2027-08-06T00:00:00"
+    "DateFin": "2027-08-06T00:00:00",
+    "JoueursIds": []
+  },
+  {
+    "Id": "2d1398a7-24dd-41ad-98cd-31c5bf6cf62a",
+    "Tournoi": "Paris Chess Tour",
+    "Ville": "Paris",
+    "DateDebut": "2025-11-30T18:32:13.3033086",
+    "DateFin": "2025-01-10T00:00:00",
+    "JoueursIds": []
+  },
+  {
+    "Id": "a149692e-8452-407f-8b05-0c1f1e2f2c38",
+    "Tournoi": "ojoea",
+    "Ville": "dddd",
+    "DateDebut": "2025-11-30T18:37:46.9920834",
+    "DateFin": "2025-12-10T18:37:46.9920941",
+    "JoueursIds": []
   }
 ]
