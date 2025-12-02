@@ -30,5 +30,18 @@
     "DateDebut": "2025-11-30T18:37:46.9920834",
     "DateFin": "2025-12-10T18:37:46.9920941",
     "JoueursIds": []
+  },
+  {
+    "Id": "df2983ad-b54b-4ffb-b4cf-9abc92dadabf",
+    "Tournoi": "ehi",
+    "Ville": "jlcvnakl",
+    "DateDebut": "2025-12-02T12:28:19.7013849",
+    "DateFin": "2025-12-12T12:28:19.7015272",
+    "JoueursIds": [
+      "7f4576b7-306b-40ed-964b-b23d1be117fb",
+      "1b9f661e-ef18-4b4c-9756-647da7f41103",
+      "9da802f3-70cb-4dc3-ab16-bc6b605bb64a",
+      "55293e4b-9906-403e-89fd-0c37741e2523"
+    ]
   }
 ]

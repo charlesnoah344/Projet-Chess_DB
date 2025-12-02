@@ -155,6 +155,7 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
                 Ville = Ville.Trim(),
                 DateDebut = DateDebut.DateTime,
                 DateFin = DateFin.DateTime,
+                JoueursIds = joueursSelectionnésIds
             };
 
             // Appeler le service pour sauvegarder dans le JSON
