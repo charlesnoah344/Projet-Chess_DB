@@ -35,7 +35,7 @@
             <Grid ColumnDefinitions="*, *, *, *">
                 
                 
-                <StackPanel Grid.Column="2" HorizontalAlignment="Center" Spacing="5">
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center" Spacing="5">
                     <TextBlock Text="👥 Participants" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
                     <TextBlock Text="{Binding JoueursParticipants.Count}" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                 </StackPanel>
