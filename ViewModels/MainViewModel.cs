@@ -138,8 +138,8 @@ public void GoToDetailsCompetition(Guid matchId)
 }
 
 [RelayCommand]
-public void GoToAjouterMatch()
+public void GoToAjouterMatch(Guid? competitionId = null)
 {
-    CurrentPage = new AjouterMatchPageViewModel(this);
+    CurrentPage = new AjouterMatchPageViewModel(this, competitionId);
 }
 }

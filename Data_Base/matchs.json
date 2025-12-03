@@ -1,3 +1,30 @@
 [
-  
+  {
+    "Id": "986cb1b3-0ddd-4bd1-9b1f-afab198f1ad8",
+    "CompetitionId": "fd39c515-6ce3-42c3-b68f-e0e38810a11b",
+    "JoueurBlancId": "7f4576b7-306b-40ed-964b-b23d1be117fb",
+    "JoueurNoirId": "1b9f661e-ef18-4b4c-9756-647da7f41103",
+    "DateMatch": "2025-12-03T22:27:33.3450383",
+    "Resultat": "Blanc gagne",
+    "ScoreBlanc": 1,
+    "ScoreNoir": 0,
+    "DureeMinutes": 60,
+    "Coups": "1.e5 e8",
+    "Notes": "",
+    "DateCreation": "2025-12-03T22:28:10.3493765+01:00"
+  },
+  {
+    "Id": "5a76beb6-3748-4daa-8112-69e9daebc633",
+    "CompetitionId": "fd39c515-6ce3-42c3-b68f-e0e38810a11b",
+    "JoueurBlancId": "9da802f3-70cb-4dc3-ab16-bc6b605bb64a",
+    "JoueurNoirId": "1b9f661e-ef18-4b4c-9756-647da7f41103",
+    "DateMatch": "2025-12-03T22:30:29.3049216",
+    "Resultat": "Blanc gagne",
+    "ScoreBlanc": 1,
+    "ScoreNoir": 0,
+    "DureeMinutes": 60,
+    "Coups": "i7 f16",
+    "Notes": "",
+    "DateCreation": "2025-12-03T22:31:09.2251805+01:00"
+  }
 ]

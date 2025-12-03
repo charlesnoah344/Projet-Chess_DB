@@ -64,20 +64,20 @@ public partial class AjouterMatchPageViewModel : ViewModelBase
     [ObservableProperty]
     private string _message = string.Empty;
 
-    public AjouterMatchPageViewModel(MainViewModel mainViewModel)
+    public AjouterMatchPageViewModel(MainViewModel mainViewModel , Guid? competitionId = null)
     {
         _mainViewModel = mainViewModel;
         _matchService = new MatchService();
         _competitionService = new CompetitionService();
         _joueurService = new JoueurService();
         
-        _ = ChargerCompetitionsAsync();
+        _ = ChargerCompetitionsAsync(competitionId);
     }
 
     /// <summary>
     /// Charge toutes les compétitions
     /// </summary>
-    private async Task ChargerCompetitionsAsync()
+    private async Task ChargerCompetitionsAsync(Guid? competitionIdPreselection = null)
     {
         try
         {
@@ -89,7 +89,19 @@ public partial class AjouterMatchPageViewModel : ViewModelBase
                 Competitions.Add(comp);
             }
             
-            Message = $"✅ {competitions.Count} compétition(s) disponible(s)";
+            // ✅ PRÉ-SÉLECTIONNER LA COMPÉTITION SI UN ID EST FOURNI
+            if (competitionIdPreselection.HasValue)
+            {
+                CompetitionSelectionnee = Competitions.FirstOrDefault(c => c.Id == competitionIdPreselection.Value);
+                if (CompetitionSelectionnee != null)
+                {
+                    Message = $"✅ Compétition '{CompetitionSelectionnee.Tournoi}' sélectionnée";
+                }
+            }
+            else
+            {
+                Message = $"✅ {competitions.Count} compétition(s) disponible(s)";
+            }
         }
         catch (Exception ex)
         {

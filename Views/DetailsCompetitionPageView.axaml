@@ -40,7 +40,7 @@
                     <TextBlock Text="{Binding JoueursParticipants.Count}" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                 </StackPanel>
                 
-                <StackPanel Grid.Column="3" HorizontalAlignment="Center" Spacing="5">
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center" Spacing="5">
                     <TextBlock Text="♟️ Matchs" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
                     <TextBlock FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">
                         <Run Text="{Binding MatchsTermines}"/>
@@ -48,6 +48,24 @@
                         <Run Text="{Binding NombreMatchs}"/>
                     </TextBlock>
                 </StackPanel>
+                
+                <!-- ✅ NOUVEAU BOUTON AJOUTER MATCH -->
+                <Button Grid.Column="2"
+                        Content="➕ Ajouter un match"
+                        Command="{Binding AjouterMatchCommand}"
+                        Height="35"
+                        Margin="0,0,10,0"
+                        Background="#16a085"
+                        Foreground="White"
+                        FontWeight="Bold"/>
+        
+                <!-- Bouton Rafraîchir -->
+                <Button Grid.Column="3"
+                        Content="🔄 Rafraîchir"
+                        Command="{Binding ChargerDetailsCommand}"
+                        Height="35"
+                        IsEnabled="{Binding !EstEnChargement}"/>
+                
             </Grid>
         </Border>
         

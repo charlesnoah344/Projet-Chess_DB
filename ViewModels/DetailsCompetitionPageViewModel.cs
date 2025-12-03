@@ -9,9 +9,6 @@ using Chess_D_B.Services;
 
 namespace Chess_D_B.ViewModels;
 
-/// <summary>
-/// Wrapper pour afficher un match avec les noms des joueurs
-/// </summary>
 public partial class MatchAvecNoms : ObservableObject
 {
     [ObservableProperty]
@@ -30,7 +27,6 @@ public partial class MatchAvecNoms : ObservableObject
         _nomJoueurNoir = nomNoir;
     }
 
-    // Propriété pour afficher le résultat avec icône
     public string ResultatAvecIcone => Match.Resultat switch
     {
         "Blanc gagne" => "⚪ 1-0",
@@ -40,7 +36,6 @@ public partial class MatchAvecNoms : ObservableObject
         _ => Match.Resultat
     };
 
-    // Couleur selon le résultat
     public string CouleurResultat => Match.Resultat switch
     {
         "Blanc gagne" => "#ecf0f1",
@@ -58,15 +53,12 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
     private readonly MatchService _matchService;
     private readonly JoueurService _joueurService;
 
-    // Compétition affichée
     [ObservableProperty]
     private Competition? _competition;
 
-    // Liste des matchs de cette compétition
     [ObservableProperty]
     private ObservableCollection<MatchAvecNoms> _matchs = new();
 
-    // Liste des joueurs participants
     [ObservableProperty]
     private ObservableCollection<Joueur> _joueursParticipants = new();
 
@@ -76,7 +68,6 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
     [ObservableProperty]
     private string _message = string.Empty;
 
-    // Statistiques
     [ObservableProperty]
     private int _nombreMatchs = 0;
 
@@ -86,7 +77,6 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
     [ObservableProperty]
     private int _matchsEnCours = 0;
 
-    // ID de la compétition à charger
     private Guid _competitionId;
 
     public DetailsCompetitionPageViewModel(MainViewModel mainViewModel, Guid competitionId)
@@ -100,9 +90,6 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
         _ = ChargerDetailsAsync();
     }
 
-    /// <summary>
-    /// Charge tous les détails de la compétition
-    /// </summary>
     [RelayCommand]
     private async Task ChargerDetailsAsync()
     {
@@ -111,7 +98,6 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
 
         try
         {
-            // Charger la compétition
             Competition = await _competitionService.ObtenirCompetitionParIdAsync(_competitionId);
 
             if (Competition == null)
@@ -120,7 +106,6 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
                 return;
             }
 
-            // Charger les joueurs participants
             var tousLesJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
             JoueursParticipants.Clear();
             
@@ -133,13 +118,11 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
                 }
             }
 
-            // Charger les matchs de cette compétition
             var matchsDeLaCompetition = await _matchService.ObtenirMatchsParCompetitionAsync(_competitionId);
             
             Matchs.Clear();
             foreach (var match in matchsDeLaCompetition.OrderByDescending(m => m.DateMatch))
             {
-                // Trouver les noms des joueurs
                 var joueurBlanc = tousLesJoueurs.Find(j => j.Id == match.JoueurBlancId);
                 var joueurNoir = tousLesJoueurs.Find(j => j.Id == match.JoueurNoirId);
 
@@ -149,7 +132,6 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
                 Matchs.Add(new MatchAvecNoms(match, nomBlanc, nomNoir));
             }
 
-            // Calculer les statistiques
             NombreMatchs = matchsDeLaCompetition.Count;
             MatchsTermines = matchsDeLaCompetition.Count(m => m.Resultat != "En cours");
             MatchsEnCours = matchsDeLaCompetition.Count(m => m.Resultat == "En cours");
@@ -166,19 +148,23 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
         }
     }
 
-    /// <summary>
-    /// Ouvre les détails d'un match
-    /// </summary>
     [RelayCommand]
     private void VoirMatch(MatchAvecNoms matchAvecNoms)
     {
-        // Navigation vers la page de détails du match
         _mainViewModel.GoToDetailsMatch(matchAvecNoms.Match.Id);
+    }
+
+    // ✅ NOUVELLE COMMANDE POUR AJOUTER UN MATCH
+    [RelayCommand]
+    private void AjouterMatch()
+    {
+        // Passer l'ID de la compétition pour pré-sélectionner dans AjouterMatchPage
+        _mainViewModel.GoToAjouterMatch(_competitionId);
     }
 
     [RelayCommand]
     private void Retour()
     {
-        _mainViewModel.GoToCompetition();
+        _mainViewModel.GoToAfficherCompetitions();
     }
 }
