@@ -26,5 +26,33 @@
     "Coups": "i7 f16",
     "Notes": "",
     "DateCreation": "2025-12-03T22:31:09.2251805+01:00"
+  },
+  {
+    "Id": "643b2a54-ae9c-4548-9b9d-8ac9afb4e4a9",
+    "CompetitionId": "fd39c515-6ce3-42c3-b68f-e0e38810a11b",
+    "JoueurBlancId": "7f4576b7-306b-40ed-964b-b23d1be117fb",
+    "JoueurNoirId": "9da802f3-70cb-4dc3-ab16-bc6b605bb64a",
+    "DateMatch": "2025-12-03T23:37:37.333289",
+    "Resultat": "Nul",
+    "ScoreBlanc": 0.5,
+    "ScoreNoir": 0.5,
+    "DureeMinutes": 60,
+    "Coups": "kfnkjfd",
+    "Notes": "",
+    "DateCreation": "2025-12-03T23:38:00.5036033+01:00"
+  },
+  {
+    "Id": "05e26f3e-2098-4b76-a1c5-4a968100a55e",
+    "CompetitionId": "fd39c515-6ce3-42c3-b68f-e0e38810a11b",
+    "JoueurBlancId": "1b9f661e-ef18-4b4c-9756-647da7f41103",
+    "JoueurNoirId": "9da802f3-70cb-4dc3-ab16-bc6b605bb64a",
+    "DateMatch": "2025-12-03T23:39:27.7221802",
+    "Resultat": "Blanc gagne",
+    "ScoreBlanc": 1,
+    "ScoreNoir": 0,
+    "DureeMinutes": 60,
+    "Coups": "xfxf",
+    "Notes": "",
+    "DateCreation": "2025-12-03T23:39:44.9875991+01:00"
   }
 ]

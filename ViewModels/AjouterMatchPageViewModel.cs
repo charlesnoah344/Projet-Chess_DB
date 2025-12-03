@@ -164,105 +164,124 @@ public partial class AjouterMatchPageViewModel : ViewModelBase
     /// Enregistre le nouveau match
     /// </summary>
     [RelayCommand]
-    private async Task EnregistrerAsync()
+private async Task EnregistrerAsync()
+{
+    // ... (votre validation existante)
+
+    EstEnChargement = true;
+    Message = "💾 Enregistrement en cours...";
+
+    try
     {
-        // Validation
-        if (CompetitionSelectionnee == null)
+        // Calculer les scores selon le résultat
+        double scoreBlanc = 0;
+        double scoreNoir = 0;
+
+        switch (ResultatSelectionne)
         {
-            Message = "❌ Veuillez sélectionner une compétition !";
-            return;
+            case "Blanc gagne":
+                scoreBlanc = 1;
+                scoreNoir = 0;
+                break;
+            case "Noir gagne":
+                scoreBlanc = 0;
+                scoreNoir = 1;
+                break;
+            case "Nul":
+                scoreBlanc = 0.5;
+                scoreNoir = 0.5;
+                break;
+            case "En cours":
+                scoreBlanc = 0;
+                scoreNoir = 0;
+                break;
         }
 
-        if (JoueurBlancSelectionne == null)
+        // Créer le nouveau match
+        var nouveauMatch = new Match
         {
-            Message = "❌ Veuillez sélectionner le joueur Blanc !";
-            return;
-        }
+            CompetitionId = CompetitionSelectionnee.Id,
+            JoueurBlancId = JoueurBlancSelectionne.Id,
+            JoueurNoirId = JoueurNoirSelectionne.Id,
+            DateMatch = DateMatch.DateTime,
+            Resultat = ResultatSelectionne,
+            ScoreBlanc = scoreBlanc,
+            ScoreNoir = scoreNoir,
+            DureeMinutes = DureeMinutes,
+            Coups = Coups.Trim(),
+            Notes = Notes.Trim()
+        };
 
-        if (JoueurNoirSelectionne == null)
+        bool succesMatch = await _matchService.AjouterMatchAsync(nouveauMatch);
+
+        if (succesMatch)
         {
-            Message = "❌ Veuillez sélectionner le joueur Noir !";
-            return;
-        }
-
-        if (JoueurBlancSelectionne.Id == JoueurNoirSelectionne.Id)
-        {
-            Message = "❌ Les deux joueurs doivent être différents !";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(Coups))
-        {
-            Message = "❌ Veuillez entrer les coups du match !";
-            return;
-        }
-
-        EstEnChargement = true;
-        Message = "💾 Enregistrement en cours...";
-
-        try
-        {
-            // Calculer les scores selon le résultat
-            double scoreBlanc = 0;
-            double scoreNoir = 0;
-
-            switch (ResultatSelectionne)
+            // ✅ METTRE À JOUR LES ELO SI LE MATCH EST TERMINÉ
+            if (ResultatSelectionne != "En cours")
             {
-                case "Blanc gagne":
-                    scoreBlanc = 1;
-                    scoreNoir = 0;
-                    break;
-                case "Noir gagne":
-                    scoreBlanc = 0;
-                    scoreNoir = 1;
-                    break;
-                case "Nul":
-                    scoreBlanc = 0.5;
-                    scoreNoir = 0.5;
-                    break;
-                case "En cours":
-                    scoreBlanc = 0;
-                    scoreNoir = 0;
-                    break;
+                await MettreAJourElosAsync();
             }
 
-            // Créer le nouveau match
-            var nouveauMatch = new Match
-            {
-                CompetitionId = CompetitionSelectionnee.Id,
-                JoueurBlancId = JoueurBlancSelectionne.Id,
-                JoueurNoirId = JoueurNoirSelectionne.Id,
-                DateMatch = DateMatch.DateTime,
-                Resultat = ResultatSelectionne,
-                ScoreBlanc = scoreBlanc,
-                ScoreNoir = scoreNoir,
-                DureeMinutes = DureeMinutes,
-                Coups = Coups.Trim(), // TOUS LES COUPS EN TEXTE
-                Notes = Notes.Trim()
-            };
-
-            bool succes = await _matchService.AjouterMatchAsync(nouveauMatch);
-
-            if (succes)
-            {
-                Message = $"✅ Match enregistré : {JoueurBlancSelectionne.Nom} vs {JoueurNoirSelectionne.Nom} !";
-                await Task.Delay(1500);
-                _mainViewModel.GoToCompetition();
-            }
-            else
-            {
-                Message = "❌ Erreur lors de l'enregistrement.";
-            }
+            Message = $"✅ Match enregistré : {JoueurBlancSelectionne.Nom} vs {JoueurNoirSelectionne.Nom} !";
+            await Task.Delay(1500);
+            _mainViewModel.GoToCompetition();
         }
-        catch (Exception ex)
+        else
         {
-            Message = $"❌ Erreur : {ex.Message}";
-        }
-        finally
-        {
-            EstEnChargement = false;
+            Message = "❌ Erreur lors de l'enregistrement.";
         }
     }
+    catch (Exception ex)
+    {
+        Message = $"❌ Erreur : {ex.Message}";
+    }
+    finally
+    {
+        EstEnChargement = false;
+    }
+}
+
+/// <summary>
+/// Met à jour les ELO des deux joueurs après le match
+/// </summary>
+private async Task MettreAJourElosAsync()
+{
+    try
+    {
+        Console.WriteLine("🔄 Mise à jour des ELO...");
+        
+        var eloService = new EloService();
+        
+        // Récupérer les ELO actuels
+        int eloBlancActuel = JoueurBlancSelectionne.Elo;
+        int eloNoirActuel = JoueurNoirSelectionne.Elo;
+
+        // Calculer les nouveaux ELO
+        var (nouveauEloBlanc, nouveauEloNoir) = eloService.CalculerNouveauxElos(
+            eloBlancActuel,
+            eloNoirActuel,
+            ResultatSelectionne
+        );
+
+        // Mettre à jour les joueurs
+        JoueurBlancSelectionne.Elo = nouveauEloBlanc;
+        JoueurNoirSelectionne.Elo = nouveauEloNoir;
+
+        // Sauvegarder dans le JSON
+        var joueurService = new JoueurService();
+        await joueurService.ModifierJoueurAsync(JoueurBlancSelectionne);
+        await joueurService.ModifierJoueurAsync(JoueurNoirSelectionne);
+
+        Console.WriteLine($"✅ ELO mis à jour avec succès");
+        Console.WriteLine($"   {JoueurBlancSelectionne.Nom}: {eloBlancActuel} → {nouveauEloBlanc}");
+        Console.WriteLine($"   {JoueurNoirSelectionne.Nom}: {eloNoirActuel} → {nouveauEloNoir}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Erreur lors de la mise à jour des ELO : {ex.Message}");
+        // On ne bloque pas l'enregistrement du match si la mise à jour ELO échoue
+    }
+}
 
     [RelayCommand]
     private void Retour()
