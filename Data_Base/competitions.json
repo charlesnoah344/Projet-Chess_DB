@@ -10,5 +10,18 @@
       "1b9f661e-ef18-4b4c-9756-647da7f41103",
       "9da802f3-70cb-4dc3-ab16-bc6b605bb64a"
     ]
+  },
+  {
+    "Id": "a4fa75f2-3c13-4b87-81e2-8cf8f58a6567",
+    "Tournoi": "Yaounde Tour",
+    "Ville": "Douala \u0026 Yaounde",
+    "DateDebut": "2025-12-03T23:52:55.6920136",
+    "DateFin": "2025-02-13T00:00:00",
+    "JoueursIds": [
+      "7f4576b7-306b-40ed-964b-b23d1be117fb",
+      "1b9f661e-ef18-4b4c-9756-647da7f41103",
+      "9da802f3-70cb-4dc3-ab16-bc6b605bb64a",
+      "55293e4b-9906-403e-89fd-0c37741e2523"
+    ]
   }
 ]
