@@ -22,8 +22,7 @@
                            HorizontalAlignment="Center"
                            IsVisible="{Binding Competition, Converter={x:Static ObjectConverters.IsNotNull}}"/>
             </StackPanel>
-        </Border>
-        
+        </Border>    
         <!-- Barre d'info -->
         <Border Grid.Row="1" Padding="15" Background="#1abc9c">
             <Grid ColumnDefinitions="*, Auto">
@@ -46,7 +45,7 @@
                 </Border>
             </Grid>
         </Border>
-        
+        <!-- Liste des joueurs -->
         <!-- Contenu -->
         <ScrollViewer Grid.Row="2">
             <Grid ColumnDefinitions="1.5*, *" Margin="20" ColumnSpacing="20">
@@ -66,31 +65,15 @@
                                        FontWeight="Bold"
                                        Foreground="#16a085"
                                        VerticalAlignment="Center"/>
-                            
-                            <Button Grid.Column="1"
-                                    Content="✓ Tous"
-                                    Command="{Binding SelectionnerTousCommand}"
-                                    CommandParameter="True"
-                                    Height="30"
-                                    Margin="0,0,5,0"
-                                    Padding="10,5"
-                                    FontSize="12"/>
-                            
-                            <Button Grid.Column="2"
-                                    Content="✗ Aucun"
-                                    Command="{Binding SelectionnerTousCommand}"
-                                    CommandParameter="False"
-                                    Height="30"
-                                    Padding="10,5"
-                                    FontSize="12"/>
                         </Grid>
                         
                         <TextBlock Text="Cochez les joueurs à ajouter à la compétition" 
                                    FontSize="12" 
                                    Foreground="#95a5a6"
-                                   TextWrapping="Wrap"/>
-                
-                        <!-- Liste des joueurs -->
+                                   TextWrapping="Wrap"/> 
+                    </StackPanel>
+                </Border>
+                <!-- Liste des joueurs -->
                         <ScrollViewer Height="450">
                             <ItemsControl ItemsSource="{Binding JoueursDisponibles}">
                                 <ItemsControl.ItemTemplate>
@@ -151,8 +134,7 @@
                             </ItemsControl>
                         </ScrollViewer>
                 
-                    </StackPanel>
-                </Border>
+                    
         
                 <!-- Colonne droite : Info compétition -->
                 <Border Grid.Column="1" 
