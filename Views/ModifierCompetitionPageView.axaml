@@ -234,6 +234,8 @@
                                             FontWeight="Bold"
                                             IsEnabled="{Binding !EstEnChargement}"/>
                                     
+                                    
+                                    
                                 </Grid>
                                 
                             </StackPanel>
@@ -252,13 +254,28 @@
             <ProgressBar IsIndeterminate="True" 
                          IsVisible="{Binding EstEnChargement}"
                          Height="4"/>
-            
-            <!-- Bouton Retour -->
-            <Button Content="← Retour au menu" 
-                    Command="{Binding RetourCommand}"
-                    HorizontalAlignment="Left"
-                    Width="200"
-                    Height="40"/>
+            <Grid ColumnDefinitions="*, *" Margin="0,20,0,0" ColumnSpacing="10">
+                <!-- Bouton Retour -->
+                <Button Grid.Column="0" 
+                        Content="← Retour au menu" 
+                        Command="{Binding RetourCommand}"
+                        HorizontalAlignment="Left"
+                        Width="200"
+                        Height="40"/>
+                
+                <!-- Bouton pour ajouter des joueurs -->
+                <Button  Grid.Column="1"
+                         Content="➕ Ajouter des joueurs"
+                         Command="{Binding AjouterJoueursCommand}"
+                         HorizontalAlignment="Stretch"
+                         Height="45"
+                         Background="#16a085"
+                         Foreground="White"
+                         FontWeight="Bold"
+                         Margin="0,10,0,20"
+                         IsEnabled="{Binding !EstEnChargement}"
+                         IsVisible="{Binding CompetitionEstSelectionne}"/>
+            </Grid>    
             
         </StackPanel>
         

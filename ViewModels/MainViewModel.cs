@@ -27,7 +27,8 @@ public partial class MainViewModel : ViewModelBase
                                         || CurrentPage is AfficherCompetitionsPageViewModel
                                         || CurrentPage is DetailsMatchPageViewModel
                                         || CurrentPage is AjouterMatchPageViewModel
-                                        || CurrentPage is DetailsCompetitionPageViewModel;
+                                        || CurrentPage is DetailsCompetitionPageViewModel
+                                        || CurrentPage is AjouterJoueursCompetitionPageViewModel;
         
     public bool EloPageIsActive => CurrentPage == _eloPage ;
     public bool BonusPageIsActive => CurrentPage == _bonusPage ;
@@ -142,4 +143,11 @@ public void GoToAjouterMatch(Guid? competitionId = null)
 {
     CurrentPage = new AjouterMatchPageViewModel(this, competitionId);
 }
+
+[RelayCommand]
+public void GoToAjouterJoueursCompetition(Guid competitionId)
+{
+    CurrentPage = new AjouterJoueursCompetitionPageViewModel(this, competitionId);
+}
+
 }

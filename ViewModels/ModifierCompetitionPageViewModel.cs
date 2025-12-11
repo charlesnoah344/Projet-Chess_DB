@@ -265,6 +265,18 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
         DateDebut = DateTimeOffset.Now;
         DateDebut = DateTimeOffset.Now.AddDays(10);
     }
+    // ✅ NOUVELLE COMMANDE pour aller à la page d'ajout de joueurs
+    [RelayCommand]
+    private void AjouterJoueurs()
+    {
+        if (CompetitionSelectionne == null)
+        {
+            Message = "❌ Veuillez sélectionner une compétition !";
+            return;
+        }
+        
+        _mainViewModel.GoToAjouterJoueursCompetition(CompetitionSelectionne.Id);
+    }
 
     /// <summary>
     /// Retourne à la page précédente
