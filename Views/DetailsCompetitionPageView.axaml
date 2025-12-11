@@ -1,0 +1,233 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
+             Foreground="{DynamicResource PrimaryForeground}"
+             Background="{DynamicResource PrimaryBackground}"
+             xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             x:DataType="vm:DetailsCompetitionPageViewModel"
+             x:Class="Chess_D_B.Views.DetailsCompetitionPageView">
+    
+    <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#16a085" Padding="20">
+            <StackPanel Spacing="5" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Competition.Tournoi}" 
+                           FontSize="28" 
+                           FontWeight="Bold"
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+                <TextBlock FontSize="14" Foreground="White" HorizontalAlignment="Center">
+                    <Run Text="📍"/>
+                    <Run Text="{Binding Competition.Ville}"/>
+                    <Run Text=" | "/>
+                    <Run Text="{Binding Competition.DateDebut, StringFormat='dd/MM/yyyy'}"/>
+                    <Run Text=" - "/>
+                    <Run Text="{Binding Competition.DateFin, StringFormat='dd/MM/yyyy'}"/>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+        
+        <!-- Statistiques -->
+        <Border Grid.Row="1" Padding="20" Background="#1abc9c">
+            <Grid ColumnDefinitions="*, *, *, *">
+                
+                
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center" Spacing="5">
+                    <TextBlock Text="👥 Participants" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding JoueursParticipants.Count}" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center" Spacing="5">
+                    <TextBlock Text="♟️ Matchs" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
+                    <TextBlock FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">
+                        <Run Text="{Binding MatchsTermines}"/>
+                        <Run Text="/"/>
+                        <Run Text="{Binding NombreMatchs}"/>
+                    </TextBlock>
+                </StackPanel>
+                
+                <!-- ✅ NOUVEAU BOUTON AJOUTER MATCH -->
+                <Button Grid.Column="2"
+                        Content="➕ Ajouter un match"
+                        Command="{Binding AjouterMatchCommand}"
+                        Height="35"
+                        Margin="0,0,10,0"
+                        Background="#16a085"
+                        Foreground="White"
+                        FontWeight="Bold"/>
+        
+                <!-- Bouton Rafraîchir -->
+                <Button Grid.Column="3"
+                        Content="🔄 Rafraîchir"
+                        Command="{Binding ChargerDetailsCommand}"
+                        Height="35"
+                        IsEnabled="{Binding !EstEnChargement}"/>
+                
+            </Grid>
+        </Border>
+        
+        <!-- Message -->
+        <Border Grid.Row="2" Padding="10" Background="#34495E">
+            <TextBlock Text="{Binding Message}" 
+                       FontSize="13"
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+        </Border>
+        
+        <!-- Contenu principal -->
+        <ScrollViewer Grid.Row="3">
+            <Grid ColumnDefinitions="*, 2*" Margin="20" ColumnSpacing="20">
+                
+                <!-- Colonne gauche : Joueurs participants -->
+                <Border Grid.Column="0" 
+                        BorderBrush="#16a085" 
+                        BorderThickness="2" 
+                        CornerRadius="5"
+                        Padding="15">
+                    <StackPanel Spacing="10">
+                        
+                        <TextBlock Text="👥 Joueurs Participants" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"
+                                   Foreground="#16a085"/>
+                        
+                        <ScrollViewer Height="500">
+                            <ItemsControl ItemsSource="{Binding JoueursParticipants}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#34495E" 
+                                                Padding="12" 
+                                                Margin="0,0,0,8"
+                                                CornerRadius="5">
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <StackPanel Grid.Column="0" Spacing="3">
+                                                    <TextBlock FontWeight="Bold" FontSize="15">
+                                                        <Run Text="{Binding Prenom}"/>
+                                                        <Run Text=" "/>
+                                                        <Run Text="{Binding Nom}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding DateNaissance, StringFormat='Né(e) le : dd/MM/yyyy'}" 
+                                                               FontSize="11" 
+                                                               Foreground="#95a5a6"/>
+                                                </StackPanel>
+                                                <Border Grid.Column="1" 
+                                                        Background="#3498db" 
+                                                        CornerRadius="8"
+                                                        Padding="8,4"
+                                                        VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Elo}" 
+                                                               FontWeight="Bold" 
+                                                               Foreground="White"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        
+                    </StackPanel>
+                </Border>
+                
+                <!-- Colonne droite : Liste des matchs -->
+                <Border Grid.Column="1" 
+                        BorderBrush="#16a085" 
+                        BorderThickness="2" 
+                        CornerRadius="5"
+                        Padding="15">
+                    <StackPanel Spacing="10">
+                        
+                        <TextBlock Text="♟️ Matchs de la Compétition" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"
+                                   Foreground="#16a085"/>
+                        
+                        <ScrollViewer Height="500">
+                            <ItemsControl ItemsSource="{Binding Matchs}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#34495E" 
+                                                Padding="15" 
+                                                Margin="0,0,0,10"
+                                                CornerRadius="5"
+                                                Cursor="Hand">
+                                            <Border.Styles>
+                                                <Style Selector="Border:pointerover">
+                                                    <Setter Property="Background" Value="#2C3E50"/>
+                                                </Style>
+                                            </Border.Styles>
+                                            
+                                            <Grid RowDefinitions="Auto, Auto, Auto">
+                                                
+                                                <!-- Date et résultat -->
+                                                <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,8">
+                                                    <TextBlock Grid.Column="0" 
+                                                               Text="{Binding Match.DateMatch, StringFormat='📅 dd/MM/yyyy HH:mm'}" 
+                                                               FontSize="12" 
+                                                               Foreground="#95a5a6"/>
+                                                    <Border Grid.Column="1" 
+                                                            Background="{Binding CouleurResultat}" 
+                                                            CornerRadius="8"
+                                                            Padding="8,4">
+                                                        <TextBlock Text="{Binding ResultatAvecIcone}" 
+                                                                   FontWeight="Bold" 
+                                                                   FontSize="12"
+                                                                   Foreground="White"/>
+                                                    </Border>
+                                                </Grid>
+                                                
+                                                <!-- Joueurs -->
+                                                <StackPanel Grid.Row="1" Spacing="5">
+                                                    <TextBlock FontSize="14">
+                                                        <Run Text="⚪ " Foreground="#ecf0f1"/>
+                                                        <Run Text="{Binding NomJoueurBlanc}" FontWeight="Bold"/>
+                                                    </TextBlock>
+                                                    <TextBlock FontSize="14">
+                                                        <Run Text="⚫ " Foreground="#34495e"/>
+                                                        <Run Text="{Binding NomJoueurNoir}" FontWeight="Bold"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                                
+                                                <!-- Bouton Voir détails -->
+                                                <Button Grid.Row="2" 
+                                                        Content="👁️ Voir les détails"
+                                                        Command="{Binding $parent[UserControl].DataContext.VoirMatchCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Margin="0,10,0,0"
+                                                        Height="35"
+                                                        HorizontalAlignment="Stretch"
+                                                        Background="#2980b9"/>
+                                                
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        
+                    </StackPanel>
+                </Border>
+                
+            </Grid>
+        </ScrollViewer>
+        
+        <!-- Footer -->
+        <StackPanel Grid.Row="4" Margin="20" Spacing="10">
+            
+            <ProgressBar IsIndeterminate="True" 
+                         IsVisible="{Binding EstEnChargement}"
+                         Height="4"/>
+            
+            <Button Content="← Retour" 
+                    Command="{Binding RetourCommand}"
+                    HorizontalAlignment="Left"
+                    Width="200"
+                    Height="40"/>
+            
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

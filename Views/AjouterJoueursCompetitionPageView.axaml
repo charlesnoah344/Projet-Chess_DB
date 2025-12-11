@@ -1,0 +1,271 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             x:DataType="vm:AjouterJoueursCompetitionPageViewModel"
+             x:Class="Chess_D_B.Views.AjouterJoueursCompetitionPageView"
+             Foreground="{DynamicResource PrimaryForeground}"
+             Background="{DynamicResource PrimaryBackground}">
+    
+    <Grid RowDefinitions="Auto, Auto, *, Auto">
+    
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#16a085" Padding="20">
+            <StackPanel Spacing="5" HorizontalAlignment="Center">
+                <TextBlock Text="➕ Ajouter des Joueurs" 
+                           FontSize="28" 
+                           FontWeight="Bold"
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Competition.Tournoi}" 
+                           FontSize="16" 
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           IsVisible="{Binding Competition, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+            </StackPanel>
+        </Border>    
+        <!-- Barre d'info -->
+        <Border Grid.Row="1" Padding="15" Background="#1abc9c">
+            <Grid ColumnDefinitions="*, Auto">
+                <TextBlock Grid.Column="0"
+                           Text="{Binding Message}" 
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+                
+                <Border Grid.Column="1"
+                        Background="#16a085"
+                        CornerRadius="15"
+                        Padding="12,6"
+                        IsVisible="{Binding NombreJoueursSelectionnes, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <TextBlock FontWeight="Bold" Foreground="White">
+                        <Run Text="{Binding NombreJoueursSelectionnes}"/>
+                        <Run Text=" nouveau(x) joueur(s) sélectionné(s)"/>
+                    </TextBlock>
+                </Border>
+            </Grid>
+        </Border>
+        <!-- Liste des joueurs -->
+        <!-- Contenu -->
+        <ScrollViewer Grid.Row="2">
+            <Grid ColumnDefinitions="1.5*, *" Margin="20" ColumnSpacing="20">
+        
+                <!-- Colonne gauche : Liste des joueurs -->
+                <Border Grid.Column="0" 
+                        BorderBrush="#16a085" 
+                        BorderThickness="2" 
+                        CornerRadius="5"
+                        Padding="20">
+                    <StackPanel Spacing="15">
+                
+                        <Grid ColumnDefinitions="*, Auto, Auto">
+                            <TextBlock Grid.Column="0"
+                                       Text="👥 Joueurs disponibles" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"
+                                       Foreground="#16a085"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                        
+                        <TextBlock Text="Cochez les joueurs à ajouter à la compétition" 
+                                   FontSize="12" 
+                                   Foreground="#95a5a6"
+                                   TextWrapping="Wrap"/> 
+                    </StackPanel>
+                </Border>
+                <!-- Liste des joueurs -->
+                        <ScrollViewer Height="450">
+                            <ItemsControl ItemsSource="{Binding JoueursDisponibles}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="12" 
+                                                Margin="0,0,0,8"
+                                                CornerRadius="5">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="#34495E" 
+                                                                 Opacity="{Binding EstDejaParticipant, Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
+                                            </Border.Background>
+                                            
+                                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                                
+                                                <!-- Checkbox -->
+                                                <CheckBox Grid.Column="0"
+                                                          IsChecked="{Binding EstSelectionne}"
+                                                          IsEnabled="{Binding !EstDejaParticipant}"
+                                                          VerticalAlignment="Center"
+                                                          Margin="0,0,10,0"/>
+                                                
+                                                <!-- Info joueur -->
+                                                <StackPanel Grid.Column="1" Spacing="3">
+                                                    <TextBlock FontWeight="Bold" 
+                                                               FontSize="15"
+                                                               Foreground="White">
+                                                        <Run Text="{Binding Joueur.Prenom}"/>
+                                                        <Run Text=" "/>
+                                                        <Run Text="{Binding Joueur.Nom}"/>
+                                                    </TextBlock>
+                                                    <TextBlock FontSize="12" Foreground="#95a5a6">
+                                                        <Run Text="ELO:"/>
+                                                        <Run Text="{Binding Joueur.Elo}" FontWeight="Bold" Foreground="#3498db"/>
+                                                        <Run Text=" | Né(e) le:"/>
+                                                        <Run Text="{Binding Joueur.DateNaissance, StringFormat='dd/MM/yyyy'}"/>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                                
+                                                <!-- Badge statut -->
+                                                <Border Grid.Column="2"
+                                                        CornerRadius="10"
+                                                        Padding="8,4"
+                                                        VerticalAlignment="Center"
+                                                        IsVisible="{Binding EstDejaParticipant}">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Color="#27ae60" Opacity="0.3"/>
+                                                    </Border.Background>
+                                                    <TextBlock Text="{Binding StatutText}" 
+                                                               FontSize="11"
+                                                               FontWeight="Bold"
+                                                               Foreground="#27ae60"/>
+                                                </Border>
+                                                
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                
+                    
+        
+                <!-- Colonne droite : Info compétition -->
+                <Border Grid.Column="1" 
+                        BorderBrush="#16a085" 
+                        BorderThickness="2" 
+                        CornerRadius="5"
+                        Padding="20">
+                    <StackPanel Spacing="15">
+                
+                        <TextBlock Text="ℹ️ Informations" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"
+                                   Foreground="#16a085"/>
+                        
+                        <StackPanel Spacing="10" 
+                                    IsVisible="{Binding Competition, Converter={x:Static ObjectConverters.IsNotNull}}">
+                            
+                            <!-- Nom compétition -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Compétition" 
+                                           FontWeight="Bold" 
+                                           FontSize="12" 
+                                           Foreground="#95a5a6"/>
+                                <TextBlock Text="{Binding Competition.Tournoi}" 
+                                           FontSize="16"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                            
+                            <!-- Ville -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Lieu" 
+                                           FontWeight="Bold" 
+                                           FontSize="12" 
+                                           Foreground="#95a5a6"/>
+                                <TextBlock Text="{Binding Competition.Ville}" 
+                                           FontSize="16"/>
+                            </StackPanel>
+                            
+                            <!-- Dates -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Dates" 
+                                           FontWeight="Bold" 
+                                           FontSize="12" 
+                                           Foreground="#95a5a6"/>
+                                <TextBlock FontSize="14">
+                                    <Run Text="Du"/>
+                                    <Run Text="{Binding Competition.DateDebut, StringFormat='dd/MM/yyyy'}" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="au"/>
+                                    <Run Text="{Binding Competition.DateFin, StringFormat='dd/MM/yyyy'}" FontWeight="Bold"/>
+                                </TextBlock>
+                            </StackPanel>
+                            
+                            <!-- Participants actuels -->
+                            <Border Background="#34495E" 
+                                    Padding="12" 
+                                    CornerRadius="5"
+                                    Margin="0,10,0,0">
+                                <StackPanel Spacing="5">
+                                    <TextBlock Text="📊 Participants actuels" 
+                                               FontSize="13" 
+                                               FontWeight="Bold"
+                                               Foreground="White"/>
+                                    <TextBlock FontSize="24" 
+                                               FontWeight="Bold" 
+                                               Foreground="#3498db"
+                                               HorizontalAlignment="Center">
+                                        <Run Text="{Binding Competition.JoueursIds.Count}"/>
+                                    </TextBlock>
+                                    <TextBlock Text="joueur(s)" 
+                                               FontSize="11" 
+                                               Foreground="#95a5a6"
+                                               HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Instructions -->
+                            <Border Background="#2C3E50" 
+                                    Padding="12" 
+                                    CornerRadius="5"
+                                    Margin="0,20,0,0">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="💡 Instructions" 
+                                               FontSize="13" 
+                                               FontWeight="Bold"
+                                               Foreground="White"/>
+                                    <TextBlock TextWrapping="Wrap" 
+                                               FontSize="12" 
+                                               Foreground="#95a5a6">
+                                        <Run Text="1. Cochez les joueurs à ajouter"/>
+                                        <LineBreak/>
+                                        <Run Text="2. Les joueurs déjà participants sont grisés"/>
+                                        <LineBreak/>
+                                        <Run Text="3. Cliquez sur 'Ajouter' pour valider"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            
+                        </StackPanel>
+                
+                    </StackPanel>
+                </Border>
+        
+            </Grid>
+        </ScrollViewer>
+        
+        <!-- Footer -->
+        <StackPanel Grid.Row="3" Margin="20" Spacing="10">
+            
+            <ProgressBar IsIndeterminate="True" 
+                         IsVisible="{Binding EstEnChargement}"
+                         Height="4"/>
+            
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Content="← Retour"
+                        Command="{Binding RetourCommand}"
+                        HorizontalAlignment="Stretch"
+                        Height="45"
+                        IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
+                
+                <Button Grid.Column="1"
+                        Content="✓ Ajouter les joueurs sélectionnés"
+                        Command="{Binding AjouterJoueursCommand}"
+                        HorizontalAlignment="Stretch"
+                        Height="45"
+                        Classes="menu"
+                        IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
+            </Grid>
+            
+        </StackPanel>
+    
+    </Grid>
+</UserControl>
