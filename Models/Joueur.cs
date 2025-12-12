@@ -4,7 +4,7 @@ namespace Chess_D_B.Models;
 /// <summary>
 /// Représente un joueur d'échecs avec toutes ses informations
 /// </summary>
-public class Joueur
+public class Joueur : Echec
 {
     // Identifiant unique du joueur (généré automatiquement)
     public Guid Id { get; set; }

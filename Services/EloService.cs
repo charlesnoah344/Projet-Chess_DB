@@ -6,7 +6,7 @@ namespace Chess_D_B.Services;
 /// <summary>
 /// Service pour calculer et mettre à jour les scores ELO selon le système FIDE
 /// </summary>
-public class EloService
+public class EloService : IRankingSystem
 {
     /// <summary>
     /// Calcule le nouveau ELO pour les deux joueurs après un match

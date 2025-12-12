@@ -10,7 +10,7 @@ namespace Chess_D_B.Services;
 /// <summary>
 /// Service responsable de la gestion des competitions (lecture/écriture dans le fichier JSON)
 /// </summary>
-public class CompetitionService
+public class CompetitionService : IService
 {
     // Chemin relatif vers le fichier JSON
     private readonly string _cheminFichier;

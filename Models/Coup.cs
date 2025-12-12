@@ -8,7 +8,7 @@ using Chess_D_B.Models;
 
 namespace Chess_D_B.Models;
 
-public class Coup
+public class Coup : Echec
 {
     // Identifiant unique du coup
     public Guid Id { get; set; }

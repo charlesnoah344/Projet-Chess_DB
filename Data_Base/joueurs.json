@@ -30,5 +30,21 @@
     "DateNaissance": "2003-01-13T00:00:00",
     "Elo": 1636,
     "DateCreation": "2025-11-12T15:10:39.9398475+01:00"
+  },
+  {
+    "Id": "57b6e3d7-b180-4cf5-8836-10cf2b52f8a1",
+    "Nom": "Messi",
+    "Prenom": "Leo",
+    "DateNaissance": "2005-12-12T21:19:48.3960336",
+    "Elo": 1200,
+    "DateCreation": "2025-12-12T21:20:22.1064646+01:00"
+  },
+  {
+    "Id": "ad791996-7bdb-4398-8ec6-d0784c98a2ee",
+    "Nom": "Ronaldo",
+    "Prenom": "Cristiano",
+    "DateNaissance": "2005-12-12T21:20:38.8950149",
+    "Elo": 1198,
+    "DateCreation": "2025-12-12T21:20:55.1675133+01:00"
   }
 ]

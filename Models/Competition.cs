@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Chess_D_B.Models;
 
 
-public class Competition
+public class Competition : Echec
 {
     public Guid Id { get; set; }
     
