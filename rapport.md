@@ -24,10 +24,27 @@ Les données sont stockées de manière persistante dans des fichiers JSON gér�
 /// A compléter
 
 ## Diagramme de classe 
-/// A compléter
+![Diagramme UML](Assets/class_diagram.png)
+### Description du diagramme de classes
+Le diagramme illustre l'architecture complète de l'application selon le pattern MVVM :
+- Couche Modèle : Les classes Joueur, Competition, Match et Coup héritent de l'interface Echec qui elle-même hérite de ISport, permettant une extensibilité vers d'autres sports.
+- Couche Service : Les services (JoueurService, CompetitionService, MatchService) implémentent IService et gèrent la persistance des données dans des fichiers JSON. Le EloService implémente IRankingSystem pour permettre l'ajout d'autres systèmes de classement.
+- Couche ViewModel : Les ViewModels orchestrent la logique métier en utilisant les services. Le MainViewModel gère la navigation entre les différentes pages de l'application.
 
 ## Diagramme de séquence
-/// A compléter
+![Diagramme UML](Assets/sequence_diagram.png)
+### Description du diagramme de séquence
+Ce diagramme illustre le flux complet d'ajout d'un match avec mise à jour automatique des classements ELO :
+
+- Sélection de la compétition : L'utilisateur choisit une compétition, ce qui déclenche le chargement des joueurs participants via le CompetitionService et le JoueurService.
+- Saisie des informations : L'utilisateur sélectionne les deux joueurs (blanc et noir), saisit le résultat du match, les coups joués et d'éventuelles notes.
+- Enregistrement du match : Le ViewModel valide les données, calcule les scores selon le résultat et enregistre le match via le MatchService.
+- Mise à jour automatique des ELO : Si le match est terminé (résultat différent de "En cours"), le système 
+appelle le EloService pour calculer les nouveaux ELO selon la formule FIDE , met à jour les deux joueurs dans la base de données via le JoueurService et afffiche un message de succès avec les nouveaux classements
+
+
+
+Cette séquence met en évidence la séparation des responsabilités et l'utilisation de services spécialisés pour chaque type d'opération.
 
 ## Diagramme d'activité 
 /// A compléter
