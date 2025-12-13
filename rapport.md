@@ -55,7 +55,7 @@ Deux principes fondamentaux de conception orientée objet (SOLID) sont mis en œ
 | Séparation de la Logique de Calcul | Le EloService a pour seule responsabilité le calcul mathématique des nouveaux classements ELO. Il ne s'occupe ni de la sauvegarde des joueurs, ni de l'affichage.                                                                                       |
 | Séparation de la Présentation | Le ViewModel (comme AjouterMatchPageViewModel) gère l'état de la vue (boutons, messages) et coordonne les appels aux autres services. Il ne contient pas la logique de lecture JSON ou de calcul ELO.                                                   |
 #### Bénéfice : 
-Si vous décidez de passer d'un stockage JSON à une base de données SQL, seul le code des classes *Service.cs sera modifié. Le EloService et les ViewModels resteront inchangés
+Si vous décidez de passer d'un stockage JSON à une base de données SQL, seul le code des classes *Service.cs (JoueurService, CompetitionService et MatchService) sera modifié. Le EloService et les ViewModels resteront inchangés
 ### 2. Principe Ouvert/Fermé (Open/Closed Principle - OCP)
 | Description | Justification dans le Projet                                                                                                                                                                                                                                                                     | 
 |--|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
