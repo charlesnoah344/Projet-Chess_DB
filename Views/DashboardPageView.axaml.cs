@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Chess_D_B.Views;
 
-public partial class BonusPageView : UserControl
+public partial class DashboardPageView : UserControl
 {
-    public BonusPageView()
+    public DashboardPageView()
     {
         InitializeComponent();
     }

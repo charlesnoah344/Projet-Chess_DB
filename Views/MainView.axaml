@@ -25,7 +25,7 @@
                     <Button Content="Gérer joueurs" Classes.active="{Binding JoueursPageIsActive}" Command="{Binding GoToJoueursCommand}"  HorizontalAlignment="Stretch"></Button>
                     <Button Content="Gérer Compétitions" Classes.active="{Binding CompetitionPageIsActive}" Command="{Binding GoToCompetitionCommand}" HorizontalAlignment="Stretch"></Button>
                     <Button Content="Classement ELO" Classes.active="{Binding EloPageIsActive}"  Command="{Binding GoToClassementEloCommand}" HorizontalAlignment="Stretch"></Button>
-                    <Button Content="Fonction Bonus" Classes.active="{Binding BonusPageIsActive}" Command="{Binding GoToBonusCommand}" HorizontalAlignment="Stretch"></Button>
+                    <Button Content="📊 Tableau de Bord" Classes.active="{Binding DashboardPageIsActive}" Command="{Binding GoToDashboardCommand}" HorizontalAlignment="Stretch"></Button>
                 </StackPanel>
                 
                 <Button Grid.Row="1" Content="Settings"  ></Button>
