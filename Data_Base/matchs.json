@@ -68,5 +68,19 @@
     "Coups": "sfssf\r\njkj\r\nkhk",
     "Notes": "",
     "DateCreation": "2025-12-03T23:54:01.0734176+01:00"
+  },
+  {
+    "Id": "25e57194-94ba-4ce4-8c2b-a1914137ef04",
+    "CompetitionId": "fd39c515-6ce3-42c3-b68f-e0e38810a11b",
+    "JoueurBlancId": "57b6e3d7-b180-4cf5-8836-10cf2b52f8a1",
+    "JoueurNoirId": "55293e4b-9906-403e-89fd-0c37741e2523",
+    "DateMatch": "2025-12-12T23:09:03.875782",
+    "Resultat": "Blanc gagne",
+    "ScoreBlanc": 1,
+    "ScoreNoir": 0,
+    "DureeMinutes": 60,
+    "Coups": "rrrrr\r\nhhh\r\nkkk",
+    "Notes": "",
+    "DateCreation": "2025-12-12T23:09:32.3340603+01:00"
   }
 ]

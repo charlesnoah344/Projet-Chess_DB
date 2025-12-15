@@ -219,7 +219,7 @@ private async Task EnregistrerAsync()
             // ✅ METTRE À JOUR LES ELO SI LE MATCH EST TERMINÉ
             if (ResultatSelectionne != "En cours")
             {
-                await MettreAJourElosAsync();
+                await MettreAJoursAsync();
             }
 
             Message = $"✅ Match enregistré : {JoueurBlancSelectionne.Nom} vs {JoueurNoirSelectionne.Nom} !";
@@ -244,7 +244,7 @@ private async Task EnregistrerAsync()
 /// <summary>
 /// Met à jour les ELO des deux joueurs après le match
 /// </summary>
-private async Task MettreAJourElosAsync()
+private async Task MettreAJoursAsync()
 {
     try
     {

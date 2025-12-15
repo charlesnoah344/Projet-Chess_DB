@@ -2,7 +2,7 @@ using System;
 
 namespace Chess_D_B.Models;
 
-public class Match
+public class Match : Echec
 {
     // Identifiant unique du match
     public Guid Id { get; set; }

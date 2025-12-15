@@ -8,7 +8,7 @@ using Chess_D_B.Models;
 
 namespace Chess_D_B.Services;
 
-public class MatchService
+public class MatchService : IService
 {
     private readonly string _cheminFichier;
     private readonly JsonSerializerOptions _jsonOptions;
