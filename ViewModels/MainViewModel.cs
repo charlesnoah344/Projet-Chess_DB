@@ -11,7 +11,7 @@ public partial class MainViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(JoueursPageIsActive))]
     [NotifyPropertyChangedFor(nameof(CompetitionPageIsActive))]
     [NotifyPropertyChangedFor(nameof(EloPageIsActive))]
-    [NotifyPropertyChangedFor(nameof(BonusPageIsActive))]
+    [NotifyPropertyChangedFor(nameof(DashboardPageIsActive))]
     private ViewModelBase _currentPage ;
 
     public bool JoueursPageIsActive => CurrentPage == _joueursPage || CurrentPage is AjouterJoueurPageViewModel 
@@ -31,18 +31,19 @@ public partial class MainViewModel : ViewModelBase
                                         || CurrentPage is AjouterJoueursCompetitionPageViewModel;
         
     public bool EloPageIsActive => CurrentPage == _eloPage ;
-    public bool BonusPageIsActive => CurrentPage == _bonusPage ;
+    public bool DashboardPageIsActive => CurrentPage == _dashboardPage ;
     
     private readonly JoueursPageViewModel _joueursPage ;
     private readonly CompetitionPageViewModel _competitionPage ;
     private readonly ClassementEloPageViewModel _eloPage ;
-    private readonly BonusPageViewModel _bonusPage = new();
+    private readonly DashboardPageViewModel _dashboardPage;
 
     public MainViewModel()
     {
         _joueursPage = new JoueursPageViewModel(this);
         _competitionPage = new CompetitionPageViewModel(this);
         _eloPage = new ClassementEloPageViewModel(this);
+        _dashboardPage = new DashboardPageViewModel(this);
         CurrentPage = _joueursPage;
     }
 
@@ -62,9 +63,9 @@ private void GoToElo()
     CurrentPage = _eloPage;
 }
 [RelayCommand]
-private void GoToBonus()
+private void GoToDashboard()
 {
-    CurrentPage = _bonusPage;
+    CurrentPage = _dashboardPage;
 }
 // méthode pour naviguer vers AjouterJoueur
 [RelayCommand]
