@@ -21,7 +21,16 @@ Les fonctionnalités de base couvrent :
 Les données sont stockées de manière persistante dans des fichiers JSON gérés par une couche de services asynchrone.
 
 ## Fonctionnalité Supplémentaire Choisie
-/// A compléter
+
+Le Tableau de Bord est conçu comme le centre de pilotage de la fédération. Au lieu de naviguer entre les différentes listes, il offre une vue d'ensemble immédiate et analytique de votre base de données :
+
+    Indicateurs Clés (KPIs) : Il affiche des cartes visuelles résumant les statistiques globales : le nombre total de joueurs inscrits, le nombre de compétitions créées et le volume total de matchs enregistrés.
+
+    Analyse de Performance : Il génère automatiquement un "Top 5" des meilleurs joueurs basé sur leur classement ELO actuel. Cela permet d'identifier instantanément les leaders de la fédération.
+
+    Interface Réactive : Grâce à l'utilisation de ObservableCollection et des commandes asynchrones, les données se chargent de manière fluide sans bloquer l'interface, avec un indicateur visuel de chargement et un bouton de rafraîchissement manuel pour garantir que les informations sont toujours à jour.
+
+C'est un outil stratégique qui transforme vos données brutes en informations exploitables pour le suivi de l'activité de votre fédération.
 
 ## Diagramme de classe 
 ![Diagramme UML](Assets/class_diagram.png)
@@ -47,7 +56,41 @@ appelle le EloService pour calculer les nouveaux ELO selon la formule FIDE , met
 Cette séquence met en évidence la séparation des responsabilités et l'utilisation de services spécialisés pour chaque type d'opération.
 
 ## Diagramme d'activité 
-/// A compléter
+![Diagramme UML](Assets/Activity_diagram.png)
+### Description du diagrame d'activité
+Ce diagramme d'activité détaille le processus complet d'enregistrement d'un match au sein de l'application Projet-Chess_DB, de la sélection initiale de la compétition jusqu'à la mise à jour automatique du classement ELO.
+
+Voici une description structurée des étapes clés du flux de travail :
+1. Initialisation et Chargement des Données
+
+Le processus débute lorsque l'Utilisateur sélectionne une compétition dans l'interface. Le ViewModel notifie alors le système de ce changement, déclenchant l'appel aux services ObtenirCompetitionParIdAsync() et ObtenirTousLesJoueursAsync(). Ces services extraient les données brutes des fichiers JSON (competitions.json et joueurs.json).
+2. Sélection des Participants et Saisie
+
+Le ViewModel filtre ensuite la liste globale pour ne proposer que les joueurs inscrits à la compétition sélectionnée.
+
+    Contrôle de flux : Si aucun joueur n'est disponible, un message d'erreur est affiché et le processus s'arrête.
+
+    Saisie utilisateur : L'utilisateur choisit les joueurs blanc et noir, saisit les coups de la partie, sélectionne le résultat (ex: "Blanc gagne", "Nul") et clique sur "Enregistrer".
+
+3. Validation et Persistance du Match
+
+Avant toute sauvegarde, le ViewModel effectue une validation des données saisies (champs obligatoires, joueurs différents). Si les données sont valides :
+
+    Le système calcule les scores numériques (1, 0.5 ou 0) selon le résultat choisi.
+
+    Le MatchService enregistre le match dans matchs.json via la méthode AjouterMatchAsync().
+
+4. Calcul et Mise à Jour du Niveau ELO
+
+Si le match est marqué comme terminé, le système déclenche automatiquement la logique de mise à jour du classement :
+
+    L'EloService calcule la probabilité de victoire et détermine le facteur K (importance du match) pour les deux joueurs.
+
+    Les nouveaux scores ELO sont calculés et appliqués aux profils des joueurs en mémoire.
+
+5. Finalisation
+
+Enfin, le JoueurService écrit les modifications de classement dans joueurs.json. L'application affiche un message de confirmation à l'utilisateur et le redirige vers la liste des compétitions.
 
 ## Justification des Qualités d'Adaptabilité à une Autre Fédération
 
