@@ -20,6 +20,10 @@ Les fonctionnalités de base couvrent :
 
 Les données sont stockées de manière persistante dans des fichiers JSON gérés par une couche de services asynchrone.
 
+## Démo
+
+[Demo](https://youtu.be/c3wZA5aClQg)
+
 ## Fonctionnalité Supplémentaire Choisie
 
 Le Tableau de Bord est conçu comme le centre de pilotage de la fédération. Au lieu de naviguer entre les différentes listes, il offre une vue d'ensemble immédiate et analytique de votre base de données :
