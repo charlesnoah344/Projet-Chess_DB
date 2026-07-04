@@ -22,6 +22,8 @@ Les données sont stockées de manière persistante dans des fichiers JSON gér�
 
 ## Démo
 
+[![Demo](demo.gif)](https://youtu.be/c3wZA5aClQg)
+
 [Demo](https://youtu.be/c3wZA5aClQg)
 
 ## Fonctionnalité Supplémentaire Choisie
