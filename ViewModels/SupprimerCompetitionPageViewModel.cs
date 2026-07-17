@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -29,21 +30,17 @@ public partial class SupprimerCompetitionPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    // Message de statut ou d'erreur
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     // Indique si la confirmation de suppression est visible
     [ObservableProperty]
     private bool _confirmationVisible = false;
-    
+
     public bool CompetitionEstSelectionne => _competitionSelectionne != null;
 
     public SupprimerCompetitionPageViewModel(MainViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
         _competitionService = new CompetitionService();
-        
+
         // Charger les competitions dès la création
         _ = ChargerCompetitionsAsync();
     }
@@ -55,30 +52,34 @@ public partial class SupprimerCompetitionPageViewModel : ViewModelBase
     private async Task ChargerCompetitionsAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement des competitions...";
-        
+        Message = "Chargement des competitions...";
+        MessageIcon = MaterialIconKind.Refresh;
+
         try
         {
             var listeCompetitions = await _competitionService.ObtenirToutesLesCompetitionsAsync();
-            
+
             Competitions.Clear();
             foreach (var competition in listeCompetitions)
             {
                 Competitions.Add(competition);
             }
-            
+
             if (Competitions.Count == 0)
             {
-                Message = "ℹ️ Aucune competition trouvée.";
+                Message = "Aucune competition trouvée.";
+                MessageIcon = MaterialIconKind.Information;
             }
             else
             {
-                Message = $"✅ {Competitions.Count} competition(s) chargé(s)";
+                Message = $"{Competitions.Count} competition(s) chargé(s)";
+                MessageIcon = MaterialIconKind.Check;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -94,38 +95,44 @@ public partial class SupprimerCompetitionPageViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(IdRecherche))
         {
-            Message = "❌ Veuillez entrer un ID !";
+            Message = "Veuillez entrer un ID !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         // Vérifier si l'ID est valide
         if (!Guid.TryParse(IdRecherche.Trim(), out Guid id))
         {
-            Message = "❌ Format d'ID invalide !";
+            Message = "Format d'ID invalide !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         EstEnChargement = true;
-        Message = "🔍 Recherche en cours...";
+        Message = "Recherche en cours...";
+        MessageIcon = MaterialIconKind.Magnify;
 
         try
         {
             var competition = await _competitionService.ObtenirCompetitionParIdAsync(id);
-            
+
             if (competition != null)
             {
                 CompetitionSelectionne = competition;
-                Message = $"✅ Competition trouvé : {competition.Ville} {competition.Tournoi}";
+                Message = $"Competition trouvé : {competition.Ville} {competition.Tournoi}";
+                MessageIcon = MaterialIconKind.Check;
             }
             else
             {
                 CompetitionSelectionne = null;
-                Message = "❌ Aucune competition trouvée avec cet ID.";
+                Message = "Aucune competition trouvée avec cet ID.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -141,12 +148,14 @@ public partial class SupprimerCompetitionPageViewModel : ViewModelBase
     {
         if (CompetitionSelectionne == null)
         {
-            Message = "❌ Veuillez sélectionner une competition !";
+            Message = "Veuillez sélectionner une competition !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         ConfirmationVisible = true;
-        Message = $"⚠️ Êtes-vous sûr de vouloir supprimer {CompetitionSelectionne.Ville} {CompetitionSelectionne.Tournoi} ?";
+        Message = $"Êtes-vous sûr de vouloir supprimer {CompetitionSelectionne.Ville} {CompetitionSelectionne.Tournoi} ?";
+        MessageIcon = MaterialIconKind.Alert;
     }
 
     /// <summary>
@@ -156,7 +165,8 @@ public partial class SupprimerCompetitionPageViewModel : ViewModelBase
     private void AnnulerSuppression()
     {
         ConfirmationVisible = false;
-        Message = "ℹ️ Suppression annulée.";
+        Message = "Suppression annulée.";
+        MessageIcon = MaterialIconKind.Information;
     }
 
     /// <summary>
@@ -167,13 +177,15 @@ public partial class SupprimerCompetitionPageViewModel : ViewModelBase
     {
         if (CompetitionSelectionne == null)
         {
-            Message = "❌ Aucun tournoi sélectionné !";
+            Message = "Aucun tournoi sélectionné !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         EstEnChargement = true;
         ConfirmationVisible = false;
-        Message = "🗑️ Suppression en cours...";
+        Message = "Suppression en cours...";
+        MessageIcon = MaterialIconKind.TrashCan;
 
         try
         {
@@ -181,28 +193,31 @@ public partial class SupprimerCompetitionPageViewModel : ViewModelBase
 
             if (succes)
             {
-                Message = $"✅ {CompetitionSelectionne.Ville} {CompetitionSelectionne.Tournoi} a été supprimé !";
-                
+                Message = $"{CompetitionSelectionne.Ville} {CompetitionSelectionne.Tournoi} a été supprimé !";
+                MessageIcon = MaterialIconKind.Check;
+
                 // Retirer le tournoi de la liste affichée
                 Competitions.Remove(CompetitionSelectionne);
-                
+
                 // Réinitialiser la sélection
                 CompetitionSelectionne = null;
                 IdRecherche = string.Empty;
-                
+
                 // Attendre un peu pour que l'utilisateur voie le message
                 await Task.Delay(1500);
-                
-                Message = $"✅ {Competitions.Count} competition(s) restante(s)";
+
+                Message = $"{Competitions.Count} competition(s) restante(s)";
             }
             else
             {
-                Message = "❌ Erreur lors de la suppression.";
+                Message = "Erreur lors de la suppression.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -218,7 +233,7 @@ public partial class SupprimerCompetitionPageViewModel : ViewModelBase
     {
         _mainViewModel.GoToCompetition();
     }
-    
+
 
     partial void OnCompetitionSelectionneChanged(Competition? value)
     {

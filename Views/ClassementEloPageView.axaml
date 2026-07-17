@@ -6,18 +6,22 @@
              Foreground="{DynamicResource PrimaryForeground}"
              Background="{DynamicResource PrimaryBackground}"
              xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             xmlns:mi="using:Material.Icons.Avalonia"
              x:DataType="vm:ClassementEloPageViewModel"
              x:Class="Chess_D_B.Views.ClassementEloPageView">
-    
+
     <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
-        
+
         <!-- Header -->
         <Border Grid.Row="0" Background="#2C3E50" Padding="20">
-            <TextBlock Text="🏆 Classement ELO des Joueurs" 
-                       FontSize="28" 
-                       FontWeight="Bold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                <mi:MaterialIcon Kind="Trophy" Width="28" Height="28" Foreground="White"/>
+                <TextBlock Text="Classement ELO des Joueurs"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
         </Border>
         
         <!-- Statistiques globales -->
@@ -25,13 +29,15 @@
             <Grid ColumnDefinitions="*, *, *, *">
                 
                 <!-- Nombre de joueurs -->
-                <StackPanel Grid.Column="0" 
+                <StackPanel Grid.Column="0"
                             HorizontalAlignment="Center"
                             Spacing="5">
-                    <TextBlock Text="👥 Joueurs" 
-                               FontSize="12" 
-                               Foreground="White"
-                               HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center">
+                        <mi:MaterialIcon Kind="AccountGroup" Width="12" Height="12" Foreground="White"/>
+                        <TextBlock Text="Joueurs"
+                                   FontSize="12"
+                                   Foreground="White"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding NombreJoueurs}" 
                                FontSize="24" 
                                FontWeight="Bold"
@@ -40,13 +46,15 @@
                 </StackPanel>
                 
                 <!-- ELO Moyen -->
-                <StackPanel Grid.Column="1" 
+                <StackPanel Grid.Column="1"
                             HorizontalAlignment="Center"
                             Spacing="5">
-                    <TextBlock Text="📊 Moyenne" 
-                               FontSize="12" 
-                               Foreground="White"
-                               HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center">
+                        <mi:MaterialIcon Kind="ChartBar" Width="12" Height="12" Foreground="White"/>
+                        <TextBlock Text="Moyenne"
+                                   FontSize="12"
+                                   Foreground="White"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding EloMoyen}" 
                                FontSize="24" 
                                FontWeight="Bold"
@@ -55,13 +63,15 @@
                 </StackPanel>
                 
                 <!-- ELO Max -->
-                <StackPanel Grid.Column="2" 
+                <StackPanel Grid.Column="2"
                             HorizontalAlignment="Center"
                             Spacing="5">
-                    <TextBlock Text="⬆️ Maximum" 
-                               FontSize="12" 
-                               Foreground="White"
-                               HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center">
+                        <mi:MaterialIcon Kind="ArrowUp" Width="12" Height="12" Foreground="White"/>
+                        <TextBlock Text="Maximum"
+                                   FontSize="12"
+                                   Foreground="White"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding EloMax}" 
                                FontSize="24" 
                                FontWeight="Bold"
@@ -70,13 +80,15 @@
                 </StackPanel>
                 
                 <!-- ELO Min -->
-                <StackPanel Grid.Column="3" 
+                <StackPanel Grid.Column="3"
                             HorizontalAlignment="Center"
                             Spacing="5">
-                    <TextBlock Text="⬇️ Minimum" 
-                               FontSize="12" 
-                               Foreground="White"
-                               HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center">
+                        <mi:MaterialIcon Kind="ArrowDown" Width="12" Height="12" Foreground="White"/>
+                        <TextBlock Text="Minimum"
+                                   FontSize="12"
+                                   Foreground="White"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding EloMin}" 
                                FontSize="24" 
                                FontWeight="Bold"
@@ -92,36 +104,38 @@
             <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                 
                 <!-- Message de statut -->
-                <TextBlock Grid.Column="0"
-                           Text="{Binding Message}" 
-                           FontSize="14"
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           Margin="0,0,20,0"/>
-                
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Margin="0,0,20,0">
+                    <mi:MaterialIcon Kind="{Binding MessageIcon}" Width="18" Height="18" Foreground="White"/>
+                    <TextBlock Text="{Binding Message}"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               Foreground="White"/>
+                </StackPanel>
+
                 <!-- Bouton Inverser tri -->
                 <Button Grid.Column="2"
-                        Content="{Binding TriDecroissant, Converter={x:Static StringConverters.IsNullOrEmpty}}"
                         Command="{Binding InverserTriCommand}"
                         Height="35"
                         MinWidth="120"
                         Margin="0,0,10,0"
                         Background="#2980b9">
-                    <Button.Content>
-                        <TextBlock>
-                            <Run Text="{Binding TriDecroissant, Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
-                            <Run Text="🔽 Meilleurs d'abord" />
-                        </TextBlock>
-                    </Button.Content>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <mi:MaterialIcon Kind="SortDescending" Width="16" Height="16"/>
+                        <TextBlock Text="Meilleurs d'abord" />
+                    </StackPanel>
                 </Button>
-                
+
                 <!-- Bouton Rafraîchir -->
                 <Button Grid.Column="3"
-                        Content="🔄 Rafraîchir"
                         Command="{Binding ChargerClassementCommand}"
                         Height="35"
                         MinWidth="120"
-                        IsEnabled="{Binding !EstEnChargement}"/>
+                        IsEnabled="{Binding !EstEnChargement}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <mi:MaterialIcon Kind="Refresh" Width="16" Height="16"/>
+                        <TextBlock Text="Rafraîchir"/>
+                    </StackPanel>
+                </Button>
                 
             </Grid>
         </Border>
@@ -192,14 +206,20 @@
                                 <Grid ColumnDefinitions="Auto,2*,2*,1.5*,1*,1.5*">
                                     
                                     <!-- Rang avec médaille -->
-                                    <TextBlock Grid.Column="0" 
-                                               Text="{Binding Medaille}" 
-                                               VerticalAlignment="Center"
-                                               FontSize="20"
-                                               FontWeight="Bold"
-                                               Foreground="{Binding CouleurRang}"
-                                               Width="70"
-                                               TextAlignment="Center"/>
+                                    <Panel Grid.Column="0" Width="70">
+                                        <mi:MaterialIcon Kind="{Binding MedailleIcon}"
+                                                          IsVisible="{Binding EstSurPodium}"
+                                                          Width="26" Height="26"
+                                                          Foreground="{Binding CouleurRang}"
+                                                          HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding RangText}"
+                                                   IsVisible="{Binding !EstSurPodium}"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="20"
+                                                   FontWeight="Bold"
+                                                   Foreground="{Binding CouleurRang}"
+                                                   TextAlignment="Center"/>
+                                    </Panel>
                                     
                                     <!-- Prénom -->
                                     <TextBlock Grid.Column="1" 
@@ -268,11 +288,15 @@
                          Height="4"/>
             
             <!-- Bouton Retour -->
-            <Button Content="← Retour au menu" 
-                    Command="{Binding RetourCommand}"
+            <Button Command="{Binding RetourCommand}"
                     HorizontalAlignment="Left"
                     Width="200"
-                    Height="40"/>
+                    Height="40">
+                <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                    <mi:MaterialIcon Kind="ArrowLeft" Width="16" Height="16"/>
+                    <TextBlock Text="Retour au menu"/>
+                </StackPanel>
+            </Button>
             
         </StackPanel>
         

@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -32,6 +33,10 @@ public partial class AjouterJoueurPageViewModel : ViewModelBase
     [ObservableProperty]
     private string _messageRetour = string.Empty;
 
+    // Icône associée au message de retour
+    [ObservableProperty]
+    private MaterialIconKind _messageRetourIcon = MaterialIconKind.Information;
+
     // Propriété pour indiquer si une sauvegarde est en cours
     [ObservableProperty]
     private bool _estEnCoursEnregistrement = false;
@@ -51,25 +56,29 @@ public partial class AjouterJoueurPageViewModel : ViewModelBase
         // Valider les données avant de sauvegarder
         if (string.IsNullOrWhiteSpace(Nom))
         {
-            MessageRetour = "❌ Le nom est obligatoire !";
+            MessageRetour = "Le nom est obligatoire !";
+            MessageRetourIcon = MaterialIconKind.Close;
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Prenom))
         {
-            MessageRetour = "❌ Le prénom est obligatoire !";
+            MessageRetour = "Le prénom est obligatoire !";
+            MessageRetourIcon = MaterialIconKind.Close;
             return;
         }
 
         if (Elo < 0 || Elo > 3000)
         {
-            MessageRetour = "❌ L'ELO doit être entre 0 et 3000 !";
+            MessageRetour = "L'ELO doit être entre 0 et 3000 !";
+            MessageRetourIcon = MaterialIconKind.Close;
             return;
         }
 
         // Indiquer que l'enregistrement est en cours
         EstEnCoursEnregistrement = true;
-        MessageRetour = "💾 Enregistrement en cours...";
+        MessageRetour = "Enregistrement en cours...";
+        MessageRetourIcon = MaterialIconKind.ContentSave;
 
         try
         {
@@ -87,22 +96,25 @@ public partial class AjouterJoueurPageViewModel : ViewModelBase
 
             if (succes)
             {
-                MessageRetour = "✅ Joueur enregistré avec succès !";
-                
+                MessageRetour = "Joueur enregistré avec succès !";
+                MessageRetourIcon = MaterialIconKind.Check;
+
                 // Attendre 1.5 secondes pour que l'utilisateur voie le message
                 await Task.Delay(1500);
-                
+
                 // Retourner à la page des joueurs
                 _mainViewModel.GoToJoueurs();
             }
             else
             {
-                MessageRetour = "❌ Erreur lors de l'enregistrement.";
+                MessageRetour = "Erreur lors de l'enregistrement.";
+                MessageRetourIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            MessageRetour = $"❌ Erreur : {ex.Message}";
+            MessageRetour = $"Erreur : {ex.Message}";
+            MessageRetourIcon = MaterialIconKind.Close;
         }
         finally
         {

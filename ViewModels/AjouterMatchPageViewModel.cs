@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -61,16 +62,13 @@ public partial class AjouterMatchPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     public AjouterMatchPageViewModel(MainViewModel mainViewModel , Guid? competitionId = null)
     {
         _mainViewModel = mainViewModel;
         _matchService = new MatchService();
         _competitionService = new CompetitionService();
         _joueurService = new JoueurService();
-        
+
         _ = ChargerCompetitionsAsync(competitionId);
     }
 
@@ -82,30 +80,33 @@ public partial class AjouterMatchPageViewModel : ViewModelBase
         try
         {
             var competitions = await _competitionService.ObtenirToutesLesCompetitionsAsync();
-            
+
             Competitions.Clear();
             foreach (var comp in competitions.OrderByDescending(c => c.DateDebut))
             {
                 Competitions.Add(comp);
             }
-            
-            // ✅ PRÉ-SÉLECTIONNER LA COMPÉTITION SI UN ID EST FOURNI
+
+            // PRÉ-SÉLECTIONNER LA COMPÉTITION SI UN ID EST FOURNI
             if (competitionIdPreselection.HasValue)
             {
                 CompetitionSelectionnee = Competitions.FirstOrDefault(c => c.Id == competitionIdPreselection.Value);
                 if (CompetitionSelectionnee != null)
                 {
-                    Message = $"✅ Compétition '{CompetitionSelectionnee.Tournoi}' sélectionnée";
+                    Message = $"Compétition '{CompetitionSelectionnee.Tournoi}' sélectionnée";
+                    MessageIcon = MaterialIconKind.Check;
                 }
             }
             else
             {
-                Message = $"✅ {competitions.Count} compétition(s) disponible(s)";
+                Message = $"{competitions.Count} compétition(s) disponible(s)";
+                MessageIcon = MaterialIconKind.Check;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
     }
 
@@ -132,9 +133,9 @@ public partial class AjouterMatchPageViewModel : ViewModelBase
         try
         {
             var tousLesJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
-            
+
             JoueursParticipants.Clear();
-            
+
             foreach (var joueurId in competition.JoueursIds)
             {
                 var joueur = tousLesJoueurs.Find(j => j.Id == joueurId);
@@ -143,12 +144,14 @@ public partial class AjouterMatchPageViewModel : ViewModelBase
                     JoueursParticipants.Add(joueur);
                 }
             }
-            
-            Message = $"✅ {JoueursParticipants.Count} joueur(s) participant(s) dans {competition.Tournoi}";
+
+            Message = $"{JoueursParticipants.Count} joueur(s) participant(s) dans {competition.Tournoi}";
+            MessageIcon = MaterialIconKind.Check;
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
     }
 
@@ -169,7 +172,8 @@ private async Task EnregistrerAsync()
     // ... (votre validation existante)
 
     EstEnChargement = true;
-    Message = "💾 Enregistrement en cours...";
+    Message = "Enregistrement en cours...";
+    MessageIcon = MaterialIconKind.ContentSave;
 
     try
     {
@@ -216,24 +220,27 @@ private async Task EnregistrerAsync()
 
         if (succesMatch)
         {
-            // ✅ METTRE À JOUR LES ELO SI LE MATCH EST TERMINÉ
+            // METTRE À JOUR LES ELO SI LE MATCH EST TERMINÉ
             if (ResultatSelectionne != "En cours")
             {
                 await MettreAJoursAsync();
             }
 
-            Message = $"✅ Match enregistré : {JoueurBlancSelectionne.Nom} vs {JoueurNoirSelectionne.Nom} !";
+            Message = $"Match enregistré : {JoueurBlancSelectionne.Nom} vs {JoueurNoirSelectionne.Nom} !";
+            MessageIcon = MaterialIconKind.Check;
             await Task.Delay(1500);
             _mainViewModel.GoToCompetition();
         }
         else
         {
-            Message = "❌ Erreur lors de l'enregistrement.";
+            Message = "Erreur lors de l'enregistrement.";
+            MessageIcon = MaterialIconKind.Close;
         }
     }
     catch (Exception ex)
     {
-        Message = $"❌ Erreur : {ex.Message}";
+        Message = $"Erreur : {ex.Message}";
+        MessageIcon = MaterialIconKind.Close;
     }
     finally
     {
@@ -248,10 +255,10 @@ private async Task MettreAJoursAsync()
 {
     try
     {
-        Console.WriteLine("🔄 Mise à jour des ELO...");
-        
+        Console.WriteLine("Mise à jour des ELO...");
+
         var eloService = new EloService();
-        
+
         // Récupérer les ELO actuels
         int eloBlancActuel = JoueurBlancSelectionne.Elo;
         int eloNoirActuel = JoueurNoirSelectionne.Elo;
@@ -272,13 +279,13 @@ private async Task MettreAJoursAsync()
         await joueurService.ModifierJoueurAsync(JoueurBlancSelectionne);
         await joueurService.ModifierJoueurAsync(JoueurNoirSelectionne);
 
-        Console.WriteLine($"✅ ELO mis à jour avec succès");
-        Console.WriteLine($"   {JoueurBlancSelectionne.Nom}: {eloBlancActuel} → {nouveauEloBlanc}");
-        Console.WriteLine($"   {JoueurNoirSelectionne.Nom}: {eloNoirActuel} → {nouveauEloNoir}");
+        Console.WriteLine($"ELO mis à jour avec succès");
+        Console.WriteLine($"   {JoueurBlancSelectionne.Nom}: {eloBlancActuel} -> {nouveauEloBlanc}");
+        Console.WriteLine($"   {JoueurNoirSelectionne.Nom}: {eloNoirActuel} -> {nouveauEloNoir}");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"❌ Erreur lors de la mise à jour des ELO : {ex.Message}");
+        Console.WriteLine($"Erreur lors de la mise à jour des ELO : {ex.Message}");
         // On ne bloque pas l'enregistrement du match si la mise à jour ELO échoue
     }
 }

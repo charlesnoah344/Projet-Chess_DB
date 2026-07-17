@@ -6,101 +6,115 @@
              Foreground="{DynamicResource PrimaryForeground}"
              Background="{DynamicResource PrimaryBackground}"
              xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             xmlns:mi="using:Material.Icons.Avalonia"
              x:DataType="vm:AjouterJoueurPageViewModel"
              x:Class="Chess_D_B.Views.AjouterJoueurPageView">
-    
+
     <Grid RowDefinitions="Auto, *">
         <!-- Header -->
         <Border Grid.Row="0" Background="#2C3E50" Padding="20">
-            <TextBlock Text="🎯 Ajouter un Nouveau Joueur" 
-                       FontSize="28" 
-                       FontWeight="Bold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                <mi:MaterialIcon Kind="AccountPlus" Width="28" Height="28" Foreground="White"/>
+                <TextBlock Text="Ajouter un Nouveau Joueur"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
         </Border>
-        
+
         <!-- Contenu -->
         <ScrollViewer Grid.Row="1">
             <StackPanel Margin="40" Spacing="20" MaxWidth="600">
-                
+
                 <!-- Message de retour (succès ou erreur) -->
-                <TextBlock Text="{Binding MessageRetour}" 
-                           FontSize="16"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           IsVisible="{Binding MessageRetour, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-                
+                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center"
+                            IsVisible="{Binding MessageRetour, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <mi:MaterialIcon Kind="{Binding MessageRetourIcon}" Width="18" Height="18"/>
+                    <TextBlock Text="{Binding MessageRetour}"
+                               FontSize="16"
+                               FontWeight="Bold"/>
+                </StackPanel>
+
                 <!-- Nom -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Nom du joueur *" FontWeight="Bold" FontSize="14"/>
                     <!-- Binding en mode TwoWay : les changements dans le TextBox modifient la propriété Nom du ViewModel -->
-                    <TextBox Text="{Binding Nom}" 
-                             Watermark="Entrez le nom..." 
-                             Background="#34495E" 
+                    <TextBox Text="{Binding Nom}"
+                             Watermark="Entrez le nom..."
+                             Background="#34495E"
                              Height="40"
                              IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
-                
+
                 <!-- Prénom -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Prénom du joueur *" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Text="{Binding Prenom}" 
-                             Watermark="Entrez le prénom..." 
-                             Background="#34495E" 
+                    <TextBox Text="{Binding Prenom}"
+                             Watermark="Entrez le prénom..."
+                             Background="#34495E"
                              Height="40"
                              IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
-                
+
                 <!-- Date de naissance -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Date de naissance *" FontWeight="Bold" FontSize="14"/>
                     <!-- Le DatePicker se lie à la propriété DateNaissance -->
-                    <DatePicker SelectedDate="{Binding DateNaissance}" 
-                                Height="40" 
+                    <DatePicker SelectedDate="{Binding DateNaissance}"
+                                Height="40"
                                 Background="#34495E"
                                 IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
-                
+
                 <!-- ELO Initial -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="ELO Initial *" FontWeight="Bold" FontSize="14"/>
                     <!-- NumericUpDown permet de saisir un nombre avec des boutons +/- -->
-                    <NumericUpDown Value="{Binding Elo}" 
-                                   Minimum="0" 
-                                   Maximum="3000" 
-                                   Background="#34495E" 
+                    <NumericUpDown Value="{Binding Elo}"
+                                   Minimum="0"
+                                   Maximum="3000"
+                                   Background="#34495E"
                                    Height="40"
                                    IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
                 </StackPanel>
-                
+
                 <!-- Boutons -->
                 <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
                     <!-- Bouton Retour : appelle la commande RetourCommand -->
-                    <Button Grid.Column="0" 
-                            Content="← Retour" 
+                    <Button Grid.Column="0"
                             Command="{Binding RetourCommand}"
                             Height="45"
                             Margin="0,0,10,0"
                             HorizontalAlignment="Stretch"
-                            IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
-                    
+                            IsEnabled="{Binding !EstEnCoursEnregistrement}">
+                        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                            <mi:MaterialIcon Kind="ArrowLeft" Width="16" Height="16"/>
+                            <TextBlock Text="Retour"/>
+                        </StackPanel>
+                    </Button>
+
                     <!-- Bouton Enregistrer : appelle la commande EnregistrerCommand (async) -->
-                    <Button Grid.Column="1" 
-                            Content="✓ Enregistrer" 
+                    <Button Grid.Column="1"
                             Command="{Binding EnregistrerCommand}"
                             Height="45"
                             Margin="10,0,0,0"
                             Classes="menu"
                             HorizontalAlignment="Stretch"
-                            IsEnabled="{Binding !EstEnCoursEnregistrement}"/>
+                            IsEnabled="{Binding !EstEnCoursEnregistrement}">
+                        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                            <mi:MaterialIcon Kind="Check" Width="16" Height="16"/>
+                            <TextBlock Text="Enregistrer"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
-                
+
                 <!-- Indicateur de chargement -->
-                <ProgressBar IsIndeterminate="True" 
+                <ProgressBar IsIndeterminate="True"
                              IsVisible="{Binding EstEnCoursEnregistrement}"
                              Height="4"
                              Margin="0,10,0,0"/>
-                
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

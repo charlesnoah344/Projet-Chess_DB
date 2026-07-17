@@ -6,44 +6,58 @@
              Foreground="{DynamicResource PrimaryForeground}"
              Background="{DynamicResource PrimaryBackground}"
              xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             xmlns:mi="using:Material.Icons.Avalonia"
              x:DataType="vm:ChargerCompetitionPageViewModel"
              x:Class="Chess_D_B.Views.ChargerCompetitionPageView">
-    
+
     <Grid RowDefinitions="Auto, Auto, *, Auto">
-        
+
         <!-- Header -->
         <Border Grid.Row="0" Background="#2C3E50" Padding="20">
-            <TextBlock Text="👥 Liste des Competitions" 
-                       FontSize="28" 
-                       FontWeight="Bold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                <mi:MaterialIcon Kind="AccountGroup" Width="28" Height="28" Foreground="White"/>
+                <TextBlock Text="Liste des Competitions"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
         </Border>
-        
+
         <!-- Barre d'outils -->
         <Border Grid.Row="1" Padding="20" Background="#34495E">
             <Grid ColumnDefinitions="*, Auto, Auto">
                 <!-- Message de statut -->
-                <TextBlock Grid.Column="0" 
-                           Text="{Binding Message}" 
-                           FontSize="14"
-                           VerticalAlignment="Center"
-                           Foreground="White"/>
-                
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <mi:MaterialIcon Kind="{Binding MessageIcon}" Width="18" Height="18" Foreground="White"/>
+                    <TextBlock Text="{Binding Message}"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               Foreground="White"/>
+                </StackPanel>
+
                 <!-- Bouton Rafraîchir -->
-                <Button Grid.Column="1" 
-                        Content="🔄 Rafraîchir" 
+                <Button Grid.Column="1"
                         Command="{Binding ChargerCompetitionsCommand}"
                         Margin="0,0,10,0"
                         Height="35"
-                        IsEnabled="{Binding !EstEnChargement}"/>
-                
+                        IsEnabled="{Binding !EstEnChargement}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <mi:MaterialIcon Kind="Refresh" Width="16" Height="16"/>
+                        <TextBlock Text="Rafraîchir"/>
+                    </StackPanel>
+                </Button>
+
                 <!-- Bouton Ajouter -->
-                <Button Grid.Column="2" 
-                        Content="➕ Ajouter une competition" 
+                <Button Grid.Column="2"
                         Command="{Binding CreateCompetitionCommand}"
                         Classes="menu"
-                        Height="35"/>
+                        Height="35">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <mi:MaterialIcon Kind="Plus" Width="16" Height="16"/>
+                        <TextBlock Text="Ajouter une competition"/>
+                    </StackPanel>
+                </Button>
             </Grid>
         </Border>
         
@@ -154,11 +168,15 @@
                          Height="4"/>
             
             <!-- Bouton Retour -->
-            <Button Content="← Retour au menu" 
-                    Command="{Binding RetourCommand}"
+            <Button Command="{Binding RetourCommand}"
                     HorizontalAlignment="Left"
                     Width="200"
-                    Height="40"/>
+                    Height="40">
+                <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                    <mi:MaterialIcon Kind="ArrowLeft" Width="16" Height="16"/>
+                    <TextBlock Text="Retour au menu"/>
+                </StackPanel>
+            </Button>
             
         </StackPanel>
         

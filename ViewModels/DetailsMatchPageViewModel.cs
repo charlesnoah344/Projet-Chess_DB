@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -37,9 +38,6 @@ public partial class DetailsMatchPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     // ID du match à charger
     private Guid _matchId;
 
@@ -50,7 +48,7 @@ public partial class DetailsMatchPageViewModel : ViewModelBase
         _joueurService = new JoueurService();
         _competitionService = new CompetitionService();
         _matchId = matchId;
-        
+
         _ = ChargerDetailsAsync();
     }
 
@@ -61,7 +59,8 @@ public partial class DetailsMatchPageViewModel : ViewModelBase
     private async Task ChargerDetailsAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement...";
+        Message = "Chargement...";
+        MessageIcon = MaterialIconKind.Refresh;
 
         try
         {
@@ -70,13 +69,14 @@ public partial class DetailsMatchPageViewModel : ViewModelBase
 
             if (Match == null)
             {
-                Message = "❌ Match introuvable !";
+                Message = "Match introuvable !";
+                MessageIcon = MaterialIconKind.Close;
                 return;
             }
 
             // Charger les informations des joueurs
             var tousLesJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
-            
+
             var joueurBlanc = tousLesJoueurs.Find(j => j.Id == Match.JoueurBlancId);
             var joueurNoir = tousLesJoueurs.Find(j => j.Id == Match.JoueurNoirId);
 
@@ -104,11 +104,13 @@ public partial class DetailsMatchPageViewModel : ViewModelBase
             var competition = await _competitionService.ObtenirCompetitionParIdAsync(Match.CompetitionId);
             NomCompetition = competition?.Tournoi ?? "Compétition inconnue";
 
-            Message = $"✅ Match chargé : {NomJoueurBlanc} vs {NomJoueurNoir}";
+            Message = $"Match chargé : {NomJoueurBlanc} vs {NomJoueurNoir}";
+            MessageIcon = MaterialIconKind.Check;
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -117,13 +119,22 @@ public partial class DetailsMatchPageViewModel : ViewModelBase
     }
 
     // Propriétés calculées pour l'affichage
-    public string ResultatAvecIcone => Match?.Resultat switch
+    public string ResultatTexte => Match?.Resultat switch
     {
-        "Blanc gagne" => "⚪ Blanc gagne (1-0)",
-        "Noir gagne" => "⚫ Noir gagne (0-1)",
-        "Nul" => "🤝 Match nul (½-½)",
-        "En cours" => "⏳ En cours",
+        "Blanc gagne" => "Blanc gagne (1-0)",
+        "Noir gagne" => "Noir gagne (0-1)",
+        "Nul" => "Match nul (½-½)",
+        "En cours" => "En cours",
         _ => Match?.Resultat ?? ""
+    };
+
+    public MaterialIconKind ResultatIcone => Match?.Resultat switch
+    {
+        "Blanc gagne" => MaterialIconKind.CircleOutline,
+        "Noir gagne" => MaterialIconKind.Circle,
+        "Nul" => MaterialIconKind.Handshake,
+        "En cours" => MaterialIconKind.TimerOutline,
+        _ => MaterialIconKind.Information
     };
 
     public string CouleurResultat => Match?.Resultat switch

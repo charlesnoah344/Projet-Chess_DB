@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -26,13 +27,19 @@ public partial class JoueurClassement : ObservableObject
         _joueur = joueur;
     }
 
-    // Propriété calculée pour afficher la médaille
-    public string Medaille => Rang switch
+    // Propriété calculée pour afficher le texte de rang (utilisée quand il n'y a pas de médaille)
+    public string RangText => $"#{Rang}";
+
+    // Indique si ce rang fait partie du podium (top 3)
+    public bool EstSurPodium => Rang is 1 or 2 or 3;
+
+    // Icône de médaille pour le podium (numéro cerclé, coloré via CouleurRang)
+    public MaterialIconKind MedailleIcon => Rang switch
     {
-        1 => "🥇",
-        2 => "🥈",
-        3 => "🥉",
-        _ => $"#{Rang}"
+        1 => MaterialIconKind.Numeric1Circle,
+        2 => MaterialIconKind.Numeric2Circle,
+        3 => MaterialIconKind.Numeric3Circle,
+        _ => MaterialIconKind.Numeric1Circle
     };
 
     // Propriété pour la couleur en fonction du rang
@@ -58,10 +65,6 @@ public partial class ClassementEloPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    // Message de statut
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     // Ordre de tri (true = décroissant, false = croissant)
     [ObservableProperty]
     private bool _triDecroissant = true;
@@ -83,7 +86,7 @@ public partial class ClassementEloPageViewModel : ViewModelBase
     {
         _mainViewModel = mainViewModel;
         _joueurService = new JoueurService();
-        
+
         // Charger le classement au démarrage
         _ = ChargerClassementAsync();
     }
@@ -95,22 +98,24 @@ public partial class ClassementEloPageViewModel : ViewModelBase
     private async Task ChargerClassementAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement du classement...";
-        
+        Message = "Chargement du classement...";
+        MessageIcon = MaterialIconKind.Refresh;
+
         try
         {
             // Récupérer tous les joueurs
             var listeJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
-            
+
             if (listeJoueurs.Count == 0)
             {
-                Message = "ℹ️ Aucun joueur trouvé.";
+                Message = "Aucun joueur trouvé.";
+                MessageIcon = MaterialIconKind.Information;
                 Classement.Clear();
                 return;
             }
 
             // Trier les joueurs par ELO (décroissant par défaut)
-            var joueursTriés = TriDecroissant 
+            var joueursTriés = TriDecroissant
                 ? listeJoueurs.OrderByDescending(j => j.Elo).ToList()
                 : listeJoueurs.OrderBy(j => j.Elo).ToList();
 
@@ -127,11 +132,13 @@ public partial class ClassementEloPageViewModel : ViewModelBase
             EloMax = listeJoueurs.Max(j => j.Elo);
             EloMin = listeJoueurs.Min(j => j.Elo);
 
-            Message = $"✅ Classement de {NombreJoueurs} joueur(s) chargé";
+            Message = $"Classement de {NombreJoueurs} joueur(s) chargé";
+            MessageIcon = MaterialIconKind.Check;
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -156,11 +163,11 @@ public partial class ClassementEloPageViewModel : ViewModelBase
     private async Task FiltrerParCategorieAsync(string categorie)
     {
         EstEnChargement = true;
-        
+
         try
         {
             var listeJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
-            
+
             // Filtrer selon la catégorie
             var joueursFiltres = categorie switch
             {
@@ -172,7 +179,7 @@ public partial class ClassementEloPageViewModel : ViewModelBase
             };
 
             // Trier
-            var joueursTriés = TriDecroissant 
+            var joueursTriés = TriDecroissant
                 ? joueursFiltres.OrderByDescending(j => j.Elo).ToList()
                 : joueursFiltres.OrderBy(j => j.Elo).ToList();
 
@@ -185,7 +192,7 @@ public partial class ClassementEloPageViewModel : ViewModelBase
 
             if (categorie == "tous")
             {
-                Message = $"✅ Tous les joueurs ({joueursFiltres.Count})";
+                Message = $"Tous les joueurs ({joueursFiltres.Count})";
             }
             else
             {
@@ -197,12 +204,14 @@ public partial class ClassementEloPageViewModel : ViewModelBase
                     "expert" => "Experts (≥ 2200)",
                     _ => ""
                 };
-                Message = $"✅ {nomCategorie} : {joueursFiltres.Count} joueur(s)";
+                Message = $"{nomCategorie} : {joueursFiltres.Count} joueur(s)";
             }
+            MessageIcon = MaterialIconKind.Check;
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {

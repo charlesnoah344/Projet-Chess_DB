@@ -53,7 +53,7 @@ public class EloService : IRankingSystem
         nouveauEloBlanc = Math.Max(0, nouveauEloBlanc);
         nouveauEloNoir = Math.Max(0, nouveauEloNoir);
 
-        Console.WriteLine($"📊 Calcul ELO:");
+        Console.WriteLine($"Calcul ELO:");
         Console.WriteLine($"   Blanc: {eloBlanc} → {nouveauEloBlanc} ({changementBlanc:+#;-#;0})");
         Console.WriteLine($"   Noir:  {eloNoir} → {nouveauEloNoir} ({changementNoir:+#;-#;0})");
 

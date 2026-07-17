@@ -1,17 +1,12 @@
 using System;
-using System.Threading.Tasks;
-using Chess_D_B.Services;
-using Chess_D_B.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Chess_D_B.Services;
+using Chess_D_B.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Chess_D_B.Models;
-using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -25,7 +20,7 @@ public partial class JoueurSelectionnable : ObservableObject
 
     [ObservableProperty]
     private bool _estSelectionne;
-    
+
     public string NomComplet => $"{_joueur.Prenom} {_joueur.Nom}";
 
     public JoueurSelectionnable(Joueur joueur)
@@ -40,7 +35,7 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
     private readonly MainViewModel _mainViewModel;
     private readonly CompetitionService _competitionService;
     private readonly JoueurService _joueurService;
-    
+
     // Propriété pour le tournoi (ObservableProperty génère automatiquement les événements de changement)
     [ObservableProperty]
     private string _tournoi = string.Empty;
@@ -49,14 +44,14 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
     [ObservableProperty]
     private string _ville = string.Empty;
 
-    // Propriété pour la date de debut 
+    // Propriété pour la date de debut
     [ObservableProperty]
     private DateTimeOffset _dateDebut = DateTimeOffset.Now;
 
-    // Propriété pour la date de fin 
+    // Propriété pour la date de fin
     [ObservableProperty]
     private DateTimeOffset _dateFin = DateTimeOffset.Now.AddDays(10);
-    
+
     [ObservableProperty]
     private ObservableCollection<JoueurSelectionnable> _joueursDisponibles = new();
 
@@ -64,13 +59,17 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
     [ObservableProperty]
     private string _messageRetour = string.Empty;
 
+    // Icône associée au message de retour
+    [ObservableProperty]
+    private MaterialIconKind _messageRetourIcon = MaterialIconKind.Information;
+
     // Propriété pour indiquer si une sauvegarde est en cours
     [ObservableProperty]
     private bool _estEnCoursEnregistrement = false;
-    
+
     [ObservableProperty]
     private bool _estEnChargement = false;
-    
+
     partial void OnEstEnChargementChanged(bool value)
     {
         OnPropertyChanged(nameof(EstPasEnChargement));
@@ -78,20 +77,16 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
 
     public bool EstPasEnChargement => !EstEnChargement;
 
-    
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     public CreateCompetitionPageViewModel(MainViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
         _competitionService = new CompetitionService();
         _joueurService = new JoueurService();
-        
+
         // Charger les joueurs disponibles
         _ = ChargerJoueursAsync();
     }
-    
+
     /// <summary>
     /// Charge tous les joueurs pour la sélection
     /// </summary>
@@ -100,21 +95,23 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
         try
         {
             var joueurs = await _joueurService.ObtenirTousLesJoueursAsync();
-            
+
             JoueursDisponibles.Clear();
             foreach (var joueur in joueurs.OrderBy(j => j.Nom))
             {
                 JoueursDisponibles.Add(new JoueurSelectionnable(joueur));
             }
-            
-            Message = $"✅ {joueurs.Count} joueur(s) disponible(s)";
+
+            Message = $"{joueurs.Count} joueur(s) disponible(s)";
+            MessageIcon = MaterialIconKind.Check;
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur lors du chargement des joueurs : {ex.Message}";
+            Message = $"Erreur lors du chargement des joueurs : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
     }
-    
+
 /// <summary>
     /// Commande pour enregistrer le nouveau tournoi
     /// </summary>
@@ -124,21 +121,22 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
         // Valider les données avant de sauvegarder
         if (string.IsNullOrWhiteSpace(Tournoi))
         {
-            MessageRetour = "❌ Le nom du tournoi est obligatoire !";
+            MessageRetour = "Le nom du tournoi est obligatoire !";
+            MessageRetourIcon = MaterialIconKind.Close;
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Ville))
         {
-            MessageRetour = "❌ La Ville est obligatoire !";
+            MessageRetour = "La Ville est obligatoire !";
+            MessageRetourIcon = MaterialIconKind.Close;
             return;
         }
 
-        
-
         // Indiquer que l'enregistrement est en cours
         EstEnCoursEnregistrement = true;
-        MessageRetour = "💾 Enregistrement en cours...";
+        MessageRetour = "Enregistrement en cours...";
+        MessageRetourIcon = MaterialIconKind.ContentSave;
 
         try
         {
@@ -147,7 +145,7 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
                 .Where(j => j.EstSelectionne)
                 .Select(j => j.Joueur.Id)
                 .ToList();
-            
+
             // Créer un nouvel objet Competition avec les données du formulaire
             var nouvelleCompetition = new Competition
             {
@@ -163,22 +161,25 @@ public partial class CreateCompetitionPageViewModel : ViewModelBase
 
             if (succes)
             {
-                MessageRetour = "✅ Joueur enregistré avec succès !";
-                
+                MessageRetour = "Joueur enregistré avec succès !";
+                MessageRetourIcon = MaterialIconKind.Check;
+
                 // Attendre 1.5 secondes pour que l'utilisateur voie le message
                 await Task.Delay(1500);
-                
+
                 // Retourner à la page des competitions
                 _mainViewModel.GoToCompetition();
             }
             else
             {
-                MessageRetour = "❌ Erreur lors de l'enregistrement.";
+                MessageRetour = "Erreur lors de l'enregistrement.";
+                MessageRetourIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            MessageRetour = $"❌ Erreur : {ex.Message}";
+            MessageRetour = $"Erreur : {ex.Message}";
+            MessageRetourIcon = MaterialIconKind.Close;
         }
         finally
         {

@@ -6,100 +6,122 @@
              Foreground="{DynamicResource PrimaryForeground}"
              Background="{DynamicResource PrimaryBackground}"
              xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             xmlns:mi="using:Material.Icons.Avalonia"
              x:DataType="vm:DetailsCompetitionPageViewModel"
              x:Class="Chess_D_B.Views.DetailsCompetitionPageView">
-    
+
     <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
-        
+
         <!-- Header -->
         <Border Grid.Row="0" Background="#16a085" Padding="20">
             <StackPanel Spacing="5" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding Competition.Tournoi}" 
-                           FontSize="28" 
+                <TextBlock Text="{Binding Competition.Tournoi}"
+                           FontSize="28"
                            FontWeight="Bold"
                            Foreground="White"
                            HorizontalAlignment="Center"/>
-                <TextBlock FontSize="14" Foreground="White" HorizontalAlignment="Center">
-                    <Run Text="📍"/>
-                    <Run Text="{Binding Competition.Ville}"/>
-                    <Run Text=" | "/>
-                    <Run Text="{Binding Competition.DateDebut, StringFormat='dd/MM/yyyy'}"/>
-                    <Run Text=" - "/>
-                    <Run Text="{Binding Competition.DateFin, StringFormat='dd/MM/yyyy'}"/>
-                </TextBlock>
+                <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                    <mi:MaterialIcon Kind="MapMarker" Width="14" Height="14" Foreground="White"/>
+                    <TextBlock FontSize="14" Foreground="White">
+                        <Run Text="{Binding Competition.Ville}"/>
+                        <Run Text=" | "/>
+                        <Run Text="{Binding Competition.DateDebut, StringFormat='dd/MM/yyyy'}"/>
+                        <Run Text=" - "/>
+                        <Run Text="{Binding Competition.DateFin, StringFormat='dd/MM/yyyy'}"/>
+                    </TextBlock>
+                </StackPanel>
             </StackPanel>
         </Border>
-        
+
         <!-- Statistiques -->
         <Border Grid.Row="1" Padding="20" Background="#1abc9c">
             <Grid ColumnDefinitions="*, *, *, *">
-                
-                
+
+
                 <StackPanel Grid.Column="0" HorizontalAlignment="Center" Spacing="5">
-                    <TextBlock Text="👥 Participants" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center">
+                        <mi:MaterialIcon Kind="AccountGroup" Width="12" Height="12" Foreground="White"/>
+                        <TextBlock Text="Participants" FontSize="12" Foreground="White"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding JoueursParticipants.Count}" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                 </StackPanel>
-                
+
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center" Spacing="5">
-                    <TextBlock Text="♟️ Matchs" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center">
+                        <mi:MaterialIcon Kind="ChessPawn" Width="12" Height="12" Foreground="White"/>
+                        <TextBlock Text="Matchs" FontSize="12" Foreground="White"/>
+                    </StackPanel>
                     <TextBlock FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center">
                         <Run Text="{Binding MatchsTermines}"/>
                         <Run Text="/"/>
                         <Run Text="{Binding NombreMatchs}"/>
                     </TextBlock>
                 </StackPanel>
-                
-                <!-- ✅ NOUVEAU BOUTON AJOUTER MATCH -->
+
+                <!-- NOUVEAU BOUTON AJOUTER MATCH -->
                 <Button Grid.Column="2"
-                        Content="➕ Ajouter un match"
                         Command="{Binding AjouterMatchCommand}"
                         Height="35"
                         Margin="0,0,10,0"
                         Background="#16a085"
                         Foreground="White"
-                        FontWeight="Bold"/>
-        
+                        FontWeight="Bold">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <mi:MaterialIcon Kind="Plus" Width="16" Height="16"/>
+                        <TextBlock Text="Ajouter un match"/>
+                    </StackPanel>
+                </Button>
+
                 <!-- Bouton Rafraîchir -->
                 <Button Grid.Column="3"
-                        Content="🔄 Rafraîchir"
                         Command="{Binding ChargerDetailsCommand}"
                         Height="35"
-                        IsEnabled="{Binding !EstEnChargement}"/>
-                
+                        IsEnabled="{Binding !EstEnChargement}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <mi:MaterialIcon Kind="Refresh" Width="16" Height="16"/>
+                        <TextBlock Text="Rafraîchir"/>
+                    </StackPanel>
+                </Button>
+
             </Grid>
         </Border>
-        
+
         <!-- Message -->
         <Border Grid.Row="2" Padding="10" Background="#34495E">
-            <TextBlock Text="{Binding Message}" 
-                       FontSize="13"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                <mi:MaterialIcon Kind="{Binding MessageIcon}" Width="14" Height="14" Foreground="White"/>
+                <TextBlock Text="{Binding Message}"
+                           FontSize="13"
+                           Foreground="White"/>
+            </StackPanel>
         </Border>
-        
+
         <!-- Contenu principal -->
         <ScrollViewer Grid.Row="3">
             <Grid ColumnDefinitions="*, 2*" Margin="20" ColumnSpacing="20">
-                
+
                 <!-- Colonne gauche : Joueurs participants -->
-                <Border Grid.Column="0" 
-                        BorderBrush="#16a085" 
-                        BorderThickness="2" 
+                <Border Grid.Column="0"
+                        BorderBrush="#16a085"
+                        BorderThickness="2"
                         CornerRadius="5"
                         Padding="15">
                     <StackPanel Spacing="10">
-                        
-                        <TextBlock Text="👥 Joueurs Participants" 
-                                   FontSize="18" 
-                                   FontWeight="Bold"
-                                   Foreground="#16a085"/>
-                        
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <mi:MaterialIcon Kind="AccountGroup" Width="18" Height="18" Foreground="#16a085"/>
+                            <TextBlock Text="Joueurs Participants"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="#16a085"/>
+                        </StackPanel>
+
                         <ScrollViewer Height="500">
                             <ItemsControl ItemsSource="{Binding JoueursParticipants}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="#34495E" 
-                                                Padding="12" 
+                                        <Border Background="#34495E"
+                                                Padding="12"
                                                 Margin="0,0,0,8"
                                                 CornerRadius="5">
                                             <Grid ColumnDefinitions="*, Auto">
@@ -109,17 +131,17 @@
                                                         <Run Text=" "/>
                                                         <Run Text="{Binding Nom}"/>
                                                     </TextBlock>
-                                                    <TextBlock Text="{Binding DateNaissance, StringFormat='Né(e) le : dd/MM/yyyy'}" 
-                                                               FontSize="11" 
+                                                    <TextBlock Text="{Binding DateNaissance, StringFormat='Né(e) le : dd/MM/yyyy'}"
+                                                               FontSize="11"
                                                                Foreground="#95a5a6"/>
                                                 </StackPanel>
-                                                <Border Grid.Column="1" 
-                                                        Background="#3498db" 
+                                                <Border Grid.Column="1"
+                                                        Background="#3498db"
                                                         CornerRadius="8"
                                                         Padding="8,4"
                                                         VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Elo}" 
-                                                               FontWeight="Bold" 
+                                                    <TextBlock Text="{Binding Elo}"
+                                                               FontWeight="Bold"
                                                                Foreground="White"/>
                                                 </Border>
                                             </Grid>
@@ -128,29 +150,32 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
-                        
+
                     </StackPanel>
                 </Border>
-                
+
                 <!-- Colonne droite : Liste des matchs -->
-                <Border Grid.Column="1" 
-                        BorderBrush="#16a085" 
-                        BorderThickness="2" 
+                <Border Grid.Column="1"
+                        BorderBrush="#16a085"
+                        BorderThickness="2"
                         CornerRadius="5"
                         Padding="15">
                     <StackPanel Spacing="10">
-                        
-                        <TextBlock Text="♟️ Matchs de la Compétition" 
-                                   FontSize="18" 
-                                   FontWeight="Bold"
-                                   Foreground="#16a085"/>
-                        
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <mi:MaterialIcon Kind="ChessPawn" Width="18" Height="18" Foreground="#16a085"/>
+                            <TextBlock Text="Matchs de la Compétition"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="#16a085"/>
+                        </StackPanel>
+
                         <ScrollViewer Height="500">
                             <ItemsControl ItemsSource="{Binding Matchs}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="#34495E" 
-                                                Padding="15" 
+                                        <Border Background="#34495E"
+                                                Padding="15"
                                                 Margin="0,0,0,10"
                                                 CornerRadius="5"
                                                 Cursor="Hand">
@@ -159,75 +184,88 @@
                                                     <Setter Property="Background" Value="#2C3E50"/>
                                                 </Style>
                                             </Border.Styles>
-                                            
+
                                             <Grid RowDefinitions="Auto, Auto, Auto">
-                                                
+
                                                 <!-- Date et résultat -->
                                                 <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,8">
-                                                    <TextBlock Grid.Column="0" 
-                                                               Text="{Binding Match.DateMatch, StringFormat='📅 dd/MM/yyyy HH:mm'}" 
-                                                               FontSize="12" 
-                                                               Foreground="#95a5a6"/>
-                                                    <Border Grid.Column="1" 
-                                                            Background="{Binding CouleurResultat}" 
+                                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
+                                                        <mi:MaterialIcon Kind="Calendar" Width="12" Height="12" Foreground="#95a5a6"/>
+                                                        <TextBlock Text="{Binding Match.DateMatch, StringFormat='{}{0:dd/MM/yyyy HH:mm}'}"
+                                                                   FontSize="12"
+                                                                   Foreground="#95a5a6"/>
+                                                    </StackPanel>
+                                                    <Border Grid.Column="1"
+                                                            Background="{Binding CouleurResultat}"
                                                             CornerRadius="8"
                                                             Padding="8,4">
-                                                        <TextBlock Text="{Binding ResultatAvecIcone}" 
-                                                                   FontWeight="Bold" 
-                                                                   FontSize="12"
-                                                                   Foreground="White"/>
+                                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                                            <mi:MaterialIcon Kind="{Binding ResultatIcone}" Width="12" Height="12" Foreground="White"/>
+                                                            <TextBlock Text="{Binding ResultatTexte}"
+                                                                       FontWeight="Bold"
+                                                                       FontSize="12"
+                                                                       Foreground="White"/>
+                                                        </StackPanel>
                                                     </Border>
                                                 </Grid>
-                                                
+
                                                 <!-- Joueurs -->
                                                 <StackPanel Grid.Row="1" Spacing="5">
-                                                    <TextBlock FontSize="14">
-                                                        <Run Text="⚪ " Foreground="#ecf0f1"/>
-                                                        <Run Text="{Binding NomJoueurBlanc}" FontWeight="Bold"/>
-                                                    </TextBlock>
-                                                    <TextBlock FontSize="14">
-                                                        <Run Text="⚫ " Foreground="#34495e"/>
-                                                        <Run Text="{Binding NomJoueurNoir}" FontWeight="Bold"/>
-                                                    </TextBlock>
+                                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                                        <mi:MaterialIcon Kind="CircleOutline" Width="12" Height="12" Foreground="#ecf0f1"/>
+                                                        <TextBlock Text="{Binding NomJoueurBlanc}" FontWeight="Bold" FontSize="14"/>
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                                        <mi:MaterialIcon Kind="Circle" Width="12" Height="12" Foreground="#34495e"/>
+                                                        <TextBlock Text="{Binding NomJoueurNoir}" FontWeight="Bold" FontSize="14"/>
+                                                    </StackPanel>
                                                 </StackPanel>
-                                                
+
                                                 <!-- Bouton Voir détails -->
-                                                <Button Grid.Row="2" 
-                                                        Content="👁️ Voir les détails"
+                                                <Button Grid.Row="2"
                                                         Command="{Binding $parent[UserControl].DataContext.VoirMatchCommand}"
                                                         CommandParameter="{Binding}"
                                                         Margin="0,10,0,0"
                                                         Height="35"
                                                         HorizontalAlignment="Stretch"
-                                                        Background="#2980b9"/>
-                                                
+                                                        Background="#2980b9">
+                                                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                                                        <mi:MaterialIcon Kind="Eye" Width="16" Height="16"/>
+                                                        <TextBlock Text="Voir les détails"/>
+                                                    </StackPanel>
+                                                </Button>
+
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
-                        
+
                     </StackPanel>
                 </Border>
-                
+
             </Grid>
         </ScrollViewer>
-        
+
         <!-- Footer -->
         <StackPanel Grid.Row="4" Margin="20" Spacing="10">
-            
-            <ProgressBar IsIndeterminate="True" 
+
+            <ProgressBar IsIndeterminate="True"
                          IsVisible="{Binding EstEnChargement}"
                          Height="4"/>
-            
-            <Button Content="← Retour" 
-                    Command="{Binding RetourCommand}"
+
+            <Button Command="{Binding RetourCommand}"
                     HorizontalAlignment="Left"
                     Width="200"
-                    Height="40"/>
-            
+                    Height="40">
+                <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                    <mi:MaterialIcon Kind="ArrowLeft" Width="16" Height="16"/>
+                    <TextBlock Text="Retour"/>
+                </StackPanel>
+            </Button>
+
         </StackPanel>
-        
+
     </Grid>
 </UserControl>

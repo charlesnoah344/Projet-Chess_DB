@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -19,14 +20,11 @@ public partial class AfficherCompetitionsPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     public AfficherCompetitionsPageViewModel(MainViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
         _competitionService = new CompetitionService();
-        
+
         _ = ChargerCompetitionsAsync();
     }
 
@@ -34,30 +32,34 @@ public partial class AfficherCompetitionsPageViewModel : ViewModelBase
     private async Task ChargerCompetitionsAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement des compétitions...";
-        
+        Message = "Chargement des compétitions...";
+        MessageIcon = MaterialIconKind.Refresh;
+
         try
         {
             var liste = await _competitionService.ObtenirToutesLesCompetitionsAsync();
-            
+
             Competitions.Clear();
             foreach (var comp in liste)
             {
                 Competitions.Add(comp);
             }
-            
+
             if (Competitions.Count == 0)
             {
-                Message = "ℹ️ Aucune compétition trouvée.";
+                Message = "Aucune compétition trouvée.";
+                MessageIcon = MaterialIconKind.Information;
             }
             else
             {
-                Message = $"✅ {Competitions.Count} compétition(s) chargée(s)";
+                Message = $"{Competitions.Count} compétition(s) chargée(s)";
+                MessageIcon = MaterialIconKind.Check;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {

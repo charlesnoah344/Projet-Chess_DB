@@ -8,6 +8,7 @@
         x:Class="Chess_D_B.MainView"
         xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
         xmlns:view="clr-namespace:Chess_D_B.Views"
+        xmlns:mi="using:Material.Icons.Avalonia"
         x:DataType="vm:MainViewModel"
         Title="Chess_D_B">
     <Window.DataContext>
@@ -15,21 +16,46 @@
     </Window.DataContext>
 
     <Grid Background="{DynamicResource ResourceKey=PrimaryBackground}" ColumnDefinitions="Auto, *">
-        
+
         <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
-        
+
         <Border Padding="20" Background="{DynamicResource PrimaryBackgroundGradient}">
             <Grid RowDefinitions="*, Auto">
                 <StackPanel Spacing="40">
                     <Image Source="/Assets/logo_fede.png" Width="100"></Image>
-                    <Button Content="Gérer joueurs" Classes.active="{Binding JoueursPageIsActive}" Command="{Binding GoToJoueursCommand}"  HorizontalAlignment="Stretch"></Button>
-                    <Button Content="Gérer Compétitions" Classes.active="{Binding CompetitionPageIsActive}" Command="{Binding GoToCompetitionCommand}" HorizontalAlignment="Stretch"></Button>
-                    <Button Content="Classement ELO" Classes.active="{Binding EloPageIsActive}"  Command="{Binding GoToClassementEloCommand}" HorizontalAlignment="Stretch"></Button>
-                    <Button Content="📊 Tableau de Bord" Classes.active="{Binding DashboardPageIsActive}" Command="{Binding GoToDashboardCommand}" HorizontalAlignment="Stretch"></Button>
+                    <Button Classes.active="{Binding JoueursPageIsActive}" Command="{Binding GoToJoueursCommand}" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <mi:MaterialIcon Kind="AccountGroup" Width="16" Height="16"/>
+                            <TextBlock Text="Gérer joueurs"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Classes.active="{Binding CompetitionPageIsActive}" Command="{Binding GoToCompetitionCommand}" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <mi:MaterialIcon Kind="Trophy" Width="16" Height="16"/>
+                            <TextBlock Text="Gérer Compétitions"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Classes.active="{Binding EloPageIsActive}" Command="{Binding GoToClassementEloCommand}" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <mi:MaterialIcon Kind="Numeric1Circle" Width="16" Height="16"/>
+                            <TextBlock Text="Classement ELO"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Classes.active="{Binding DashboardPageIsActive}" Command="{Binding GoToDashboardCommand}" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <mi:MaterialIcon Kind="ChartBar" Width="16" Height="16"/>
+                            <TextBlock Text="Tableau de Bord"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
-                
-                <Button Grid.Row="1" Content="Settings"  ></Button>
-                </Grid> 
-        </Border>        
+
+                <Button Grid.Row="1" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <mi:MaterialIcon Kind="Cog" Width="16" Height="16"/>
+                        <TextBlock Text="Settings"/>
+                    </StackPanel>
+                </Button>
+                </Grid>
+        </Border>
     </Grid>
 </Window>

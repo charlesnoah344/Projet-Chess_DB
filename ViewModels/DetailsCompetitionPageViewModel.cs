@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -27,13 +28,22 @@ public partial class MatchAvecNoms : ObservableObject
         _nomJoueurNoir = nomNoir;
     }
 
-    public string ResultatAvecIcone => Match.Resultat switch
+    public string ResultatTexte => Match.Resultat switch
     {
-        "Blanc gagne" => "⚪ 1-0",
-        "Noir gagne" => "⚫ 0-1",
-        "Nul" => "🤝 ½-½",
-        "En cours" => "⏳ En cours",
+        "Blanc gagne" => "1-0",
+        "Noir gagne" => "0-1",
+        "Nul" => "½-½",
+        "En cours" => "En cours",
         _ => Match.Resultat
+    };
+
+    public MaterialIconKind ResultatIcone => Match.Resultat switch
+    {
+        "Blanc gagne" => MaterialIconKind.CircleOutline,
+        "Noir gagne" => MaterialIconKind.Circle,
+        "Nul" => MaterialIconKind.Handshake,
+        "En cours" => MaterialIconKind.TimerOutline,
+        _ => MaterialIconKind.Information
     };
 
     public string CouleurResultat => Match.Resultat switch
@@ -66,9 +76,6 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
     private bool _estEnChargement = false;
 
     [ObservableProperty]
-    private string _message = string.Empty;
-
-    [ObservableProperty]
     private int _nombreMatchs = 0;
 
     [ObservableProperty]
@@ -86,7 +93,7 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
         _matchService = new MatchService();
         _joueurService = new JoueurService();
         _competitionId = competitionId;
-        
+
         _ = ChargerDetailsAsync();
     }
 
@@ -94,7 +101,8 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
     private async Task ChargerDetailsAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement...";
+        Message = "Chargement...";
+        MessageIcon = MaterialIconKind.Refresh;
 
         try
         {
@@ -102,13 +110,14 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
 
             if (Competition == null)
             {
-                Message = "❌ Compétition introuvable !";
+                Message = "Compétition introuvable !";
+                MessageIcon = MaterialIconKind.Close;
                 return;
             }
 
             var tousLesJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
             JoueursParticipants.Clear();
-            
+
             foreach (var joueurId in Competition.JoueursIds)
             {
                 var joueur = tousLesJoueurs.Find(j => j.Id == joueurId);
@@ -119,7 +128,7 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
             }
 
             var matchsDeLaCompetition = await _matchService.ObtenirMatchsParCompetitionAsync(_competitionId);
-            
+
             Matchs.Clear();
             foreach (var match in matchsDeLaCompetition.OrderByDescending(m => m.DateMatch))
             {
@@ -136,11 +145,13 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
             MatchsTermines = matchsDeLaCompetition.Count(m => m.Resultat != "En cours");
             MatchsEnCours = matchsDeLaCompetition.Count(m => m.Resultat == "En cours");
 
-            Message = $"✅ {NombreMatchs} match(s) chargé(s)";
+            Message = $"{NombreMatchs} match(s) chargé(s)";
+            MessageIcon = MaterialIconKind.Check;
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -154,7 +165,7 @@ public partial class DetailsCompetitionPageViewModel : ViewModelBase
         _mainViewModel.GoToDetailsMatch(matchAvecNoms.Match.Id);
     }
 
-    // ✅ NOUVELLE COMMANDE POUR AJOUTER UN MATCH
+    // NOUVELLE COMMANDE POUR AJOUTER UN MATCH
     [RelayCommand]
     private void AjouterMatch()
     {

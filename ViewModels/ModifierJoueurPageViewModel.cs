@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -46,10 +47,6 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    // Message de statut
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     // Indique si le formulaire est visible
     public bool JoueurEstSelectionne => JoueurSelectionne != null;
 
@@ -57,7 +54,7 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
     {
         _mainViewModel = mainViewModel;
         _joueurService = new JoueurService();
-        
+
         // Charger les joueurs au démarrage
         _ = ChargerJoueursAsync();
     }
@@ -69,30 +66,34 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
     private async Task ChargerJoueursAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement des joueurs...";
-        
+        Message = "Chargement des joueurs...";
+        MessageIcon = MaterialIconKind.Refresh;
+
         try
         {
             var listeJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
-            
+
             Joueurs.Clear();
             foreach (var joueur in listeJoueurs)
             {
                 Joueurs.Add(joueur);
             }
-            
+
             if (Joueurs.Count == 0)
             {
-                Message = "ℹ️ Aucun joueur trouvé.";
+                Message = "Aucun joueur trouvé.";
+                MessageIcon = MaterialIconKind.Information;
             }
             else
             {
-                Message = $"✅ {Joueurs.Count} joueur(s) chargé(s)";
+                Message = $"{Joueurs.Count} joueur(s) chargé(s)";
+                MessageIcon = MaterialIconKind.Check;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -108,37 +109,43 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(IdRecherche))
         {
-            Message = "❌ Veuillez entrer un ID !";
+            Message = "Veuillez entrer un ID !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         if (!Guid.TryParse(IdRecherche.Trim(), out Guid id))
         {
-            Message = "❌ Format d'ID invalide !";
+            Message = "Format d'ID invalide !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         EstEnChargement = true;
-        Message = "🔍 Recherche en cours...";
+        Message = "Recherche en cours...";
+        MessageIcon = MaterialIconKind.Magnify;
 
         try
         {
             var joueur = await _joueurService.ObtenirJoueurParIdAsync(id);
-            
+
             if (joueur != null)
             {
                 JoueurSelectionne = joueur;
                 ChargerDansFormulaire(joueur);
-                Message = $"✅ Joueur trouvé : {joueur.Prenom} {joueur.Nom}";
+                Message = $"Joueur trouvé : {joueur.Prenom} {joueur.Nom}";
+                MessageIcon = MaterialIconKind.Check;
             }
             else
             {
-                Message = "❌ Aucun joueur trouvé avec cet ID.";
+                Message = "Aucun joueur trouvé avec cet ID.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -154,7 +161,8 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
         if (value != null)
         {
             ChargerDansFormulaire(value);
-            Message = $"📝 Modification de {value.Prenom} {value.Nom}";
+            Message = $"Modification de {value.Prenom} {value.Nom}";
+            MessageIcon = MaterialIconKind.NoteText;
         }
     }
 
@@ -179,30 +187,35 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
         // Validation
         if (JoueurSelectionne == null)
         {
-            Message = "❌ Aucun joueur sélectionné !";
+            Message = "Aucun joueur sélectionné !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Nom))
         {
-            Message = "❌ Le nom est obligatoire !";
+            Message = "Le nom est obligatoire !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Prenom))
         {
-            Message = "❌ Le prénom est obligatoire !";
+            Message = "Le prénom est obligatoire !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         if (Elo < 0 || Elo > 3000)
         {
-            Message = "❌ L'ELO doit être entre 0 et 3000 !";
+            Message = "L'ELO doit être entre 0 et 3000 !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         EstEnChargement = true;
-        Message = "💾 Enregistrement des modifications...";
+        Message = "Enregistrement des modifications...";
+        MessageIcon = MaterialIconKind.ContentSave;
 
         try
         {
@@ -222,33 +235,36 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
 
             if (succes)
             {
-                Message = $"✅ {joueurModifie.Prenom} {joueurModifie.Nom} a été modifié avec succès !";
-                
+                Message = $"{joueurModifie.Prenom} {joueurModifie.Nom} a été modifié avec succès !";
+                MessageIcon = MaterialIconKind.Check;
+
                 // Mettre à jour le joueur dans la liste
                 var index = Joueurs.IndexOf(JoueurSelectionne);
                 if (index >= 0)
                 {
                     Joueurs[index] = joueurModifie;
                 }
-                
+
                 // Réinitialiser la sélection
                 JoueurSelectionne = null;
                 IdRecherche = string.Empty;
-                
+
                 // Attendre pour que l'utilisateur voie le message
                 await Task.Delay(1500);
-                
+
                 // Recharger la liste
                 await ChargerJoueursAsync();
             }
             else
             {
-                Message = "❌ Erreur lors de la modification.";
+                Message = "Erreur lors de la modification.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -268,7 +284,8 @@ public partial class ModifierJoueurPageViewModel : ViewModelBase
         Prenom = string.Empty;
         DateNaissance = DateTimeOffset.Now.AddYears(-20);
         Elo = 1200;
-        Message = "ℹ️ Modification annulée.";
+        Message = "Modification annulée.";
+        MessageIcon = MaterialIconKind.Information;
     }
 
     /// <summary>

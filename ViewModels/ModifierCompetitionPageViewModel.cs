@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -33,11 +34,11 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
     [ObservableProperty]
     private string _ville = string.Empty;
 
-    // Propriété pour la date de debut 
+    // Propriété pour la date de debut
     [ObservableProperty]
     private DateTimeOffset _dateDebut = DateTimeOffset.Now;
 
-    // Propriété pour la date de fin 
+    // Propriété pour la date de fin
     [ObservableProperty]
     private DateTimeOffset _dateFin = DateTimeOffset.Now.AddDays(10);
 
@@ -48,10 +49,6 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    // Message de statut
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     // Indique si le formulaire est visible
     public bool CompetitionEstSelectionne => CompetitionSelectionne != null;
 
@@ -59,7 +56,7 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
     {
         _mainViewModel = mainViewModel;
         _competitionService = new CompetitionService();
-        
+
         // Charger les competitions au démarrage
         _ = ChargerCompetitionsAsync();
     }
@@ -71,30 +68,34 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
     private async Task ChargerCompetitionsAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement des competitions...";
-        
+        Message = "Chargement des competitions...";
+        MessageIcon = MaterialIconKind.Refresh;
+
         try
         {
             var listeCompetitions = await _competitionService.ObtenirToutesLesCompetitionsAsync();
-            
+
             Competitions.Clear();
             foreach (var competition in listeCompetitions)
             {
                 Competitions.Add(competition);
             }
-            
+
             if (Competitions.Count == 0)
             {
-                Message = "ℹ️ Aucune competition trouvée.";
+                Message = "Aucune competition trouvée.";
+                MessageIcon = MaterialIconKind.Information;
             }
             else
             {
-                Message = $"✅ {Competitions.Count} joueur(s) chargé(s)";
+                Message = $"{Competitions.Count} joueur(s) chargé(s)";
+                MessageIcon = MaterialIconKind.Check;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -110,37 +111,43 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(IdRecherche))
         {
-            Message = "❌ Veuillez entrer un ID !";
+            Message = "Veuillez entrer un ID !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         if (!Guid.TryParse(IdRecherche.Trim(), out Guid id))
         {
-            Message = "❌ Format d'ID invalide !";
+            Message = "Format d'ID invalide !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         EstEnChargement = true;
-        Message = "🔍 Recherche en cours...";
+        Message = "Recherche en cours...";
+        MessageIcon = MaterialIconKind.Magnify;
 
         try
         {
             var competition = await _competitionService.ObtenirCompetitionParIdAsync(id);
-            
+
             if (competition != null)
             {
                 CompetitionSelectionne = competition;
                 ChargerDansFormulaire(competition);
-                Message = $"✅ Competition trouvée : {competition.Tournoi} {competition.Ville}";
+                Message = $"Competition trouvée : {competition.Tournoi} {competition.Ville}";
+                MessageIcon = MaterialIconKind.Check;
             }
             else
             {
-                Message = "❌ Aucune competiton trouvée avec cet ID.";
+                Message = "Aucune competiton trouvée avec cet ID.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -156,7 +163,8 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
         if (value != null)
         {
             ChargerDansFormulaire(value);
-            Message = $"📝 Modification de {value.Tournoi} {value.Ville}";
+            Message = $"Modification de {value.Tournoi} {value.Ville}";
+            MessageIcon = MaterialIconKind.NoteText;
         }
     }
 
@@ -181,25 +189,28 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
         // Validation
         if (CompetitionSelectionne == null)
         {
-            Message = "❌ Aucun joueur sélectionné !";
+            Message = "Aucun joueur sélectionné !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Tournoi))
         {
-            Message = "❌ Le nom du tournoi est obligatoire !";
+            Message = "Le nom du tournoi est obligatoire !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Ville))
         {
-            Message = "❌ La ville est obligatoire !";
+            Message = "La ville est obligatoire !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
-        
 
         EstEnChargement = true;
-        Message = "💾 Enregistrement des modifications...";
+        Message = "Enregistrement des modifications...";
+        MessageIcon = MaterialIconKind.ContentSave;
 
         try
         {
@@ -218,33 +229,36 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
 
             if (succes)
             {
-                Message = $"✅ {competitionModifie.Tournoi} de {competitionModifie.Ville} a été modifié avec succès !";
-                
+                Message = $"{competitionModifie.Tournoi} de {competitionModifie.Ville} a été modifié avec succès !";
+                MessageIcon = MaterialIconKind.Check;
+
                 // Mettre à jour la competition dans la liste
                 var index = Competitions.IndexOf(CompetitionSelectionne);
                 if (index >= 0)
                 {
                     Competitions[index] = competitionModifie;
                 }
-                
+
                 // Réinitialiser la sélection
                 CompetitionSelectionne = null;
                 IdRecherche = string.Empty;
-                
+
                 // Attendre pour que l'utilisateur voie le message
                 await Task.Delay(1500);
-                
+
                 // Recharger la liste
                 await ChargerCompetitionsAsync();
             }
             else
             {
-                Message = "❌ Erreur lors de la modification.";
+                Message = "Erreur lors de la modification.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -265,16 +279,17 @@ public partial class ModifierCompetitionPageViewModel : ViewModelBase
         DateDebut = DateTimeOffset.Now;
         DateDebut = DateTimeOffset.Now.AddDays(10);
     }
-    // ✅ NOUVELLE COMMANDE pour aller à la page d'ajout de joueurs
+    // NOUVELLE COMMANDE pour aller à la page d'ajout de joueurs
     [RelayCommand]
     private void AjouterJoueurs()
     {
         if (CompetitionSelectionne == null)
         {
-            Message = "❌ Veuillez sélectionner une compétition !";
+            Message = "Veuillez sélectionner une compétition !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
-        
+
         _mainViewModel.GoToAjouterJoueursCompetition(CompetitionSelectionne.Id);
     }
 

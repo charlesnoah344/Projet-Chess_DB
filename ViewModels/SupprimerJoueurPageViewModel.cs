@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -29,21 +30,17 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    // Message de statut ou d'erreur
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     // Indique si la confirmation de suppression est visible
     [ObservableProperty]
     private bool _confirmationVisible = false;
-    
+
     public bool JoueurEstSelectionne => _joueurSelectionne != null;
 
     public SupprimerJoueurPageViewModel(MainViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
         _joueurService = new JoueurService();
-        
+
         // Charger les joueurs dès la création
         _ = ChargerJoueursAsync();
     }
@@ -55,30 +52,34 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     private async Task ChargerJoueursAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement des joueurs...";
-        
+        Message = "Chargement des joueurs...";
+        MessageIcon = MaterialIconKind.Refresh;
+
         try
         {
             var listeJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
-            
+
             Joueurs.Clear();
             foreach (var joueur in listeJoueurs)
             {
                 Joueurs.Add(joueur);
             }
-            
+
             if (Joueurs.Count == 0)
             {
-                Message = "ℹ️ Aucun joueur trouvé.";
+                Message = "Aucun joueur trouvé.";
+                MessageIcon = MaterialIconKind.Information;
             }
             else
             {
-                Message = $"✅ {Joueurs.Count} joueur(s) chargé(s)";
+                Message = $"{Joueurs.Count} joueur(s) chargé(s)";
+                MessageIcon = MaterialIconKind.Check;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -94,38 +95,44 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(IdRecherche))
         {
-            Message = "❌ Veuillez entrer un ID !";
+            Message = "Veuillez entrer un ID !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         // Vérifier si l'ID est valide
         if (!Guid.TryParse(IdRecherche.Trim(), out Guid id))
         {
-            Message = "❌ Format d'ID invalide !";
+            Message = "Format d'ID invalide !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         EstEnChargement = true;
-        Message = "🔍 Recherche en cours...";
+        Message = "Recherche en cours...";
+        MessageIcon = MaterialIconKind.Magnify;
 
         try
         {
             var joueur = await _joueurService.ObtenirJoueurParIdAsync(id);
-            
+
             if (joueur != null)
             {
                 JoueurSelectionne = joueur;
-                Message = $"✅ Joueur trouvé : {joueur.Prenom} {joueur.Nom}";
+                Message = $"Joueur trouvé : {joueur.Prenom} {joueur.Nom}";
+                MessageIcon = MaterialIconKind.Check;
             }
             else
             {
                 JoueurSelectionne = null;
-                Message = "❌ Aucun joueur trouvé avec cet ID.";
+                Message = "Aucun joueur trouvé avec cet ID.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -141,12 +148,14 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     {
         if (JoueurSelectionne == null)
         {
-            Message = "❌ Veuillez sélectionner un joueur !";
+            Message = "Veuillez sélectionner un joueur !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         ConfirmationVisible = true;
-        Message = $"⚠️ Êtes-vous sûr de vouloir supprimer {JoueurSelectionne.Prenom} {JoueurSelectionne.Nom} ?";
+        Message = $"Êtes-vous sûr de vouloir supprimer {JoueurSelectionne.Prenom} {JoueurSelectionne.Nom} ?";
+        MessageIcon = MaterialIconKind.Alert;
     }
 
     /// <summary>
@@ -156,7 +165,8 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     private void AnnulerSuppression()
     {
         ConfirmationVisible = false;
-        Message = "ℹ️ Suppression annulée.";
+        Message = "Suppression annulée.";
+        MessageIcon = MaterialIconKind.Information;
     }
 
     /// <summary>
@@ -167,13 +177,15 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     {
         if (JoueurSelectionne == null)
         {
-            Message = "❌ Aucun joueur sélectionné !";
+            Message = "Aucun joueur sélectionné !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
 
         EstEnChargement = true;
         ConfirmationVisible = false;
-        Message = "🗑️ Suppression en cours...";
+        Message = "Suppression en cours...";
+        MessageIcon = MaterialIconKind.TrashCan;
 
         try
         {
@@ -181,28 +193,31 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
 
             if (succes)
             {
-                Message = $"✅ {JoueurSelectionne.Prenom} {JoueurSelectionne.Nom} a été supprimé !";
-                
+                Message = $"{JoueurSelectionne.Prenom} {JoueurSelectionne.Nom} a été supprimé !";
+                MessageIcon = MaterialIconKind.Check;
+
                 // Retirer le joueur de la liste affichée
                 Joueurs.Remove(JoueurSelectionne);
-                
+
                 // Réinitialiser la sélection
                 JoueurSelectionne = null;
                 IdRecherche = string.Empty;
-                
+
                 // Attendre un peu pour que l'utilisateur voie le message
                 await Task.Delay(1500);
-                
-                Message = $"✅ {Joueurs.Count} joueur(s) restant(s)";
+
+                Message = $"{Joueurs.Count} joueur(s) restant(s)";
             }
             else
             {
-                Message = "❌ Erreur lors de la suppression.";
+                Message = "Erreur lors de la suppression.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
@@ -218,7 +233,7 @@ public partial class SupprimerJoueurPageViewModel : ViewModelBase
     {
         _mainViewModel.GoToJoueurs();
     }
-    
+
 
     partial void OnJoueurSelectionneChanged(Joueur? value)
     {

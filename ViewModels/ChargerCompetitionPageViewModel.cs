@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -16,27 +17,23 @@ public partial class ChargerCompetitionPageViewModel : ViewModelBase
     // Collection observable pour le DataGrid (se met à jour automatiquement)
     [ObservableProperty]
     private ObservableCollection<Competition> _competitions = new();
-    
+
     // Competition sélectionné dans la liste
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CompetitionEstSelectionne))]
     private Competition? _competitionSelectionne;
-    
+
     public bool CompetitionEstSelectionne => CompetitionSelectionne != null;
 
     // Indique si les données sont en cours de chargement
     [ObservableProperty]
     private bool _estEnChargement = false;
 
-    // Message à afficher (erreur ou info)
-    [ObservableProperty]
-    private string _message = string.Empty;
-
     public ChargerCompetitionPageViewModel(MainViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
         _competitionService = new CompetitionService();
-        
+
         // Charger les competitions dès la création du ViewModel
         _ = ChargerCompetitionsAsync();
     }
@@ -48,41 +45,45 @@ public partial class ChargerCompetitionPageViewModel : ViewModelBase
     private async Task ChargerCompetitionsAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement des competitions...";
-        
+        Message = "Chargement des competitions...";
+        MessageIcon = MaterialIconKind.Refresh;
+
         try
         {
             // Récupérer toutes les compétitions via le service
             var listeCompetitions = await _competitionService.ObtenirToutesLesCompetitionsAsync();
-            
+
             // Vider la collection actuelle
             Competitions.Clear();
-            
+
             // Ajouter toutes les competitions à la collection observable
             foreach (var competition in listeCompetitions)
             {
                 Competitions.Add(competition);
             }
-            
+
             if (Competitions.Count == 0)
             {
-                Message = "ℹ️ Aucune competition trouvée. Ajoutez-en une !";
+                Message = "Aucune competition trouvée. Ajoutez-en une !";
+                MessageIcon = MaterialIconKind.Information;
             }
             else
             {
-                Message = $"✅ {Competitions.Count} compétition chargée";
+                Message = $"{Competitions.Count} compétition chargée";
+                MessageIcon = MaterialIconKind.Check;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
             EstEnChargement = false;
         }
     }
-    
+
     // <summary>
     /// Appelé quand la sélection change dans la liste
     /// </summary>
@@ -91,7 +92,7 @@ public partial class ChargerCompetitionPageViewModel : ViewModelBase
         if (value != null)
         {
             //ChargerDansFormulaire(value);
-            //Message = $"📝 Modification de {value.Tournoi} {value.Ville}";
+            //Message = $"Modification de {value.Tournoi} {value.Ville}";
         }
     }
 

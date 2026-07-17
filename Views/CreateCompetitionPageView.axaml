@@ -1,99 +1,117 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:Chess_D_B.ViewModels"
+             xmlns:mi="using:Material.Icons.Avalonia"
              x:DataType="vm:CreateCompetitionPageViewModel"
              x:Class="Chess_D_B.Views.CreateCompetitionPageView"
              Foreground="{DynamicResource PrimaryForeground}"
              Background="{DynamicResource PrimaryBackground}">
-    
+
     <Grid RowDefinitions="Auto, *">
-    
+
         <!-- Header -->
         <Border Grid.Row="0" Background="#16a085" Padding="20">
-            <TextBlock Text="🏆 Créer une Nouvelle Compétition" 
-                       FontSize="28" 
-                       FontWeight="Bold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                <mi:MaterialIcon Kind="Trophy" Width="28" Height="28" Foreground="White"/>
+                <TextBlock Text="Créer une Nouvelle Compétition"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
         </Border>
-    
+
         <!-- Contenu avec ScrollViewer -->
         <ScrollViewer Grid.Row="1">
     <Grid ColumnDefinitions="1.2*, *" Margin="20" ColumnSpacing="20">
-        
+
         <!-- Colonne gauche : Formulaire COMPLET -->
-        <Border Grid.Column="0" 
-                BorderBrush="#16a085" 
-                BorderThickness="2" 
+        <Border Grid.Column="0"
+                BorderBrush="#16a085"
+                BorderThickness="2"
                 CornerRadius="5"
                 Padding="20">
             <StackPanel Spacing="15">
-                
-                <TextBlock Text="📋 Informations de la compétition" 
-                           FontSize="18" 
-                           FontWeight="Bold"
-                           Foreground="#16a085"/>
-                
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <mi:MaterialIcon Kind="ClipboardText" Width="18" Height="18" Foreground="#16a085"/>
+                    <TextBlock Text="Informations de la compétition"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="#16a085"/>
+                </StackPanel>
+
                 <!-- Nom -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Nom de la compétition *" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Text="{Binding Tournoi}" 
-                             Watermark="Ex: Championnat" 
+                    <TextBox Text="{Binding Tournoi}"
+                             Watermark="Ex: Championnat"
                              Height="40"/>
                 </StackPanel>
-                
+
                 <!-- Lieu -->
                 <StackPanel Spacing="8">
                     <TextBlock Text="Lieu *" FontWeight="Bold" FontSize="14"/>
-                    <TextBox Text="{Binding Ville}" 
-                             Watermark="Ex: Bruxelles" 
+                    <TextBox Text="{Binding Ville}"
+                             Watermark="Ex: Bruxelles"
                              Height="40"/>
                 </StackPanel>
-                
+
                 <!-- Dates -->
                 <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
                     <StackPanel Grid.Column="0" Spacing="8">
                         <TextBlock Text="Date de début *" FontWeight="Bold" FontSize="14"/>
                         <DatePicker SelectedDate="{Binding DateDebut}" Height="40"/>
                     </StackPanel>
-                    
+
                     <StackPanel Grid.Column="1" Spacing="8">
                         <TextBlock Text="Date de fin *" FontWeight="Bold" FontSize="14"/>
                         <DatePicker SelectedDate="{Binding DateFin}" Height="40"/>
                     </StackPanel>
                 </Grid>
-                
+
                 <!-- Boutons -->
                 <Grid ColumnDefinitions="*, *" Margin="0,20,0,0" ColumnSpacing="10">
                     <Button Grid.Column="0"
-                            Content="← Retour"
                             Command="{Binding RetourCommand}"
-                            Height="45"/>
-                    
+                            Height="45">
+                        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                            <mi:MaterialIcon Kind="ArrowLeft" Width="16" Height="16"/>
+                            <TextBlock Text="Retour"/>
+                        </StackPanel>
+                    </Button>
+
                     <Button Grid.Column="1"
-                            Content="✓ Créer"
                             Command="{Binding EnregistrerCommand}"
-                            Height="45"/>
+                            Height="45">
+                        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                            <mi:MaterialIcon Kind="Check" Width="16" Height="16"/>
+                            <TextBlock Text="Créer"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
-                
+
             </StackPanel>
         </Border>
-        
+
         <!-- Colonne droite : Joueurs -->
-        <Border Grid.Column="1" 
-                BorderBrush="#16a085" 
-                BorderThickness="2" 
+        <Border Grid.Column="1"
+                BorderBrush="#16a085"
+                BorderThickness="2"
                 CornerRadius="5"
                 Padding="20">
             <StackPanel Spacing="15">
-                
-                <TextBlock Text="👥 Joueurs participants" 
-                           FontSize="18" 
-                           FontWeight="Bold"
-                           Foreground="#16a085"/>
-                
-                
-                
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <mi:MaterialIcon Kind="AccountGroup" Width="18" Height="18" Foreground="#16a085"/>
+                    <TextBlock Text="Joueurs participants"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="#16a085"/>
+                </StackPanel>
+
+
+
                 <!-- Liste des joueurs -->
                 <ScrollViewer Height="400">
                     <ItemsControl ItemsSource="{Binding JoueursDisponibles}">
@@ -102,9 +120,9 @@
                                 <Border Padding="10" Margin="0,0,0,5">
                                     <CheckBox Foreground="White" IsChecked="{Binding EstSelectionne}">
                                         <StackPanel>
-                            
-                                            <TextBlock Text="{Binding NomComplet}" FontWeight="Bold" Foreground="White"/>  
-                            
+
+                                            <TextBlock Text="{Binding NomComplet}" FontWeight="Bold" Foreground="White"/>
+
                                             <TextBlock Text="{Binding Joueur.Elo, StringFormat='ELO: {0}'}" Foreground="White"/>
                                         </StackPanel>
                                     </CheckBox>
@@ -113,12 +131,12 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-                
+
             </StackPanel>
         </Border>
-        
+
     </Grid>
 </ScrollViewer>
-    
+
     </Grid>
 </UserControl>

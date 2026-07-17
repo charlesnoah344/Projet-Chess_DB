@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Chess_D_B.Models;
 using Chess_D_B.Services;
+using Material.Icons;
 
 namespace Chess_D_B.ViewModels;
 
@@ -19,13 +20,15 @@ public partial class JoueurSelectionnableAvecEtat : ObservableObject
 
     [ObservableProperty]
     private bool _estSelectionne;
-    
+
     [ObservableProperty]
     private bool _estDejaParticipant;
-    
+
     public string NomComplet => $"{_joueur.Prenom} {_joueur.Nom}";
-    
-    public string StatutText => _estDejaParticipant ? "✓ Déjà participant" : "À ajouter";
+
+    public string StatutText => _estDejaParticipant ? "Déjà participant" : "À ajouter";
+
+    public MaterialIconKind StatutIcon => _estDejaParticipant ? MaterialIconKind.Check : MaterialIconKind.Plus;
 
     public JoueurSelectionnableAvecEtat(Joueur joueur, bool estDejaParticipant)
     {
@@ -41,22 +44,19 @@ public partial class AjouterJoueursCompetitionPageViewModel : ViewModelBase
     private readonly CompetitionService _competitionService;
     private readonly JoueurService _joueurService;
     private readonly Guid _competitionId;
-    
+
     [ObservableProperty]
     private Competition? _competition;
-    
+
     [ObservableProperty]
     private ObservableCollection<JoueurSelectionnableAvecEtat> _joueursDisponibles = new();
-    
+
     [ObservableProperty]
     private bool _estEnChargement = false;
-    
-    [ObservableProperty]
-    private string _message = string.Empty;
-    
+
     [ObservableProperty]
     private bool _estEnCoursEnregistrement = false;
-    
+
     [ObservableProperty]
     private int _nombreJoueursSelectionnes = 0;
 
@@ -66,38 +66,40 @@ public partial class AjouterJoueursCompetitionPageViewModel : ViewModelBase
         _competitionService = new CompetitionService();
         _joueurService = new JoueurService();
         _competitionId = competitionId;
-        
+
         _ = ChargerDonneesAsync();
     }
-    
+
     /// <summary>
     /// Charge la compétition et tous les joueurs
     /// </summary>
     private async Task ChargerDonneesAsync()
     {
         EstEnChargement = true;
-        Message = "🔄 Chargement...";
-        
+        Message = "Chargement...";
+        MessageIcon = MaterialIconKind.Refresh;
+
         try
         {
             // Charger la compétition
             Competition = await _competitionService.ObtenirCompetitionParIdAsync(_competitionId);
-            
+
             if (Competition == null)
             {
-                Message = "❌ Compétition introuvable !";
+                Message = "Compétition introuvable !";
+                MessageIcon = MaterialIconKind.Close;
                 return;
             }
-            
+
             // Charger tous les joueurs
             var tousLesJoueurs = await _joueurService.ObtenirTousLesJoueursAsync();
-            
+
             JoueursDisponibles.Clear();
             foreach (var joueur in tousLesJoueurs.OrderBy(j => j.Nom))
             {
                 bool estDejaParticipant = Competition.JoueursIds.Contains(joueur.Id);
                 var joueurSelectionnable = new JoueurSelectionnableAvecEtat(joueur, estDejaParticipant);
-                
+
                 // S'abonner aux changements de sélection
                 joueurSelectionnable.PropertyChanged += (s, e) =>
                 {
@@ -106,22 +108,24 @@ public partial class AjouterJoueursCompetitionPageViewModel : ViewModelBase
                         MettreAJourCompteur();
                     }
                 };
-                
+
                 JoueursDisponibles.Add(joueurSelectionnable);
             }
-            
-            Message = $"✅ {tousLesJoueurs.Count} joueur(s) disponible(s) | {Competition.JoueursIds.Count} déjà participant(s)";
+
+            Message = $"{tousLesJoueurs.Count} joueur(s) disponible(s) | {Competition.JoueursIds.Count} déjà participant(s)";
+            MessageIcon = MaterialIconKind.Check;
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
             EstEnChargement = false;
         }
     }
-    
+
     /// <summary>
     /// Met à jour le compteur de joueurs sélectionnés
     /// </summary>
@@ -129,7 +133,7 @@ public partial class AjouterJoueursCompetitionPageViewModel : ViewModelBase
     {
         NombreJoueursSelectionnes = JoueursDisponibles.Count(j => j.EstSelectionne && !j.EstDejaParticipant);
     }
-    
+
     /// <summary>
     /// Sélectionne ou désélectionne tous les nouveaux joueurs
     /// </summary>
@@ -141,7 +145,7 @@ public partial class AjouterJoueursCompetitionPageViewModel : ViewModelBase
             joueur.EstSelectionne = selectionner;
         }
     }
-    
+
     /// <summary>
     /// Ajoute les joueurs sélectionnés à la compétition
     /// </summary>
@@ -150,25 +154,28 @@ public partial class AjouterJoueursCompetitionPageViewModel : ViewModelBase
     {
         if (Competition == null)
         {
-            Message = "❌ Aucune compétition chargée !";
+            Message = "Aucune compétition chargée !";
+            MessageIcon = MaterialIconKind.Close;
             return;
         }
-        
+
         // Récupérer les IDs des nouveaux joueurs sélectionnés
         var nouveauxJoueursIds = JoueursDisponibles
             .Where(j => j.EstSelectionne && !j.EstDejaParticipant)
             .Select(j => j.Joueur.Id)
             .ToList();
-        
+
         if (nouveauxJoueursIds.Count == 0)
         {
-            Message = "⚠️ Veuillez sélectionner au moins un nouveau joueur !";
+            Message = "Veuillez sélectionner au moins un nouveau joueur !";
+            MessageIcon = MaterialIconKind.Alert;
             return;
         }
-        
+
         EstEnCoursEnregistrement = true;
-        Message = $"💾 Ajout de {nouveauxJoueursIds.Count} joueur(s)...";
-        
+        Message = $"Ajout de {nouveauxJoueursIds.Count} joueur(s)...";
+        MessageIcon = MaterialIconKind.ContentSave;
+
         try
         {
             // Ajouter les nouveaux joueurs à la liste existante
@@ -179,34 +186,37 @@ public partial class AjouterJoueursCompetitionPageViewModel : ViewModelBase
                     Competition.JoueursIds.Add(joueurId);
                 }
             }
-            
+
             // Sauvegarder la compétition modifiée
             bool succes = await _competitionService.ModifierCompetitionAsync(Competition);
-            
+
             if (succes)
             {
-                Message = $"✅ {nouveauxJoueursIds.Count} joueur(s) ajouté(s) avec succès !";
-                
+                Message = $"{nouveauxJoueursIds.Count} joueur(s) ajouté(s) avec succès !";
+                MessageIcon = MaterialIconKind.Check;
+
                 await Task.Delay(1500);
-                
+
                 // Retourner à la page de modification de compétition
                 _mainViewModel.GoToModifierCompetition();
             }
             else
             {
-                Message = "❌ Erreur lors de l'enregistrement.";
+                Message = "Erreur lors de l'enregistrement.";
+                MessageIcon = MaterialIconKind.Close;
             }
         }
         catch (Exception ex)
         {
-            Message = $"❌ Erreur : {ex.Message}";
+            Message = $"Erreur : {ex.Message}";
+            MessageIcon = MaterialIconKind.Close;
         }
         finally
         {
             EstEnCoursEnregistrement = false;
         }
     }
-    
+
     [RelayCommand]
     private void Retour()
     {
