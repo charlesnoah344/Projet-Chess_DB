@@ -1,15 +1,17 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              x:Class="Chess_D_B.App"
              xmlns:local="clr-namespace:Chess_D_B"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-           
+
              <Application.DataTemplates>
                  <local:ViewLocator></local:ViewLocator>
              </Application.DataTemplates>
     <Application.Styles>
         <FluentTheme />
+        <materialIcons:MaterialIconStyles />
         <StyleInclude Source="Styles/AppDefaultStyles.axaml"></StyleInclude>
     </Application.Styles>
     
